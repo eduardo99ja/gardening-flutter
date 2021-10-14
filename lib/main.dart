@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gardening/src/pages/home/home_controller.dart';
+import 'package:gardening/src/pages/home/home_page.dart';
 import 'package:gardening/src/pages/login/login_page.dart';
 import 'package:gardening/src/pages/register/register_page.dart';
 import 'package:gardening/src/utils/my_colors.dart';
@@ -23,10 +25,11 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Delivery App ',
-      initialRoute: 'login',
+      initialRoute: 'home',
       routes: {
         'register': (BuildContext context) => RegisterPage(),
         'login': (BuildContext context) => LoginPage(),
+        'home': (BuildContext context) => HomePage(),
       },
       theme: ThemeData(
         primaryColor: MyColors.primaryColor,
