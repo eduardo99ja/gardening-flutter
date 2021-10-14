@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "783942439663",
+    "project_id": "gardening-8c7ca",
+    "storage_bucket": "gardening-8c7ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:783942439663:android:18c6994fbc8527d39e011a",
+        "android_client_info": {
+          "package_name": "com.apodaca.gardening"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "783942439663-lmffuqhjr9dole95lithf9jvovonb0s1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apodaca.gardening",
+            "certificate_hash": "26a1136ed8275eae490afddd2a0274247bd6b85c"
+          }
+        },
+        {
+          "client_id": "783942439663-01v38oqgtr0h2uqhsb4asqlghncvok8f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGFv3stlT_lxWXVzaOCCY_t70D-8Doi7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "783942439663-01v38oqgtr0h2uqhsb4asqlghncvok8f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
