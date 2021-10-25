@@ -24,7 +24,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Delivery App ',
+      title: 'Gardening',
       initialRoute: 'home',
       routes: {
         'register': (BuildContext context) => RegisterPage(),
