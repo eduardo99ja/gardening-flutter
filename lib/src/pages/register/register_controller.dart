@@ -1,8 +1,8 @@
 import 'package:gardening/src/models/user.dart';
 import 'package:gardening/src/providers/auth_provider.dart';
 
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:gardening/src/providers/user_provider.dart';
 import 'package:ndialog/ndialog.dart';
 
 class RegisterController {
@@ -16,14 +16,15 @@ class RegisterController {
   TextEditingController confirmPasswordController = new TextEditingController();
 
   late AuthProvider _authProvider;
+  late UserProvider _userProvider;
   late final userRef;
 
   String? _typeUser;
 
   Future? init(BuildContext context) async {
     this.context = context;
-    userRef = FirebaseDatabase.instance.reference();
     _authProvider = new AuthProvider();
+    _userProvider = new UserProvider();
   }
 
   void register() async {
@@ -69,7 +70,6 @@ class RegisterController {
 
       if (isRegister) {
         progressDialog.dismiss();
-        print('usuario registrado');
         User user = User(
             email: email,
             password: password,
@@ -77,8 +77,10 @@ class RegisterController {
             name: name,
             lastname: lastname,
             id: _authProvider.getUser().uid);
+        await _userProvider.create(user);
+        // print('usuario registrado');
         // _sharedPref.save('user', user.toJson());
-
+        Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
       } else {
         progressDialog.dismiss();
 

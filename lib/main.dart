@@ -25,7 +25,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Gardening',
-      initialRoute: 'home',
+      initialRoute: 'register',
       routes: {
         'register': (BuildContext context) => RegisterPage(),
         'login': (BuildContext context) => LoginPage(),
