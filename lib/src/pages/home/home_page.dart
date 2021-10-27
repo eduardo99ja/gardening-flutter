@@ -2,7 +2,6 @@ import 'package:gardening/src/pages/home/home_controller.dart';
 import 'package:gardening/src/providers/auth_provider.dart';
 import 'package:gardening/src/utils/my_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -43,7 +42,8 @@ class _HomePageState extends State<HomePage> {
           GestureDetector(
             onTap: () async {
               await _authProvider.signOut();
-              Navigator.pushNamedAndRemoveUntil(context, 'roles', (route) => false);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, 'roles', (route) => false);
             },
             child: Container(
               margin: EdgeInsets.only(right: 10),

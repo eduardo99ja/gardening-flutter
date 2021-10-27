@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:gardening/src/models/user.dart';
+import 'package:gardening/src/pages/plants/details.dart';
 
 class HomeController {
   late BuildContext context;
@@ -30,7 +31,8 @@ class HomeController {
   }
 
   void goToCreate() {
-    Navigator.pushNamed(context, 'plants/create');
+    Navigator.push(context,
+        new MaterialPageRoute(builder: (context) => new CreatePlant()));
   }
 
   void goToCredits() {
