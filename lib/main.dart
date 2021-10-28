@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gardening/src/pages/home/home_page.dart';
-import 'package:gardening/src/pages/plants/details.dart';
 import 'package:gardening/src/pages/login/login_page.dart';
+import 'package:gardening/src/pages/plantasAdmin/create.dart';
+import 'package:gardening/src/pages/plantasAdmin/searchPlant.dart';
 import 'package:gardening/src/pages/register/register_page.dart';
 import 'package:gardening/src/utils/my_colors.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,12 +26,13 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Gardening',
-      initialRoute: 'plants/create',
+      initialRoute: 'plants/search',
       routes: {
         'register': (BuildContext context) => RegisterPage(),
         'login': (BuildContext context) => LoginPage(),
         'home': (BuildContext context) => HomePage(),
         'plants/create': (BuildContext context) => CreatePlant(),
+        'plants/search': (BuildContext context) => SearchPlant(),
       },
       theme: ThemeData(
         primaryColor: MyColors.primaryColor,
