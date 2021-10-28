@@ -274,6 +274,16 @@ class _HomePageState extends State<HomePage> {
               trailing: Icon(Icons.add),
             ),
             ListTile(
+              onTap: _con.goToDetailsCreate,
+              title: Text('Vista plantas'),
+              trailing: Icon(Icons.arrow_right),
+            ),
+            ListTile(
+              onTap: _con.goToListPlants,
+              title: Text('Plantas en base'),
+              trailing: Icon(Icons.arrow_right),
+            ),
+            ListTile(
               onTap: _con.goToPlantInfoReal,
               title: Text('Estadisticas planta'),
               trailing: Icon(Icons.arrow_right),
@@ -294,10 +304,20 @@ class _HomePageState extends State<HomePage> {
               trailing: Icon(Icons.arrow_right),
             ),
             ListTile(
+              onTap: _con.goToLogin,
+              title: Text('login'),
+              trailing: Icon(Icons.arrow_right),
+            ),
+            ListTile(
+              onTap: _con.goToRegister,
+              title: Text('Registro'),
+              trailing: Icon(Icons.add),
+            ),
+           /* ListTile(
               title: Text('Creditos'),
               trailing: Icon(Icons.info),
               onTap: _con.goToCredits,
-            ),
+            ),*/
           ],
         ),
       );

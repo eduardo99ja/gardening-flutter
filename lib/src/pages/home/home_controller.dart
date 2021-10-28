@@ -30,7 +30,15 @@ class HomeController {
   }
 
   void goToCreate() {
-    Navigator.pushNamed(context, 'plants/create');
+    Navigator.pushNamed(context, 'addPlantScreen');
+  }
+
+  void goToDetailsCreate() {
+    Navigator.pushNamed(context, 'details');
+  }
+
+  void goToListPlants() {
+    Navigator.pushNamed(context, 'listPlants');
   }
 
   void goToAdminAccount() {
@@ -47,6 +55,14 @@ class HomeController {
 
   void goToPlantInfoHistory() {
     Navigator.pushNamed(context, 'plant/info/history');
+  }
+
+  void goToLogin() {
+    Navigator.pushNamed(context, 'login');
+  }
+
+  void goToRegister() {
+    Navigator.pushNamed(context, 'register');
   }
 
   void goToCredits() {
