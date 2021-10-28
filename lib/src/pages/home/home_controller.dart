@@ -31,8 +31,40 @@ class HomeController {
   }
 
   void goToCreate() {
-    Navigator.push(context,
-        new MaterialPageRoute(builder: (context) => new CreatePlant()));
+
+    Navigator.pushNamed(context, 'addPlantScreen');
+  }
+
+  void goToDetailsCreate() {
+    Navigator.pushNamed(context, 'details');
+  }
+
+  void goToListPlants() {
+    Navigator.pushNamed(context, 'listPlants');
+  }
+
+  void goToAdminAccount() {
+    Navigator.pushNamed(context, 'account/admin');
+  }
+
+  void goToUserAccount() {
+    Navigator.pushNamed(context, 'account/user');
+  }
+
+  void goToPlantInfoReal() {
+    Navigator.pushNamed(context, 'plant/info/real');
+  }
+
+  void goToPlantInfoHistory() {
+    Navigator.pushNamed(context, 'plant/info/history');
+  }
+
+  void goToLogin() {
+    Navigator.pushNamed(context, 'login');
+  }
+
+  void goToRegister() {
+    Navigator.pushNamed(context, 'register');
   }
 
   void goToCredits() {

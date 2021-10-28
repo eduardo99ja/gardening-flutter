@@ -1,12 +1,9 @@
-import 'package:flutter/scheduler.dart';
 import 'package:gardening/src/pages/home/home_controller.dart';
 import 'package:gardening/src/providers/auth_provider.dart';
 import 'package:gardening/src/utils/my_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:gardening/src/pages/home/components/vertical_card_pager.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -73,35 +70,10 @@ class _HomePageState extends State<HomePage> {
     ),
   ];
 
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Likes',
-      style: optionStyle,
-    ),
-    Text(
-      'Search',
-      style: optionStyle,
-    ),
-    Text(
-      'Profile',
-      style: optionStyle,
-    ),
-  ];
-
   @override
   void initState() {
     super.initState();
 
-    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
-      _con.init(context, refresh);
-    });
     _authProvider = new AuthProvider();
   }
 
@@ -121,11 +93,6 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 40),
             _menuDrawer(),
           ],
-        ),
-        centerTitle: true,
-        title: Text(
-          "\tMi jardín",
-          style: TextStyle(fontSize: 20, fontFamily: 'RobotoMono'),
         ),
         actions: [
           GestureDetector(
@@ -169,50 +136,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      /* bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 20,
-              color: Colors.black.withOpacity(.0),
-            )
-          ],
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
-            child: GNav(
-              rippleColor: Colors.grey[300]!,
-              hoverColor: Colors.white,
-              gap: 8,
-              activeColor: Colors.grey[600],
-              iconSize: 40,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              tabBackgroundColor: Colors.white!,
-              color: Colors.black,
-              tabs: [
-                GButton(
-                  icon: MdiIcons.leaf,
-                  onPressed: _con.goToCreate,
-                ),
-                GButton(
-                  icon: MdiIcons.plusBoxOutline,
-                ),
-                GButton(
-                  icon: MdiIcons.accountCircleOutline,
-                ),
-              ],
-              selectedIndex: _selectedIndex,
-              onTabChange: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
-            ),
-          ),
-        ),
-      ),*/
     );
   }
 
@@ -275,50 +198,10 @@ class _HomePageState extends State<HomePage> {
               trailing: Icon(Icons.add),
             ),
             ListTile(
-              onTap: _con.goToDetailsCreate,
-              title: Text('Vista plantas'),
-              trailing: Icon(Icons.arrow_right),
-            ),
-            ListTile(
-              onTap: _con.goToListPlants,
-              title: Text('Plantas en base'),
-              trailing: Icon(Icons.arrow_right),
-            ),
-            ListTile(
-              onTap: _con.goToPlantInfoReal,
-              title: Text('Estadisticas planta'),
-              trailing: Icon(Icons.arrow_right),
-            ),
-            ListTile(
-              onTap: _con.goToPlantInfoHistory,
-              title: Text('Historico planta'),
-              trailing: Icon(Icons.arrow_right),
-            ),
-            ListTile(
-              onTap: _con.goToUserAccount,
-              title: Text('Cuenta usuario'),
-              trailing: Icon(Icons.arrow_right),
-            ),
-            ListTile(
-              onTap: _con.goToAdminAccount,
-              title: Text('Cuenta admin'),
-              trailing: Icon(Icons.arrow_right),
-            ),
-            ListTile(
-              onTap: _con.goToLogin,
-              title: Text('login'),
-              trailing: Icon(Icons.arrow_right),
-            ),
-            ListTile(
-              onTap: _con.goToRegister,
-              title: Text('Registro'),
-              trailing: Icon(Icons.add),
-            ),
-           /* ListTile(
               title: Text('Creditos'),
               trailing: Icon(Icons.info),
               onTap: _con.goToCredits,
-            ),*/
+            ),
           ],
         ),
       );
