@@ -1,4 +1,3 @@
-import 'package:gardening/src/models/user.dart';
 import 'package:gardening/src/providers/auth_provider.dart';
 
 import 'package:firebase_database/firebase_database.dart';
@@ -35,7 +34,8 @@ class LoginController {
     String password = passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
-      final snackBar = SnackBar(content: Text('Debes ingresar sus credenciales'));
+      final snackBar =
+          SnackBar(content: Text('Debes ingresar sus credenciales'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
       return;

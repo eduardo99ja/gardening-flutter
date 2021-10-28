@@ -1,11 +1,9 @@
-import 'package:gardening/src/pages/login/login_controller.dart';
 import 'package:gardening/src/widgets/button_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:gardening/src/pages/register/register_controller.dart';
 import 'package:gardening/src/utils/my_colors.dart' as utils;
-import 'package:gardening/src/widgets/button_app.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -143,7 +141,8 @@ class _RegisterPageState extends State<RegisterPage> {
         margin: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
         child: Text(
           'REGISTRO',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25),
+          style: TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25),
         ),
       );
 

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gardening/src/pages/plantasAdmin/create.dart';
+import 'package:gardening/src/pages/plantasAdmin/searchPlant.dart';
 import 'package:gardening/src/pages/account/details_admin.dart';
 import 'package:gardening/src/pages/account/details_user.dart';
 import 'package:gardening/src/pages/home/home_page.dart';
@@ -37,6 +39,8 @@ class _MyAppState extends State<MyApp> {
         'register': (BuildContext context) => RegisterPage(),
         'login': (BuildContext context) => LoginPage(),
         'home': (BuildContext context) => HomePage(),
+        'plants/create': (BuildContext context) => CreatePlant(),
+        'plants/search': (BuildContext context) => SearchPlant(),
         'details': (BuildContext context) => DetailsScreen(),
         'listPlants': (BuildContext context) => listPlants(),
         'addPlantScreen': (BuildContext context) => addPlantScreen(),

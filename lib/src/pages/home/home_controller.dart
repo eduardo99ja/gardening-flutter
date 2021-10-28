@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:gardening/src/models/user.dart';
+import 'package:gardening/src/pages/plantasAdmin/create.dart';
 
 class HomeController {
   late BuildContext context;
@@ -30,6 +31,7 @@ class HomeController {
   }
 
   void goToCreate() {
+
     Navigator.pushNamed(context, 'addPlantScreen');
   }
 
