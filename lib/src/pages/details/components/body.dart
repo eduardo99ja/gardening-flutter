@@ -6,7 +6,6 @@ import 'package:gardening/src/pages/details/components/item_image.dart';
 import 'package:flutter/rendering.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-
 class Details extends StatefulWidget {
   @override
   _DetailsState createState() => _DetailsState();
@@ -51,8 +50,8 @@ class ItemInfo extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+            borderRadius:
+                BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
         child: Padding(
           padding: EdgeInsets.all(15.0),
           child: Column(
@@ -65,52 +64,50 @@ class ItemInfo extends StatelessWidget {
                   ),
                   Text(
                     'Lirio Flamingo',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Card(
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      child: CircleAvatar(
-                        radius: 15,
-                        backgroundColor: Colors.white,
-                        child: IconButton(
-                            padding: new EdgeInsets.all(0.0),
-                            onPressed: () => print("button"),
-                            icon: Icon(Icons.location_on_outlined,
-                                color: Colors.green)),
-                      ),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Card(
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            child: CircleAvatar(
+                              radius: 15,
+                              backgroundColor: Colors.white,
+                              child: IconButton(
+                                  padding: new EdgeInsets.all(0.0),
+                                  onPressed: () => print("button"),
+                                  icon: Icon(Icons.location_on_outlined, color: Colors.green)),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Card(
+                            elevation: 3,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                            ),
+                            child: CircleAvatar(
+                              radius: 15,
+                              backgroundColor: Colors.white,
+                              child: IconButton(
+                                  padding: new EdgeInsets.all(0.0),
+                                  onPressed: () => print("button"),
+                                  icon: Icon(Icons.bar_chart, color: Colors.green)),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(width: 5),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Card(
-                      elevation: 3,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      child: CircleAvatar(
-                        radius: 15,
-                        backgroundColor: Colors.white,
-                        child: IconButton(
-                            padding: new EdgeInsets.all(0.0),
-                            onPressed: () => print("button"),
-                            icon:
-                                Icon(Icons.bar_chart, color: Colors.green)),
-                      ),
-                    ),
-                  ),
-                    ],
                   )
                 ],
               ),
@@ -123,10 +120,8 @@ class ItemInfo extends StatelessWidget {
                   Text(
                     'Genero:',
                     textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                    style:
+                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
                   ),
                   SizedBox(width: size.width * 0.2),
                   Text(
@@ -144,10 +139,8 @@ class ItemInfo extends StatelessWidget {
                   Text(
                     'Nombre botánico:',
                     textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                    style:
+                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
                   ),
                   SizedBox(width: size.width * 0.04),
                   Text(
@@ -165,10 +158,8 @@ class ItemInfo extends StatelessWidget {
                   Text(
                     'Nombre común:',
                     textAlign: TextAlign.left,
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                    style:
+                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
                   ),
                   SizedBox(width: size.width * 0.07),
                   Text(
@@ -182,10 +173,8 @@ class ItemInfo extends StatelessWidget {
                 children: [
                   Text(
                     'Galería de fotos',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                   ),
                 ],
               ),
@@ -202,8 +191,7 @@ class ItemInfo extends StatelessWidget {
                     SizedBox(
                       width: size.width * 0.02,
                     ),
-                    _buildUsageItem(
-                        Icons.wb_sunny_outlined, ' Sol', size.width),
+                    _buildUsageItem(Icons.wb_sunny_outlined, ' Sol', size.width),
                     SizedBox(
                       width: size.width * 0.02,
                     ),
@@ -211,8 +199,7 @@ class ItemInfo extends StatelessWidget {
                     SizedBox(
                       width: size.width * 0.02,
                     ),
-                    _buildUsageItem(
-                        Icons.thermostat, 'Temperatura', size.width),
+                    _buildUsageItem(Icons.thermostat, 'Temperatura', size.width),
                     SizedBox(
                       width: size.width * 0.02,
                     ),
@@ -224,10 +211,8 @@ class ItemInfo extends StatelessWidget {
                 children: [
                   Text(
                     'Realidad Aumentada',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                    style:
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                   ),
                   Align(
                     alignment: Alignment.center,
@@ -274,8 +259,7 @@ class RenderSliverWidget extends RenderSliverToBoxAdapter {
       return;
     }
     final SliverConstraints constraints = this.constraints;
-    child!.layout(
-        constraints.asBoxConstraints(/* crossAxisExtent: double.infinity */),
+    child!.layout(constraints.asBoxConstraints(/* crossAxisExtent: double.infinity */),
         parentUsesSize: true);
     double childExtent;
     switch (constraints.axis) {
@@ -287,10 +271,8 @@ class RenderSliverWidget extends RenderSliverToBoxAdapter {
         break;
     }
     assert(childExtent != null);
-    final double paintedChildSize =
-        calculatePaintOffset(constraints, from: 0.0, to: childExtent);
-    final double cacheExtent =
-        calculateCacheOffset(constraints, from: 0.0, to: childExtent);
+    final double paintedChildSize = calculatePaintOffset(constraints, from: 0.0, to: childExtent);
+    final double cacheExtent = calculateCacheOffset(constraints, from: 0.0, to: childExtent);
 
     assert(paintedChildSize.isFinite);
     assert(paintedChildSize >= 0.0);

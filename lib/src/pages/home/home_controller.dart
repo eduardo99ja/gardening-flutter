@@ -31,7 +31,6 @@ class HomeController {
   }
 
   void goToCreate() {
-
     Navigator.pushNamed(context, 'addPlantScreen');
   }
 
@@ -69,5 +68,13 @@ class HomeController {
 
   void goToCredits() {
     Navigator.pushNamed(context, 'credits');
+  }
+
+  void goToCreatePlantAdmin() {
+    Navigator.pushNamed(context, 'plants/create');
+  }
+
+  void goToSearch() {
+    Navigator.pushNamed(context, 'plants/search');
   }
 }

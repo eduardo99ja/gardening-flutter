@@ -7,7 +7,6 @@ import 'package:gardening/src/pages/home/components/vertical_card_pager.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -74,8 +73,7 @@ class _HomePageState extends State<HomePage> {
   ];
 
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
+  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
       'Home',
@@ -131,8 +129,7 @@ class _HomePageState extends State<HomePage> {
           GestureDetector(
             onTap: () async {
               await _authProvider.signOut();
-              Navigator.pushNamedAndRemoveUntil(
-                  context, 'roles', (route) => false);
+              Navigator.pushNamedAndRemoveUntil(context, 'roles', (route) => false);
             },
             child: Container(
               margin: EdgeInsets.only(right: 10),
@@ -153,9 +150,7 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.all(10.0),
                 child: VerticalCardPager(
                   textStyle: TextStyle(
-                      fontFamily: "Bevan",
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+                      fontFamily: "Bevan", color: Colors.white, fontWeight: FontWeight.bold),
                   titles: titles,
                   images: images,
                   initialPage: 0,
@@ -314,7 +309,17 @@ class _HomePageState extends State<HomePage> {
               title: Text('Registro'),
               trailing: Icon(Icons.add),
             ),
-           /* ListTile(
+            ListTile(
+              onTap: _con.goToCreatePlantAdmin,
+              title: Text('Crear Planta Admin'),
+              trailing: Icon(Icons.add),
+            ),
+            ListTile(
+              onTap: _con.goToSearch,
+              title: Text('Buscar planta '),
+              trailing: Icon(Icons.add),
+            ),
+            /* ListTile(
               title: Text('Creditos'),
               trailing: Icon(Icons.info),
               onTap: _con.goToCredits,
