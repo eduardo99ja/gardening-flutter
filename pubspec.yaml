@@ -20,6 +20,10 @@ dependencies:
   firebase_database: ^7.2.1
   cloud_firestore: ^2.5.4
   ndialog: ^4.1.0
+  smooth_star_rating: ^1.0.4
+  material_design_icons_flutter: ^5.0.6295
+  flutter_swiper: ^1.1.6
+  google_nav_bar: ^5.0.5
 
 dev_dependencies:
   flutter_test:
