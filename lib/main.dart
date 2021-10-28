@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gardening/src/pages/home/home_controller.dart';
+import 'package:gardening/src/pages/account/details_admin.dart';
+import 'package:gardening/src/pages/account/details_user.dart';
 import 'package:gardening/src/pages/home/home_page.dart';
 import 'package:gardening/src/pages/login/login_page.dart';
+import 'package:gardening/src/pages/plant/plant_info_history.dart';
+import 'package:gardening/src/pages/plant/plant_info_real_page.dart';
 import 'package:gardening/src/pages/register/register_page.dart';
 import 'package:gardening/src/utils/my_colors.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,7 +32,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Gardening',
-      initialRoute: 'addPlantScreen',
+      initialRoute: 'home',
       routes: {
         'register': (BuildContext context) => RegisterPage(),
         'login': (BuildContext context) => LoginPage(),
@@ -37,6 +40,10 @@ class _MyAppState extends State<MyApp> {
         'details': (BuildContext context) => DetailsScreen(),
         'listPlants': (BuildContext context) => listPlants(),
         'addPlantScreen': (BuildContext context) => addPlantScreen(),
+        'plant/info/real': (BuildContext context) => PlantInfoRealPage(),
+        'plant/info/history': (BuildContext context) => PlantInfoHistory(),
+        'account/admin': (BuildContext context) => AccountAdminPage(),
+        'account/user': (BuildContext context) => AccountUserPage(),
       },
       theme: ThemeData(
         primaryColor: MyColors.primaryColor,

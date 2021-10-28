@@ -1,3 +1,4 @@
+import 'package:flutter/scheduler.dart';
 import 'package:gardening/src/pages/home/home_controller.dart';
 import 'package:gardening/src/providers/auth_provider.dart';
 import 'package:gardening/src/utils/my_colors.dart';
@@ -97,6 +98,9 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
+    SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
+      _con.init(context, refresh);
+    });
     _authProvider = new AuthProvider();
   }
 
@@ -268,6 +272,26 @@ class _HomePageState extends State<HomePage> {
               onTap: _con.goToCreate,
               title: Text('Agregar planta'),
               trailing: Icon(Icons.add),
+            ),
+            ListTile(
+              onTap: _con.goToPlantInfoReal,
+              title: Text('Estadisticas planta'),
+              trailing: Icon(Icons.arrow_right),
+            ),
+            ListTile(
+              onTap: _con.goToPlantInfoHistory,
+              title: Text('Historico planta'),
+              trailing: Icon(Icons.arrow_right),
+            ),
+            ListTile(
+              onTap: _con.goToUserAccount,
+              title: Text('Cuenta usuario'),
+              trailing: Icon(Icons.arrow_right),
+            ),
+            ListTile(
+              onTap: _con.goToAdminAccount,
+              title: Text('Cuenta admin'),
+              trailing: Icon(Icons.arrow_right),
             ),
             ListTile(
               title: Text('Creditos'),

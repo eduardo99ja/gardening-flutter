@@ -33,6 +33,22 @@ class HomeController {
     Navigator.pushNamed(context, 'plants/create');
   }
 
+  void goToAdminAccount() {
+    Navigator.pushNamed(context, 'account/admin');
+  }
+
+  void goToUserAccount() {
+    Navigator.pushNamed(context, 'account/user');
+  }
+
+  void goToPlantInfoReal() {
+    Navigator.pushNamed(context, 'plant/info/real');
+  }
+
+  void goToPlantInfoHistory() {
+    Navigator.pushNamed(context, 'plant/info/history');
+  }
+
   void goToCredits() {
     Navigator.pushNamed(context, 'credits');
   }
