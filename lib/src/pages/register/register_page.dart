@@ -5,6 +5,8 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:gardening/src/pages/register/register_controller.dart';
 import 'package:gardening/src/utils/my_colors.dart' as utils;
 
+enum TypeUser { user, admin }
+
 class RegisterPage extends StatefulWidget {
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -12,6 +14,8 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   RegisterController _con = new RegisterController();
+
+  TypeUser _user = TypeUser.user;
 
   @override
   void initState() {
@@ -37,6 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
             _textFieldEmail(),
             _textFieldPassword(),
             _textFieldConfirmPassword(),
+            _radioUser(),
             _buttonRegister(),
           ],
         ),
@@ -141,8 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
         margin: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
         child: Text(
           'REGISTRO',
-          style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 25),
         ),
       );
 
@@ -167,5 +171,34 @@ class _RegisterPageState extends State<RegisterPage> {
             ],
           ),
         ),
+      );
+
+  Widget _radioUser() => Column(
+        children: [
+          ListTile(
+            title: Text("Usuario"),
+            leading: Radio(
+              value: TypeUser.user,
+              onChanged: (TypeUser? value) {
+                setState(() {
+                  _user = value!;
+                });
+              },
+              groupValue: _user,
+            ),
+          ),
+          ListTile(
+            title: Text("Administrador"),
+            leading: Radio(
+              value: TypeUser.admin,
+              onChanged: (TypeUser? value) {
+                setState(() {
+                  _user = value!;
+                });
+              },
+              groupValue: _user,
+            ),
+          ),
+        ],
       );
 }
