@@ -20,7 +20,8 @@ List<String> images = [
   "https://www.conflores.cl/wp-content/uploads/2019/09/flor-flamingo-flower-800x450.jpg"
 ];
 
-class _SearchPlantState extends State<SearchPlant> with SingleTickerProviderStateMixin {
+class _SearchPlantState extends State<SearchPlant>
+    with SingleTickerProviderStateMixin {
   double? height, width;
   late TextEditingController _controller;
 
@@ -56,7 +57,8 @@ class _SearchPlantState extends State<SearchPlant> with SingleTickerProviderStat
           ),
         ),
         child: Scaffold(
-          appBar: PreferredSize(child: campoBusqueda(), preferredSize: Size.fromHeight(78)),
+          appBar: PreferredSize(
+              child: campoBusqueda(), preferredSize: Size.fromHeight(90)),
           body: _buildBody(),
         ),
       );
@@ -68,19 +70,18 @@ class _SearchPlantState extends State<SearchPlant> with SingleTickerProviderStat
       primary: false,
       padding: const EdgeInsets.all(10),
       crossAxisSpacing: 10,
-      mainAxisSpacing: 10,
+      mainAxisSpacing: 0,
       crossAxisCount: 2,
       children: [
         Container(
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               image: DecorationImage(
                   image: NetworkImage(
                       "https://images.clarin.com/2020/09/08/las-suculentas-son-plantas-muy___NwExXM3p3_640x361__1.jpg"),
-                  fit: BoxFit.fitWidth,
-                  colorFilter:
-                      new ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
-                  alignment: Alignment.center),
+                  colorFilter: new ColorFilter.mode(
+                      Colors.black.withOpacity(1.0), BlendMode.dstATop),
+                  alignment: Alignment.topLeft),
             ),
             child: Align(
               alignment: Alignment.bottomLeft,
@@ -88,11 +89,10 @@ class _SearchPlantState extends State<SearchPlant> with SingleTickerProviderStat
                 children: [
                   Expanded(
                     flex: 1,
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text('Suculentas y cactus',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
-                    ),
+                    child: Text('Suculentas y cactus',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87)),
                   ),
                   SizedBox(width: 15),
                   Expanded(
@@ -107,15 +107,14 @@ class _SearchPlantState extends State<SearchPlant> with SingleTickerProviderStat
               ),
             )),
         Container(
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               image: DecorationImage(
                   image: NetworkImage(
                       "https://www.hogarmania.com/archivos/202006/plantas-flores-llamativas-1280x720x80xX.jpg"),
-                  fit: BoxFit.fitWidth,
-                  colorFilter:
-                      new ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
-                  alignment: Alignment.center),
+                  colorFilter: new ColorFilter.mode(
+                      Colors.black.withOpacity(1.0), BlendMode.dstATop),
+                  alignment: Alignment.topLeft),
             ),
             child: Align(
               alignment: Alignment.bottomLeft,
@@ -123,11 +122,10 @@ class _SearchPlantState extends State<SearchPlant> with SingleTickerProviderStat
                 children: [
                   Expanded(
                     flex: 1,
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text('Florales    ',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
-                    ),
+                    child: Text('Florales    ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87)),
                   ),
                   SizedBox(width: 15),
                   Expanded(
@@ -147,10 +145,9 @@ class _SearchPlantState extends State<SearchPlant> with SingleTickerProviderStat
               image: DecorationImage(
                   image: NetworkImage(
                       "https://www.guiadejardineria.com/wp-content/uploads/2020/01/planta-con-follaje-rojo-1.jpg"),
-                  fit: BoxFit.fitWidth,
-                  colorFilter:
-                      new ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
-                  alignment: Alignment.center),
+                  colorFilter: new ColorFilter.mode(
+                      Colors.black.withOpacity(1.0), BlendMode.dstATop),
+                  alignment: Alignment.topLeft),
             ),
             child: Align(
               alignment: Alignment.bottomLeft,
@@ -158,11 +155,10 @@ class _SearchPlantState extends State<SearchPlant> with SingleTickerProviderStat
                 children: [
                   Expanded(
                     flex: 1,
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text('Follaje       ',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
-                    ),
+                    child: Text('Follaje       ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87)),
                   ),
                   SizedBox(width: 15),
                   Expanded(
@@ -182,10 +178,9 @@ class _SearchPlantState extends State<SearchPlant> with SingleTickerProviderStat
               image: DecorationImage(
                   image: NetworkImage(
                       "https://www.hogarmania.com/archivos/201701/12-plantas-interior-hoja-grande-1280x720x80xX.jpg"),
-                  fit: BoxFit.fitWidth,
-                  colorFilter:
-                      new ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
-                  alignment: Alignment.center),
+                  colorFilter: new ColorFilter.mode(
+                      Colors.black.withOpacity(1.0), BlendMode.dstATop),
+                  alignment: Alignment.topLeft),
             ),
             child: Align(
               alignment: Alignment.bottomLeft,
@@ -193,11 +188,10 @@ class _SearchPlantState extends State<SearchPlant> with SingleTickerProviderStat
                 children: [
                   Expanded(
                     flex: 1,
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text('Plantas de hoja verde',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
-                    ),
+                    child: Text('Plantas de hoja verde',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87)),
                   ),
                   SizedBox(width: 15),
                   Expanded(
@@ -217,10 +211,9 @@ class _SearchPlantState extends State<SearchPlant> with SingleTickerProviderStat
               image: DecorationImage(
                   image: NetworkImage(
                       "https://previews.123rf.com/images/prinprince/prinprince1709/prinprince170900164/86754131-bush-de-hojas-rojas-planta-en-jard%C3%ADn-en-fresco-y-relajarse-emoci%C3%B3n-hermosa-textura-en-el-patio-trase.jpg"),
-                  fit: BoxFit.fitWidth,
-                  colorFilter:
-                      new ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
-                  alignment: Alignment.center),
+                  colorFilter: new ColorFilter.mode(
+                      Colors.black.withOpacity(1.0), BlendMode.dstATop),
+                  alignment: Alignment.topLeft),
             ),
             child: Align(
               alignment: Alignment.bottomLeft,
@@ -228,11 +221,10 @@ class _SearchPlantState extends State<SearchPlant> with SingleTickerProviderStat
                 children: [
                   Expanded(
                     flex: 1,
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text('Plantas de hoja roja',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
-                    ),
+                    child: Text('Plantas de hoja roja',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87)),
                   ),
                   SizedBox(width: 15),
                   Expanded(
@@ -252,10 +244,9 @@ class _SearchPlantState extends State<SearchPlant> with SingleTickerProviderStat
               image: DecorationImage(
                   image: NetworkImage(
                       "https://www.ecoterrazas.com/blog/wp-content/uploads/orquideas-ecoterrazas-3-660x330.jpg"),
-                  fit: BoxFit.fitWidth,
-                  colorFilter:
-                      new ColorFilter.mode(Colors.black.withOpacity(0.3), BlendMode.dstATop),
-                  alignment: Alignment.center),
+                  colorFilter: new ColorFilter.mode(
+                      Colors.black.withOpacity(1.0), BlendMode.dstATop),
+                  alignment: Alignment.topLeft),
             ),
             child: Align(
               alignment: Alignment.bottomLeft,
@@ -263,11 +254,10 @@ class _SearchPlantState extends State<SearchPlant> with SingleTickerProviderStat
                 children: [
                   Expanded(
                     flex: 1,
-                    child: FittedBox(
-                      fit: BoxFit.fitWidth,
-                      child: Text('Orquídeas',
-                          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87)),
-                    ),
+                    child: Text('Orquídeas',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87)),
                   ),
                   SizedBox(width: 15),
                   Expanded(
@@ -309,12 +299,14 @@ class _SearchPlantState extends State<SearchPlant> with SingleTickerProviderStat
     return Container(
         color: Theme.of(context).primaryColor,
         child: new Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(top: 20),
             child: new Card(
                 child: new ListTile(
-              leading: new IconButton(onPressed: () {}, icon: Icon(Icons.search)),
+              leading:
+                  new IconButton(onPressed: () {}, icon: Icon(Icons.search)),
               title: new TextField(
-                decoration: new InputDecoration(hintText: 'Search', border: InputBorder.none),
+                decoration: new InputDecoration(
+                    hintText: 'Search', border: InputBorder.none),
                 // onChanged: onSearchTextChanged,
               ),
               trailing: new IconButton(

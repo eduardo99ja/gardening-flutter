@@ -6,7 +6,6 @@ import 'package:gardening/src/pages/details/components/item_image.dart';
 import 'package:flutter/rendering.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-
 class addPlant extends StatefulWidget {
   @override
   _addPlantState createState() => _addPlantState();
@@ -50,7 +49,7 @@ class ItemInfo extends StatelessWidget {
     return Container(
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: Colors.green,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30), topRight: Radius.circular(30))),
         child: Padding(
@@ -74,7 +73,6 @@ class ItemInfo extends StatelessWidget {
                       child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                    
                       Align(
                         alignment: Alignment.centerRight,
                         child: Card(
@@ -88,8 +86,7 @@ class ItemInfo extends StatelessWidget {
                             child: IconButton(
                                 padding: new EdgeInsets.all(0.0),
                                 onPressed: () => print("button"),
-                                icon:
-                                    Icon(Icons.add, color: Colors.green)),
+                                icon: Icon(Icons.add, color: Colors.green)),
                           ),
                         ),
                       ),
