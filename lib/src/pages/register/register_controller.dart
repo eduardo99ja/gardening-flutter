@@ -27,7 +27,9 @@ class RegisterController {
     _userProvider = new UserProvider();
   }
 
-  void register() async {
+  void register(String _user) async {
+    _typeUser = _user.split(".")[1];
+    print('$_typeUser splitted');
     ProgressDialog progressDialog = ProgressDialog(context,
         message: Text("Por favor, espere un momento"), title: Text("Cargando"));
     String username = usernameController.text;
@@ -70,13 +72,27 @@ class RegisterController {
 
       if (isRegister) {
         progressDialog.dismiss();
-        User user = User(
-            email: email,
-            password: password,
-            username: username,
-            name: name,
-            lastname: lastname,
-            id: _authProvider.getUser().uid);
+        User user;
+
+        if (_typeUser == "user") {
+          user = User(
+              email: email,
+              password: password,
+              username: username,
+              name: name,
+              lastname: lastname,
+              id: _authProvider.getUser().uid);
+        } else {
+          user = User(
+              email: email,
+              password: password,
+              username: username,
+              name: name,
+              lastname: lastname,
+              isAdmin: true,
+              id: _authProvider.getUser().uid);
+        }
+
         await _userProvider.create(user);
         // print('usuario registrado');
         // _sharedPref.save('user', user.toJson());

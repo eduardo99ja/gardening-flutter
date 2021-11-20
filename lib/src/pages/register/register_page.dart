@@ -52,7 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _buttonRegister() => Container(
         margin: EdgeInsets.symmetric(horizontal: 30, vertical: 25),
         child: ButtonApp(
-          onPressed: _con.register,
+          onPressed: () => _con.register(_user.toString()),
           text: 'Registrar ahora',
           color: utils.MyColors.primaryColor,
           textColor: Colors.white,
