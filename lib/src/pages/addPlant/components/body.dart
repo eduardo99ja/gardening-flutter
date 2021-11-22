@@ -62,7 +62,7 @@ class ItemInfo extends StatelessWidget {
     return Container(
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.green,
+            color: Colors.white,
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(30), topRight: Radius.circular(30))),
         child: Padding(
