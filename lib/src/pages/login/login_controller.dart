@@ -25,6 +25,8 @@ class LoginController {
     _userProvider = new UserProvider();
 
     // userRef = FirebaseDatabase.instance.reference();
+
+    checkIfUserIsAuth();
   }
 
   void goToRegisterPage() {
@@ -59,10 +61,11 @@ class LoginController {
           print(user.isAdmin);
           print(user.id);
           print(user.image);
-          if (user.isAdmin!) {
+          if (!user.isAdmin!) {
+            Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
             //ir a administrador pantalla
           } else {
-            //ir a administrador pantalla
+            Navigator.pushNamedAndRemoveUntil(context, 'listPlants', (route) => false);
           }
         } else {
           print('Ha ocurrido un error');
@@ -74,6 +77,24 @@ class LoginController {
       _progressDialog.dismiss();
       final snackBar = SnackBar(content: Text('Error: $error'));
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  void checkIfUserIsAuth() async {
+    String? isSigned = _authProvider.isSignedIn();
+    print(isSigned);
+    if (isSigned != null) {
+      //el usuario esta logueado
+
+      User? user = await _userProvider.getUser(isSigned);
+      if (!user!.isAdmin!) {
+        Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
+        //ir a administrador pantalla
+      } else {
+        Navigator.pushNamedAndRemoveUntil(context, 'listPlants', (route) => false);
+      }
+    } else {
+      print('NO ESTA LOGEADO');
     }
   }
 }

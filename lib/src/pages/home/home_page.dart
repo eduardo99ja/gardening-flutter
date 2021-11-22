@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage> {
           GestureDetector(
             onTap: () async {
               await _authProvider.signOut();
-              Navigator.pushNamedAndRemoveUntil(context, 'roles', (route) => false);
+              Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
             },
             child: Container(
               margin: EdgeInsets.only(right: 10),
@@ -265,60 +265,16 @@ class _HomePageState extends State<HomePage> {
               trailing: Icon(Icons.home),
             ),
             ListTile(
-              onTap: _con.goToCreate,
-              title: Text('Agregar planta'),
+              onTap: _con.goToSearch,
+              title: Text('Buscar planta '),
               trailing: Icon(Icons.add),
-            ),
-            ListTile(
-              onTap: _con.goToDetailsCreate,
-              title: Text('Vista plantas'),
-              trailing: Icon(Icons.arrow_right),
-            ),
-            ListTile(
-              onTap: _con.goToListPlants,
-              title: Text('Plantas en base'),
-              trailing: Icon(Icons.arrow_right),
-            ),
-            ListTile(
-              onTap: _con.goToPlantInfoReal,
-              title: Text('Estadisticas planta'),
-              trailing: Icon(Icons.arrow_right),
-            ),
-            ListTile(
-              onTap: _con.goToPlantInfoHistory,
-              title: Text('Historico planta'),
-              trailing: Icon(Icons.arrow_right),
             ),
             ListTile(
               onTap: _con.goToUserAccount,
               title: Text('Cuenta usuario'),
               trailing: Icon(Icons.arrow_right),
             ),
-            ListTile(
-              onTap: _con.goToAdminAccount,
-              title: Text('Cuenta admin'),
-              trailing: Icon(Icons.arrow_right),
-            ),
-            ListTile(
-              onTap: _con.goToLogin,
-              title: Text('login'),
-              trailing: Icon(Icons.arrow_right),
-            ),
-            ListTile(
-              onTap: _con.goToRegister,
-              title: Text('Registro'),
-              trailing: Icon(Icons.add),
-            ),
-            ListTile(
-              onTap: _con.goToCreatePlantAdmin,
-              title: Text('Crear Planta Admin'),
-              trailing: Icon(Icons.add),
-            ),
-            ListTile(
-              onTap: _con.goToSearch,
-              title: Text('Buscar planta '),
-              trailing: Icon(Icons.add),
-            ),
+
             /* ListTile(
               title: Text('Creditos'),
               trailing: Icon(Icons.info),

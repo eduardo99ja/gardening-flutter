@@ -14,7 +14,6 @@ import 'package:gardening/src/pages/details/details-screen.dart';
 import 'package:gardening/src/pages/plantasAdmin/listPlants.dart';
 import 'package:gardening/src/pages/addPlant/addPlant_page.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -34,7 +33,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Gardening',
-      initialRoute: 'home',
+      initialRoute: 'login',
       routes: {
         'register': (BuildContext context) => RegisterPage(),
         'login': (BuildContext context) => LoginPage(),
