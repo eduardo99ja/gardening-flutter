@@ -39,6 +39,18 @@ class Plant {
         temperatura: json["temperatura"],
       );
 
+  Plant.fromElement(elemento){
+        id = elemento.id;
+        img = elemento["img"];
+        nomComm = elemento["nomComm"];
+        nomBot = elemento["nomBot"];
+        genero = elemento["genero"];
+        riego = elemento["riego"];
+        sol = elemento["sol"];
+        humedad = elemento["humedad"];
+        temperatura = elemento["temperatura"];
+  }
+
   Map<String, dynamic> toJson() => {
         "id": id,
         "img": img,
