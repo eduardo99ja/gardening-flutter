@@ -5,20 +5,30 @@ import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:gardening/src/pages/details/components/item_image.dart';
 import 'package:flutter/rendering.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:gardening/src/models/plant.dart';
 
 class addPlant extends StatefulWidget {
+  final Plant plant;
+  addPlant(this.plant);
+
   @override
-  _addPlantState createState() => _addPlantState();
+  _addPlantState createState() => _addPlantState(plant);
 }
 
 class _addPlantState extends State<addPlant> {
+  final Plant plant;
+  _addPlantState(this.plant);
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         Container(
-            child: ItemImage(
-              imgSrc: "assets/img/violetaAfricana.jpg",
+            child: FadeInImage(
+              fit: BoxFit.cover,
+              image:
+                  NetworkImage("${plant.img!.split('name')[0]}"),
+              placeholder: AssetImage("assets/img/loading.jpg"),
             ),
             height: 400,
             width: double.infinity,
@@ -28,7 +38,11 @@ class _addPlantState extends State<addPlant> {
           slivers: <Widget>[
             SliverList(
               delegate: SliverChildListDelegate(
-                <Widget>[ItemInfo()],
+                <Widget>[
+                  ItemInfo(
+                    plant: plant,
+                  )
+                ],
               ),
             ),
           ],
@@ -39,9 +53,8 @@ class _addPlantState extends State<addPlant> {
 }
 
 class ItemInfo extends StatelessWidget {
-  const ItemInfo({
-    Key? key,
-  }) : super(key: key);
+  final Plant plant;
+  const ItemInfo({Key? key, required this.plant}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +76,7 @@ class ItemInfo extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    'Lirio Flamingo',
+                    '${plant.nomComm}',
                     style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -111,7 +124,7 @@ class ItemInfo extends StatelessWidget {
                   SizedBox(width: size.width * 0.2),
                   Expanded(
                     child: Text(
-                      'Anthurium',
+                      '${plant.genero}',
                       style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   )
@@ -134,7 +147,7 @@ class ItemInfo extends StatelessWidget {
                   SizedBox(width: size.width * 0.04),
                   Expanded(
                     child: Text(
-                      'Anthurium andraemun',
+                      '${plant.nomBot}',
                       style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   )
@@ -157,7 +170,7 @@ class ItemInfo extends StatelessWidget {
                   SizedBox(width: size.width * 0.07),
                   Expanded(
                     child: Text(
-                      'Lirio Flamingo',
+                      '${plant.nomComm}',
                       style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   )

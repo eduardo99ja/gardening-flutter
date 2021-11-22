@@ -145,120 +145,111 @@ class _listPlantsState extends State<listPlants> {
                   ),
                 ),
               ),
-              Container(
-                height: size.height * 0.8,
-                width: size.width * 0.9,
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: ListView.builder(
-                            itemCount: _resultsList!.length,
-                            itemBuilder: (BuildContext context, int index) =>
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 8),
-                                    height: 180,
-                                    width: 160,
-                                    child: Stack(
-                                      children: [
-                                        Positioned.fill(
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            child: FadeInImage(
-                                              fit: BoxFit.cover,
+              Expanded(
+                  child: ListView.builder(
+                      itemCount: _resultsList!.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 8),
+                              height: 180,
+                              child: Stack(
+                                children: [
+                                  Positioned.fill(
+                                    child: ClipRRect(
+                                      borderRadius:
+                                          BorderRadius.circular(20),
+                                      child: FadeInImage(
+                                        fit: BoxFit.cover,
 
-                                              image: NetworkImage(
+                                        image: NetworkImage(
 
-                                                  "${_resultsList![index].img!.split('name')[0]}"),
-                                              placeholder: AssetImage(
-                                                  "assets/img/loading.jpg"),
-                                            ),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          bottom: 0,
-                                          left: 0,
-                                          right: 0,
-                                          child: Container(
-                                              height: 120,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                          bottomLeft:
-                                                              Radius.circular(
-                                                                  20),
-                                                          bottomRight:
-                                                              Radius.circular(
-                                                                  20)),
-                                                  gradient: LinearGradient(
-                                                      begin: Alignment
-                                                          .bottomCenter,
-                                                      end: Alignment.topCenter,
-                                                      colors: [
-                                                        Colors.black
-                                                            .withOpacity(1.0),
-                                                        Colors.transparent
-                                                      ]))),
-                                        ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: <Widget>[
-                                                IconButton(
-                                                    tooltip: 'Editar',
-                                                    padding:
-                                                        new EdgeInsets.all(0.0),
-                                                    onPressed: () =>
-                                                        print("button"),
-                                                    icon: Icon(
-                                                        MdiIcons
-                                                            .pencilBoxMultiple,
-                                                        size: 30,
-                                                        color:
-                                                            Color(0xff59fb12))),
-                                              ],
-                                            ),
-         
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                                                       Text(
-                                                  "\t${_resultsList![index].nomComm}",
-                                                  style: GoogleFonts.leckerliOne(
-                                                    textStyle: TextStyle(
-                                                        color: Color(0xff67E278),
-                                                        fontSize: 25,
-                                                      
-                                                        letterSpacing: .5),
-                                                  ),
-                                                ),
-                                                IconButton(
-                                                    icon: Icon(MdiIcons.delete),
-                                                    iconSize: 25,
-                                                    color: Colors.red[500],
-                                                    tooltip: 'Borrar',
-                                                    onPressed: () {}),
-                                              ],
-                                            ),
-                                          ],
-                                        )
-                                      ],
+                                            "${_resultsList![index].img!.split('name')[0]}"),
+                                        placeholder: AssetImage(
+                                            "assets/img/loading.jpg"),
+                                      ),
                                     ),
                                   ),
-                                ))),
-                  ],
-                ),
-              ),
+                                  Positioned(
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    child: Container(
+                                        height: 120,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.only(
+                                                    bottomLeft:
+                                                        Radius.circular(
+                                                            20),
+                                                    bottomRight:
+                                                        Radius.circular(
+                                                            20)),
+                                            gradient: LinearGradient(
+                                                begin: Alignment
+                                                    .bottomCenter,
+                                                end: Alignment.topCenter,
+                                                colors: [
+                                                  Colors.black
+                                                      .withOpacity(1.0),
+                                                  Colors.transparent
+                                                ]))),
+                                  ),
+                                  Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: <Widget>[
+                                          IconButton(
+                                              tooltip: 'Editar',
+                                              padding:
+                                                  new EdgeInsets.all(0.0),
+                                              onPressed: () =>
+                                                  print("button"),
+                                              icon: Icon(
+                                                  MdiIcons
+                                                      .pencilBoxMultiple,
+                                                  size: 30,
+                                                  color:
+                                                      Color(0xff59fb12))),
+                                        ],
+                                      ),
+         
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                                                                 Text(
+                                            "\t${_resultsList![index].nomComm}",
+                                            style: GoogleFonts.leckerliOne(
+                                              textStyle: TextStyle(
+                                                  color: Color(0xff67E278),
+                                                  fontSize: 25,
+                                                
+                                                  letterSpacing: .5),
+                                            ),
+                                          ),
+                                          IconButton(
+                                              icon: Icon(MdiIcons.delete),
+                                              iconSize: 25,
+                                              color: Colors.red[500],
+                                              tooltip: 'Borrar',
+                                              onPressed: () {}),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ))),
             ],
           ),
         )
