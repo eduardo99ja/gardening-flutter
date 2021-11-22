@@ -108,8 +108,7 @@ class _listPlantsState extends State<listPlants> {
             GestureDetector(
               onTap: () async {
                 await _authProvider.signOut();
-                Navigator.pushNamedAndRemoveUntil(
-                    context, 'roles', (route) => false);
+                Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
               },
               child: Container(
                 margin: EdgeInsets.only(right: 10),
@@ -129,15 +128,13 @@ class _listPlantsState extends State<listPlants> {
                 height: 20,
               ),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 30.0, right: 30.0, bottom: 10.0),
+                padding: const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 10.0),
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.search),
                     focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.green, width: 2.0),
+                      borderSide: const BorderSide(color: Colors.green, width: 2.0),
                       borderRadius: BorderRadius.circular(25.0),
                     ),
                     contentPadding: EdgeInsets.fromLTRB(10.0, 10.0, 40.0, 10.0),
@@ -148,27 +145,21 @@ class _listPlantsState extends State<listPlants> {
               Expanded(
                   child: ListView.builder(
                       itemCount: _resultsList!.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          GestureDetector(
+                      itemBuilder: (BuildContext context, int index) => GestureDetector(
                             onTap: () {},
                             child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 8),
+                              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
                               height: 180,
                               child: Stack(
                                 children: [
                                   Positioned.fill(
                                     child: ClipRRect(
-                                      borderRadius:
-                                          BorderRadius.circular(20),
+                                      borderRadius: BorderRadius.circular(20),
                                       child: FadeInImage(
                                         fit: BoxFit.cover,
-
                                         image: NetworkImage(
-
                                             "${_resultsList![index].img!.split('name')[0]}"),
-                                        placeholder: AssetImage(
-                                            "assets/img/loading.jpg"),
+                                        placeholder: AssetImage("assets/img/loading.jpg"),
                                       ),
                                     ),
                                   ),
@@ -179,60 +170,41 @@ class _listPlantsState extends State<listPlants> {
                                     child: Container(
                                         height: 120,
                                         decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.only(
-                                                    bottomLeft:
-                                                        Radius.circular(
-                                                            20),
-                                                    bottomRight:
-                                                        Radius.circular(
-                                                            20)),
+                                            borderRadius: BorderRadius.only(
+                                                bottomLeft: Radius.circular(20),
+                                                bottomRight: Radius.circular(20)),
                                             gradient: LinearGradient(
-                                                begin: Alignment
-                                                    .bottomCenter,
+                                                begin: Alignment.bottomCenter,
                                                 end: Alignment.topCenter,
                                                 colors: [
-                                                  Colors.black
-                                                      .withOpacity(1.0),
+                                                  Colors.black.withOpacity(1.0),
                                                   Colors.transparent
                                                 ]))),
                                   ),
                                   Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.end,
                                         children: <Widget>[
                                           IconButton(
                                               tooltip: 'Editar',
-                                              padding:
-                                                  new EdgeInsets.all(0.0),
-                                              onPressed: () =>
-                                                  print("button"),
-                                              icon: Icon(
-                                                  MdiIcons
-                                                      .pencilBoxMultiple,
-                                                  size: 30,
-                                                  color:
-                                                      Color(0xff59fb12))),
+                                              padding: new EdgeInsets.all(0.0),
+                                              onPressed: () => print("button"),
+                                              icon: Icon(MdiIcons.pencilBoxMultiple,
+                                                  size: 30, color: Color(0xff59fb12))),
                                         ],
                                       ),
-         
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
-                                                                                 Text(
+                                          Text(
                                             "\t${_resultsList![index].nomComm}",
                                             style: GoogleFonts.leckerliOne(
                                               textStyle: TextStyle(
                                                   color: Color(0xff67E278),
                                                   fontSize: 25,
-                                                
                                                   letterSpacing: .5),
                                             ),
                                           ),
@@ -252,9 +224,7 @@ class _listPlantsState extends State<listPlants> {
                           ))),
             ],
           ),
-        )
-        
-        );
+        ));
   }
 
   Widget _menuDrawer() => GestureDetector(

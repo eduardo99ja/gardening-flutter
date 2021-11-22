@@ -96,7 +96,7 @@ class RegisterController {
         await _userProvider.create(user);
         // print('usuario registrado');
         // _sharedPref.save('user', user.toJson());
-        Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
+        Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
       } else {
         progressDialog.dismiss();
 
