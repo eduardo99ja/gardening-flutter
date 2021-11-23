@@ -4,9 +4,7 @@ import 'package:gardening/src/pages/addPlant/components/body.dart';
 
 class addPlantScreen extends StatelessWidget {
   final Plant plant;
-  
   addPlantScreen(this.plant);
-  
 
   @override
   Widget build(BuildContext context) {

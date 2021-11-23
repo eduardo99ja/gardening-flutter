@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:gardening/src/models/jardin.dart';
+import 'package:gardening/src/models/plant.dart';
 import 'package:gardening/src/pages/details/components/item_image.dart';
 import 'package:flutter/rendering.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class Details extends StatefulWidget {
+  final Plant plant;
+  final jardin garden;
+  const Details({required this.plant, required this.garden});
+
   @override
   _DetailsState createState() => _DetailsState();
 }
@@ -17,8 +23,10 @@ class _DetailsState extends State<Details> {
     return Stack(
       children: [
         Container(
-            child: ItemImage(
-              imgSrc: "assets/img/violetaAfricana.jpg",
+            child: FadeInImage(
+              fit: BoxFit.cover,
+              image: NetworkImage("${widget.plant.img!.split('name')[0]}"),
+              placeholder: AssetImage("assets/img/loading.jpg"),
             ),
             height: 400,
             width: double.infinity,
@@ -28,7 +36,11 @@ class _DetailsState extends State<Details> {
           slivers: <Widget>[
             SliverList(
               delegate: SliverChildListDelegate(
-                <Widget>[ItemInfo()],
+                <Widget>[
+                  ItemInfo(
+                    plant: widget.plant,
+                  )
+                ],
               ),
             ),
           ],
@@ -39,9 +51,8 @@ class _DetailsState extends State<Details> {
 }
 
 class ItemInfo extends StatelessWidget {
-  const ItemInfo({
-    Key? key,
-  }) : super(key: key);
+  final Plant plant;
+  const ItemInfo({Key? key, required this.plant}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +74,7 @@ class ItemInfo extends StatelessWidget {
                     width: 10,
                   ),
                   Text(
-                    'Lirio Flamingo',
+                    plant.nomComm!,
                     style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                   ),
@@ -125,7 +136,7 @@ class ItemInfo extends StatelessWidget {
                   ),
                   SizedBox(width: size.width * 0.2),
                   Text(
-                    'Anthurium',
+                    plant.genero!,
                     style: TextStyle(fontSize: 15, color: Colors.black),
                   )
                 ],
@@ -144,7 +155,7 @@ class ItemInfo extends StatelessWidget {
                   ),
                   SizedBox(width: size.width * 0.04),
                   Text(
-                    'Anthurium andraemun',
+                    plant.nomBot!,
                     style: TextStyle(fontSize: 15, color: Colors.black),
                   )
                 ],
@@ -163,7 +174,7 @@ class ItemInfo extends StatelessWidget {
                   ),
                   SizedBox(width: size.width * 0.07),
                   Text(
-                    'Lirio Flamingo',
+                    plant.nomComm!,
                     style: TextStyle(fontSize: 15, color: Colors.black),
                   )
                 ],
@@ -179,27 +190,28 @@ class ItemInfo extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 15),
-              _swiper(),
+              _swiper(img1: plant.img1!, img2: plant.img2!, img3: plant.img3!),
               SizedBox(height: 20),
               Container(
-                height: 0.22 * size.height!,
+                height: 0.22 * size.height,
                 child: ListView(
                   padding: EdgeInsets.all(15.0),
                   scrollDirection: Axis.horizontal,
                   children: [
-                    _buildUsageItem(Icons.opacity, 'Agua', size.width),
+                    _buildUsageItem(Icons.opacity, 'Riego', size.width, plant.riego!),
                     SizedBox(
                       width: size.width * 0.02,
                     ),
-                    _buildUsageItem(Icons.wb_sunny_outlined, ' Sol', size.width),
+                    _buildUsageItem(Icons.wb_sunny_outlined, ' Sol', size.width, plant.sol!),
                     SizedBox(
                       width: size.width * 0.02,
                     ),
-                    _buildUsageItem(Icons.water, 'Humedad', size.width),
+                    _buildUsageItem(Icons.water, 'Humedad', size.width, plant.humedad!),
                     SizedBox(
                       width: size.width * 0.02,
                     ),
-                    _buildUsageItem(Icons.thermostat, 'Temperatura', size.width),
+                    _buildUsageItem(
+                        Icons.thermostat, 'Temperatura', size.width, plant.temperatura!),
                     SizedBox(
                       width: size.width * 0.02,
                     ),
@@ -214,16 +226,18 @@ class ItemInfo extends StatelessWidget {
                     style:
                         TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                   ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: CircleAvatar(
-                        radius: 25,
-                        backgroundColor: Colors.green,
-                        child: IconButton(
-                            padding: new EdgeInsets.all(0.0),
-                            onPressed: () => print("button"),
-                            icon: Icon(MdiIcons.flower),
-                            color: Colors.white)),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: CircleAvatar(
+                          radius: 25,
+                          backgroundColor: Colors.green,
+                          child: IconButton(
+                              padding: new EdgeInsets.all(0.0),
+                              onPressed: () => print("button"),
+                              icon: Icon(MdiIcons.flower),
+                              color: Colors.white)),
+                    ),
                   )
                 ],
               )
@@ -293,7 +307,8 @@ List<String> images = [
   "assets/img/crasas.jpg",
   "assets/img/violetaAfricana.jpg"
 ];
-Widget _swiper() {
+Widget _swiper({required String img1, required String img2, required String img3}) {
+  List<String> images = [img1, img2, img3];
   return Container(
     width: double.infinity,
     height: 180.0,
@@ -303,32 +318,33 @@ Widget _swiper() {
       itemBuilder: (BuildContext context, int index) {
         return ClipRRect(
           borderRadius: BorderRadius.circular(20.0),
-          child: new Image.asset(
-            images[index],
-            fit: BoxFit.fill,
+          child: new FadeInImage(
+            fit: BoxFit.cover,
+            image: NetworkImage(images[index]),
+            placeholder: AssetImage("assets/img/loading.jpg"),
           ),
         );
       },
-      itemCount: images.length,
+      itemCount: 3,
       /*pagination: new SwiperPagination(),
       control: new SwiperControl(),*/
     ),
   );
 }
 
-_buildUsageItem(IconData icon, String title, double w) {
+_buildUsageItem(IconData icon, String title, double w, String medida) {
   return Card(
     elevation: 5,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(30.0),
     ),
     child: Container(
-      width: 0.24 * w!,
+      width: 0.24 * w,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(30.0),
       ),
-      padding: EdgeInsets.all(0.025 * w!),
+      padding: EdgeInsets.all(0.025 * w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -365,9 +381,9 @@ _buildUsageItem(IconData icon, String title, double w) {
           ),
           Spacer(),
           Text(
-            "${Random().nextInt(100)} %",
+            medida,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20, color: Colors.green),
+            style: TextStyle(fontSize: 15, color: Colors.green),
           ),
         ],
       ),

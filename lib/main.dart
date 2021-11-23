@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
         'home': (BuildContext context) => HomePage(),
         'plants/create': (BuildContext context) => CreatePlant(),
         'plants/search': (BuildContext context) => SearchPlant(),
-        'details': (BuildContext context) => DetailsScreen(),
+        // 'details': (BuildContext context) => DetailsScreen(),
         'listPlants': (BuildContext context) => listPlants(),
         'plant/info/real': (BuildContext context) => PlantInfoRealPage(),
         'plant/info/history': (BuildContext context) => PlantInfoHistory(),

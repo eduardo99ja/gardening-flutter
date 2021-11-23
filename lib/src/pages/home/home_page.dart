@@ -1,6 +1,8 @@
 import 'package:flutter/scheduler.dart';
 import 'package:gardening/src/models/jardin.dart';
 import 'package:gardening/src/pages/addPlant/components/body.dart';
+import 'package:gardening/src/pages/details/components/body.dart';
+import 'package:gardening/src/pages/details/details-screen.dart';
 import 'package:gardening/src/pages/home/home_controller.dart';
 import 'package:gardening/src/providers/auth_provider.dart';
 import 'package:gardening/src/utils/my_colors.dart';
@@ -90,8 +92,7 @@ class _HomePageState extends State<HomePage> {
   ];
 
   int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
+  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
       'Home',
@@ -160,8 +161,7 @@ class _HomePageState extends State<HomePage> {
           GestureDetector(
             onTap: () async {
               await _authProvider.signOut();
-              Navigator.pushNamedAndRemoveUntil(
-                  context, 'login', (route) => false);
+              Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
             },
             child: Container(
               margin: EdgeInsets.only(right: 10),
@@ -182,23 +182,30 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.all(10.0),
                 child: VerticalCardPager(
                   textStyle: TextStyle(
-                      fontFamily: "Bevan",
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                  titles: tiP!,
+                      fontFamily: "Bevan", color: Colors.white, fontWeight: FontWeight.bold),
+                  titles: tiP,
                   images: images,
                   initialPage: 0,
                   onPageChanged: (page) {
                     // print(page);
                   },
-                  onSelectedItem: (index) {},
+                  onSelectedItem: (index) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => DetailsScreen(
+                          garden: LJardin![index],
+                          plant: plant![index],
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
           ],
         ),
       ),
-     
     );
   }
 
@@ -304,8 +311,7 @@ class _HomePageState extends State<HomePage> {
         var title = tripSnapshot.idPlanta!.toLowerCase();
         if (title.contains(titleP)) {
           showResults.add(tripSnapshotP);
-          images.add(
-            ClipRRect(
+          images.add(ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
             child: FadeInImage(
               fit: BoxFit.cover,
@@ -314,11 +320,12 @@ class _HomePageState extends State<HomePage> {
             ),
           ));
 
-         tiP.add(ti);
+          tiP.add(ti);
         }
       }
     }
     print(showResults.length);
+    plant = showResults;
     setState(() {});
   }
 }
