@@ -36,82 +36,11 @@ class _HomePageState extends State<HomePage> {
   List<String>? imagesP;
   List<String> tiP = [];
 
-  final List<String> titles = [
-    "Ceropegia",
-    "Helecho",
-    "Maranta",
-    "Pluma Rosa",
-    "Violeta Africana",
-    "Crasas",
-  ];
+
   final List<Widget> images = [];
 
-  final List<Widget> imagesq = [
-    ClipRRect(
-      borderRadius: BorderRadius.circular(20.0),
-      child: Image.asset(
-        "assets/img/ceropegiaWoodii.jpg",
-        fit: BoxFit.cover,
-      ),
-    ),
-    ClipRRect(
-      borderRadius: BorderRadius.circular(20.0),
-      child: Image.asset(
-        "assets/img/helecho.jpg",
-        fit: BoxFit.cover,
-      ),
-    ),
-    ClipRRect(
-      borderRadius: BorderRadius.circular(20.0),
-      child: Image.asset(
-        "assets/img/marantaLeuconera.jpg",
-        fit: BoxFit.cover,
-      ),
-    ),
-    ClipRRect(
-      borderRadius: BorderRadius.circular(20.0),
-      child: Image.asset(
-        "assets/img/plumaRosa.jpg",
-        fit: BoxFit.cover,
-      ),
-    ),
-    ClipRRect(
-      borderRadius: BorderRadius.circular(20.0),
-      child: Image.asset(
-        "assets/img/violetaAfricana.jpg",
-        fit: BoxFit.cover,
-      ),
-    ),
-    ClipRRect(
-      borderRadius: BorderRadius.circular(20.0),
-      child: Image.asset(
-        "assets/img/crasas.jpg",
-        fit: BoxFit.cover,
-      ),
-    ),
-  ];
 
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Likes',
-      style: optionStyle,
-    ),
-    Text(
-      'Search',
-      style: optionStyle,
-    ),
-    Text(
-      'Profile',
-      style: optionStyle,
-    ),
-  ];
-
+  
   @override
   void initState() {
     super.initState();
