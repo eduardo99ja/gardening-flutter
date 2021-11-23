@@ -1,11 +1,11 @@
-import 'package:gardening/src/pages/login/login_controller.dart';
 import 'package:gardening/src/widgets/button_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:gardening/src/pages/register/register_controller.dart';
 import 'package:gardening/src/utils/my_colors.dart' as utils;
-import 'package:gardening/src/widgets/button_app.dart';
+
+enum TypeUser { user, admin }
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -14,6 +14,8 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   RegisterController _con = new RegisterController();
+
+  TypeUser _user = TypeUser.user;
 
   @override
   void initState() {
@@ -39,6 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
             _textFieldEmail(),
             _textFieldPassword(),
             _textFieldConfirmPassword(),
+            _radioUser(),
             _buttonRegister(),
           ],
         ),
@@ -49,7 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget _buttonRegister() => Container(
         margin: EdgeInsets.symmetric(horizontal: 30, vertical: 25),
         child: ButtonApp(
-          onPressed: _con.register,
+          onPressed: () => _con.register(_user.toString()),
           text: 'Registrar ahora',
           color: utils.MyColors.primaryColor,
           textColor: Colors.white,
@@ -168,5 +171,34 @@ class _RegisterPageState extends State<RegisterPage> {
             ],
           ),
         ),
+      );
+
+  Widget _radioUser() => Column(
+        children: [
+          ListTile(
+            title: Text("Usuario"),
+            leading: Radio(
+              value: TypeUser.user,
+              onChanged: (TypeUser? value) {
+                setState(() {
+                  _user = value!;
+                });
+              },
+              groupValue: _user,
+            ),
+          ),
+          ListTile(
+            title: Text("Administrador"),
+            leading: Radio(
+              value: TypeUser.admin,
+              onChanged: (TypeUser? value) {
+                setState(() {
+                  _user = value!;
+                });
+              },
+              groupValue: _user,
+            ),
+          ),
+        ],
       );
 }
