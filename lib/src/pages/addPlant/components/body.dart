@@ -26,8 +26,7 @@ class _addPlantState extends State<addPlant> {
         Container(
             child: FadeInImage(
               fit: BoxFit.cover,
-              image:
-                  NetworkImage("${plant.img!.split('name')[0]}"),
+              image: NetworkImage("${plant.img!.split('name')[0]}"),
               placeholder: AssetImage("assets/img/loading.jpg"),
             ),
             height: 400,
