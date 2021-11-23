@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:gardening/src/models/jardin.dart';
 import 'package:gardening/src/models/plant.dart';
@@ -17,6 +18,7 @@ class Details extends StatefulWidget {
 }
 
 class _DetailsState extends State<Details> {
+  final _dbRef = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +81,11 @@ class _DetailsState extends State<Details> {
                                           backgroundColor: Colors.white,
                                           child: IconButton(
                                               padding: new EdgeInsets.all(0.0),
-                                              onPressed: () => print("button"),
+                                              onPressed: () => {
+                                                print(widget.garden.id),
+                                                    _dbRef.collection('MiJardin').doc(widget.garden.id).delete().then((value) => Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false))
+
+                                              },
                                               icon: Icon(Icons.restore_from_trash,
                                                   color: Colors.green)),
                                         ),
