@@ -6,6 +6,8 @@ import 'package:gardening/src/models/jardin.dart';
 import 'package:gardening/src/models/plant.dart';
 import 'package:gardening/src/pages/details/components/item_image.dart';
 import 'package:flutter/rendering.dart';
+import 'package:gardening/src/pages/plant/bluetooht.dart';
+import 'package:gardening/src/pages/plant/plant_info_real_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class Details extends StatefulWidget {
@@ -39,6 +41,7 @@ class _DetailsState extends State<Details> {
                 <Widget>[
                   ItemInfo(
                     plant: widget.plant,
+                    garden: widget.garden,
                   )
                 ],
               ),
@@ -52,7 +55,8 @@ class _DetailsState extends State<Details> {
 
 class ItemInfo extends StatelessWidget {
   final Plant plant;
-  const ItemInfo({Key? key, required this.plant}) : super(key: key);
+  final jardin garden;
+  const ItemInfo({Key? key, required this.plant, required this.garden}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +116,13 @@ class ItemInfo extends StatelessWidget {
                               backgroundColor: Colors.white,
                               child: IconButton(
                                   padding: new EdgeInsets.all(0.0),
-                                  onPressed: () => print("button"),
+                                  onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (_) => BluetoothPage(
+                                                plant: plant,
+                                                garden: garden,
+                                              ))),
                                   icon: Icon(Icons.bar_chart, color: Colors.green)),
                             ),
                           ),
