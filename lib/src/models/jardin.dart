@@ -31,10 +31,10 @@ class jardin {
 
   jardin.fromElement(elemento) {
     id = elemento.id;
-    idPlanta = elemento["img"];
-    idUsuario = elemento["nomComm"];
-    latitud = elemento["nomBot"];
-    longitud = elemento["genero"];
+    idPlanta = elemento["idPlanta"];
+    idUsuario = elemento["idUsuario"];
+    latitud = elemento["latitud"];
+    longitud = elemento["longitud"];
     temperatura= elemento["temperatura"];
     humedadA= elemento["humedadA"];
     humedadS= elemento["humedadS"];

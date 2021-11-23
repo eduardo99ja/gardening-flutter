@@ -1,11 +1,16 @@
 import 'package:flutter/scheduler.dart';
+import 'package:gardening/src/models/jardin.dart';
+import 'package:gardening/src/pages/addPlant/components/body.dart';
 import 'package:gardening/src/pages/home/home_controller.dart';
 import 'package:gardening/src/providers/auth_provider.dart';
 import 'package:gardening/src/utils/my_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:gardening/src/pages/home/components/vertical_card_pager.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gardening/src/models/plant.dart';
+import 'package:gardening/src/models/jardin.dart';
+
+import 'dart:async';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,6 +23,17 @@ class _HomePageState extends State<HomePage> {
   HomeController _con = HomeController();
   late AuthProvider _authProvider;
 
+  final _dbRef = FirebaseFirestore.instance;
+  List<Plant>? plant;
+  StreamSubscription<QuerySnapshot>? addPlant;
+
+  final _dbRefJ = FirebaseFirestore.instance;
+  List<jardin>? LJardin;
+  StreamSubscription<QuerySnapshot>? addjardin;
+
+  List<String>? imagesP;
+  List<String> tiP = [];
+
   final List<String> titles = [
     "Ceropegia",
     "Helecho",
@@ -26,8 +42,9 @@ class _HomePageState extends State<HomePage> {
     "Violeta Africana",
     "Crasas",
   ];
+  final List<Widget> images = [];
 
-  final List<Widget> images = [
+  final List<Widget> imagesq = [
     ClipRRect(
       borderRadius: BorderRadius.circular(20.0),
       child: Image.asset(
@@ -73,7 +90,8 @@ class _HomePageState extends State<HomePage> {
   ];
 
   int _selectedIndex = 0;
-  static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
   static const List<Widget> _widgetOptions = <Widget>[
     Text(
       'Home',
@@ -101,6 +119,19 @@ class _HomePageState extends State<HomePage> {
       _con.init(context, refresh);
     });
     _authProvider = new AuthProvider();
+
+    plant = [];
+    addPlant = _dbRef
+        .collection('Plantas')
+        .where("idPlanta", whereIn: LJardin)
+        .snapshots()
+        .listen(agregarPlanta);
+    LJardin = [];
+    addjardin = _dbRef
+        .collection('MiJardin')
+        .where('idUsuario', isEqualTo: _authProvider.getUser().uid)
+        .snapshots()
+        .listen(agregarJardin);
   }
 
   @override
@@ -129,7 +160,8 @@ class _HomePageState extends State<HomePage> {
           GestureDetector(
             onTap: () async {
               await _authProvider.signOut();
-              Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, 'login', (route) => false);
             },
             child: Container(
               margin: EdgeInsets.only(right: 10),
@@ -150,8 +182,10 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.all(10.0),
                 child: VerticalCardPager(
                   textStyle: TextStyle(
-                      fontFamily: "Bevan", color: Colors.white, fontWeight: FontWeight.bold),
-                  titles: titles,
+                      fontFamily: "Bevan",
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                  titles: tiP!,
                   images: images,
                   initialPage: 0,
                   onPageChanged: (page) {
@@ -164,50 +198,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      /* bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 20,
-              color: Colors.black.withOpacity(.0),
-            )
-          ],
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
-            child: GNav(
-              rippleColor: Colors.grey[300]!,
-              hoverColor: Colors.white,
-              gap: 8,
-              activeColor: Colors.grey[600],
-              iconSize: 40,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              tabBackgroundColor: Colors.white!,
-              color: Colors.black,
-              tabs: [
-                GButton(
-                  icon: MdiIcons.leaf,
-                  onPressed: _con.goToCreate,
-                ),
-                GButton(
-                  icon: MdiIcons.plusBoxOutline,
-                ),
-                GButton(
-                  icon: MdiIcons.accountCircleOutline,
-                ),
-              ],
-              selectedIndex: _selectedIndex,
-              onTabChange: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
-            ),
-          ),
-        ),
-      ),*/
+     
     );
   }
 
@@ -284,6 +275,50 @@ class _HomePageState extends State<HomePage> {
         ),
       );
   refresh() {
+    setState(() {});
+  }
+
+  agregarPlanta(QuerySnapshot evento) {
+    plant = [];
+    evento.docs.forEach((element) {
+      setState(() {
+        plant!.add(new Plant.fromElement(element));
+      });
+    });
+  }
+
+  agregarJardin(QuerySnapshot evento) {
+    LJardin = [];
+    evento.docs.forEach((element) {
+      setState(() {
+        LJardin!.add(new jardin.fromElement(element));
+      });
+    });
+    List<Plant> showResults = [];
+    for (var tripSnapshotP in plant!) {
+      var titleP = tripSnapshotP.id!.toLowerCase();
+      String img = tripSnapshotP.img!.split("name")[0];
+      String ti = tripSnapshotP.nomComm!;
+
+      for (var tripSnapshot in LJardin!) {
+        var title = tripSnapshot.idPlanta!.toLowerCase();
+        if (title.contains(titleP)) {
+          showResults.add(tripSnapshotP);
+          images.add(
+            ClipRRect(
+            borderRadius: BorderRadius.circular(20.0),
+            child: FadeInImage(
+              fit: BoxFit.cover,
+              image: NetworkImage(img),
+              placeholder: AssetImage("assets/img/loading.jpg"),
+            ),
+          ));
+
+         tiP.add(ti);
+        }
+      }
+    }
+    print(showResults.length);
     setState(() {});
   }
 }
