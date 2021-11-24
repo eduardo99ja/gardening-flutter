@@ -2,8 +2,13 @@ import 'dart:math';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gardening/src/pages/home/home_controller.dart';
+
 import 'package:gardening/src/pages/plantasAdmin/edit.dart';
+
+import 'package:gardening/src/pages/plantasAdmin/components/view_plantBody.dart';
+
 import 'package:gardening/src/pages/plantasAdmin/listPlants_controller.dart';
+import 'package:gardening/src/pages/plantasAdmin/view_plant.dart';
 import 'dart:async';
 
 import 'package:gardening/src/providers/auth_provider.dart';
@@ -157,7 +162,7 @@ class _listPlantsState extends State<listPlants> {
                       itemCount: _resultsList!.length,
                       itemBuilder: (BuildContext context, int index) =>
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () => viewPlantM(_resultsList![index]),
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 30, vertical: 8),
@@ -224,7 +229,7 @@ class _listPlantsState extends State<listPlants> {
                                             "\t${_resultsList![index].nomComm}",
                                             style: GoogleFonts.leckerliOne(
                                               textStyle: TextStyle(
-                                                  color: Color(0xff67E278),
+                                                  color: Colors.white,
                                                   fontSize: 25,
                                                   letterSpacing: .5),
                                             ),
@@ -331,6 +336,7 @@ class _listPlantsState extends State<listPlants> {
     });
   }
 
+
   _editaPlanta(Plant planta) async {
     await Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => EditPlant(planta)));
@@ -398,5 +404,10 @@ class _listPlantsState extends State<listPlants> {
           .catchError((error) => print(error));
       setState(() {});
     }).catchError((error) => print(error));
+
+    viewPlantM(Plant plant) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => viewPlantScreen(plant)));
+
   }
 }

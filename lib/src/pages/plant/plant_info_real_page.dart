@@ -2,13 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:gardening/src/models/jardin.dart';
 import 'package:gardening/src/models/plant.dart';
+import 'package:gardening/src/models/plantaSemana.dart';
+import 'package:gardening/src/pages/plant/plant_info_history.dart';
 import 'package:gardening/src/pages/plantasAdmin/create.dart';
 import 'package:gardening/src/painters/radial_painter.dart';
 import 'package:flutter/material.dart';
+import 'package:gardening/src/providers/db_provider.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gardening/src/helper/hex_color.dart';
 import 'package:gardening/src/layout/back_layout.dart';
+
+import 'package:sqflite/sqflite.dart';
+// import 'package:path/path.dart';
+import 'dart:async';
+import 'dart:io';
+
+import 'package:path/path.dart' as Path;
 
 import 'dart:typed_data';
 
@@ -64,6 +74,10 @@ class _PlantInfoRealPageState extends State<PlantInfoRealPage> with SingleTicker
 
   CollectionReference jardin = FirebaseFirestore.instance.collection('MiJardin');
 
+  //SQLite
+
+  late SqliteProvider plantProvider;
+
   @override
   void initState() {
     super.initState();
@@ -73,6 +87,9 @@ class _PlantInfoRealPageState extends State<PlantInfoRealPage> with SingleTicker
       CurvedAnimation(parent: _animationController!, curve: Curves.easeIn),
     );
     _animationController?.forward();
+
+    WidgetsFlutterBinding.ensureInitialized();
+    _initDB();
 
     //bluetooth
     BluetoothConnection.toAddress(widget.server.address).then((_connection) {
@@ -292,6 +309,14 @@ class _PlantInfoRealPageState extends State<PlantInfoRealPage> with SingleTicker
     );
   }
 
+  _initDB() async {
+    final path = await initDeleteDb('plantas.db');
+    // print("patgh....");
+    // print(path);
+    plantProvider = SqliteProvider();
+    await plantProvider.open(path);
+  }
+
   _buildDevicesRow(bool isconnecting) {
     return Row(
       children: [
@@ -306,7 +331,13 @@ class _PlantInfoRealPageState extends State<PlantInfoRealPage> with SingleTicker
         Spacer(),
         Icon(Icons.pie_chart),
         SizedBox(width: 5),
-        Text("Historico"),
+        GestureDetector(
+          child: Text("Historico"),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => PlantInfoHistory()),
+          ),
+        ),
         SizedBox(width: 15),
       ],
     );
@@ -404,7 +435,7 @@ class _PlantInfoRealPageState extends State<PlantInfoRealPage> with SingleTicker
             ? _messageBuffer.substring(0, _messageBuffer.length - backspacesCounter)
             : _messageBuffer + dataString.substring(0, index);
         //Obtener datos de temperatura:
-        print(datos.toString());
+        // print(datos.toString());
         temp =
             datos.split("%")[1].trim().split("Sens")[0].trim().split(":")[1].trim().substring(0, 5);
         hum = datos.split("Humedad:")[1].trimLeft().substring(0, 7);
@@ -412,12 +443,15 @@ class _PlantInfoRealPageState extends State<PlantInfoRealPage> with SingleTicker
             datos.contains("Lluvia") ? datos.split("Lluvia: ")[1].trim().split("Hum")[0] : "...";
         riego =
             datos.contains("Riego") ? datos.split("Riego: ")[1].trim().split("Lluvia")[0] : "...";
-        print(widget.garden.id);
+        // print(widget.garden.id);
+        // todo
+        _fillDatabse();
+
         jardin
             .doc(widget.garden.id)
             .update({'temperatura': temp, 'lluvia': lluvia, 'humedadA': hum, 'humedadS': riego})
-            .then((value) => print("User Updated"))
-            .catchError((error) => print("Failed to update user: $error"));
+            .then((value) => print("Datos firebase Updated"))
+            .catchError((error) => print("Failed to update plant: $error"));
         _messageBuffer = dataString.substring(index);
       });
     } else {
@@ -426,4 +460,187 @@ class _PlantInfoRealPageState extends State<PlantInfoRealPage> with SingleTicker
           : _messageBuffer + dataString);
     }
   }
+
+  _fillDatabse() async {
+    PlantaSemanal? getPlanta = await plantProvider.getPlantaSemanalById(widget.garden.id!);
+
+    if (getPlanta == null) {
+      // Insertar nuevo registro
+
+      PlantaSemanal plantaSem = PlantaSemanal();
+      plantaSem.plantaId = widget.garden.id;
+      plantaSem.plantaLunes = "temp:" + "0" + "hum" + "0";
+      plantaSem.plantaMartes = "temp:" + "0" + "hum" + "0";
+      plantaSem.plantaMiercoles = "temp:" + "0" + "hum" + "0";
+      plantaSem.plantaJueves = "temp:" + "0" + "hum" + "0";
+      plantaSem.plantaViernes = "temp:" + "0" + "hum" + "0";
+      plantaSem.plantaSabado = "temp:" + "0" + "hum" + "0";
+      plantaSem.plantaDomingo = "temp:" + "0" + "hum" + "0";
+
+      plantaSem = await plantProvider.insert(plantaSem);
+      // print("Lunesssss-----" + plantaSem.lunes!);
+      // print("Lunesssss-----");
+    } else {
+      // await plantProvider.delete(getPlanta.id!);
+      var now = DateTime.now();
+      String? datosDB;
+
+      print(getPlanta.lunes! + "diaa----lunes");
+      print(getPlanta.martes! + "diaa----martes");
+      print(getPlanta.miercoles! + "diaa----miercoles");
+      print(getPlanta.jueves! + "diaa----jueves");
+      print(getPlanta.viernes! + "diaa----viernes");
+      print(getPlanta.sabado! + "diaa----sabado");
+
+      switch (now.weekday) {
+        case 0:
+          print("Es lunes");
+          break;
+        case 1:
+          datosDB = getPlanta.lunes;
+          break;
+        case 2:
+          datosDB = getPlanta.martes;
+          break;
+        case 3:
+          datosDB = getPlanta.miercoles;
+          break;
+        case 4:
+          datosDB = getPlanta.jueves;
+          break;
+        case 5:
+          datosDB = getPlanta.viernes;
+          break;
+        case 6:
+          datosDB = getPlanta.sabado;
+          break;
+        case 7:
+          datosDB = getPlanta.domingo;
+          break;
+      }
+      String? datosReal = "temp:" + temp! + "hum" + hum!.trim().split("%")[0];
+
+      double tempReal = double.parse(datosReal.split("hum")[0].split("temp:")[1]);
+      double tempBD = double.parse(datosDB!.split("hum")[0].split("temp:")[1]);
+      // print(datosReal + "Datos real");
+      double humReal = double.parse(datosReal.split("hum")[1].trim());
+      double humBD = double.parse(datosDB.split("hum")[1].trim());
+
+      if ((tempReal > tempBD) || (humReal > humBD)) {
+        String stringUpdate = "";
+        if (tempReal > tempBD) {
+          if (humReal > humBD) {
+            //La temperatura y la humedad se actualizan
+            stringUpdate = "temp:" + tempReal.toString() + "hum" + humReal.toString();
+          } else {
+            //Solo se actualiza la temperatura
+            stringUpdate = "temp:" + tempReal.toString() + "hum" + humBD.toString();
+          }
+        } else if (humReal > humBD) {
+          //solo se actualiza la humedad
+          stringUpdate = "temp:" + tempBD.toString() + "hum" + humReal.toString();
+        }
+
+        // "temp:" + "0" + "hum" + "0"
+
+        //Actualizar temperatura
+
+        // print(stringUpdate + "-----------------------Toupdate -------------------");
+        PlantaSemanal plantaToUpdate = PlantaSemanal();
+        plantaToUpdate.detId = getPlanta.id!;
+        plantaToUpdate.plantaId = getPlanta.idPlanta;
+        switch (now.weekday) {
+          case 1:
+            plantaToUpdate.plantaLunes = stringUpdate;
+            plantaToUpdate.plantaMartes = getPlanta.martes;
+            plantaToUpdate.plantaMiercoles = getPlanta.miercoles;
+            plantaToUpdate.plantaJueves = getPlanta.jueves;
+            plantaToUpdate.plantaViernes = getPlanta.viernes;
+            plantaToUpdate.plantaSabado = getPlanta.sabado;
+            plantaToUpdate.plantaDomingo = getPlanta.domingo;
+            break;
+          case 2:
+            plantaToUpdate.plantaLunes = getPlanta.lunes;
+            plantaToUpdate.plantaMartes = stringUpdate;
+            plantaToUpdate.plantaMiercoles = getPlanta.miercoles;
+            plantaToUpdate.plantaJueves = getPlanta.jueves;
+            plantaToUpdate.plantaViernes = getPlanta.viernes;
+            plantaToUpdate.plantaSabado = getPlanta.sabado;
+            plantaToUpdate.plantaDomingo = getPlanta.domingo;
+            break;
+          case 3:
+            plantaToUpdate.plantaLunes = getPlanta.lunes;
+            plantaToUpdate.plantaMartes = getPlanta.martes;
+            plantaToUpdate.plantaMiercoles = stringUpdate;
+            plantaToUpdate.plantaJueves = getPlanta.jueves;
+            plantaToUpdate.plantaViernes = getPlanta.viernes;
+            plantaToUpdate.plantaSabado = getPlanta.sabado;
+            plantaToUpdate.plantaDomingo = getPlanta.domingo;
+
+            break;
+          case 4:
+            plantaToUpdate.plantaLunes = getPlanta.lunes;
+            plantaToUpdate.plantaMartes = getPlanta.martes;
+            plantaToUpdate.plantaMiercoles = getPlanta.miercoles;
+            plantaToUpdate.plantaJueves = stringUpdate;
+            plantaToUpdate.plantaViernes = getPlanta.viernes;
+            plantaToUpdate.plantaSabado = getPlanta.sabado;
+            plantaToUpdate.plantaDomingo = getPlanta.domingo;
+            break;
+          case 5:
+            plantaToUpdate.plantaLunes = getPlanta.lunes;
+            plantaToUpdate.plantaMartes = getPlanta.martes;
+            plantaToUpdate.plantaMiercoles = getPlanta.miercoles;
+            plantaToUpdate.plantaJueves = getPlanta.jueves;
+            plantaToUpdate.plantaViernes = stringUpdate;
+            plantaToUpdate.plantaSabado = getPlanta.sabado;
+            plantaToUpdate.plantaDomingo = getPlanta.domingo;
+            break;
+          case 6:
+            plantaToUpdate.plantaLunes = getPlanta.lunes;
+            plantaToUpdate.plantaMartes = getPlanta.martes;
+            plantaToUpdate.plantaMiercoles = getPlanta.miercoles;
+            plantaToUpdate.plantaJueves = getPlanta.jueves;
+            plantaToUpdate.plantaViernes = getPlanta.viernes;
+            plantaToUpdate.plantaSabado = stringUpdate;
+            plantaToUpdate.plantaDomingo = getPlanta.domingo;
+            break;
+          case 7:
+            plantaToUpdate.plantaLunes = getPlanta.lunes;
+            plantaToUpdate.plantaMartes = getPlanta.martes;
+            plantaToUpdate.plantaMiercoles = getPlanta.miercoles;
+            plantaToUpdate.plantaJueves = getPlanta.jueves;
+            plantaToUpdate.plantaViernes = getPlanta.viernes;
+            plantaToUpdate.plantaSabado = getPlanta.sabado;
+            plantaToUpdate.plantaDomingo = stringUpdate;
+            break;
+        }
+
+        await plantProvider.update(plantaToUpdate);
+      }
+    }
+
+    // await plantProvider.deleteDB(1);
+  }
+}
+
+/// delete the db, create the folder and returnes its path
+Future<String> initDeleteDb(String dbName) async {
+  final databasePath = await getDatabasesPath();
+  // print(databasePath);
+  final path = Path.join(databasePath, dbName);
+
+  // make sure the folder exists
+  // ignore: avoid_slow_async_io
+  // if (await Directory(Path.dirname(path)).exists()) {
+  //   await deleteDatabase(path);
+  // } else {
+  //   try {
+  //     await Directory(Path.dirname(path)).create(recursive: true);
+  //   } catch (e) {
+  //     // ignore: avoid_print
+  //     print(e);
+  //   }
+  // }
+  return path;
 }

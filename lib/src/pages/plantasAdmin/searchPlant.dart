@@ -104,10 +104,10 @@ class _SearchPlantState extends State<SearchPlant> {
           actions: [
             GestureDetector(
               onTap: () async {
-                await _authProvider.signOut();
-                Navigator.pushNamedAndRemoveUntil(
-                    context, 'roles', (route) => false);
-              },
+              await _authProvider.signOut();
+              Navigator.pushNamedAndRemoveUntil(
+                  context, 'login', (route) => false);
+            },
               child: Container(
                 margin: EdgeInsets.only(right: 10),
                 child: Icon(
@@ -198,7 +198,7 @@ class _SearchPlantState extends State<SearchPlant> {
                                             "\t${_resultsList![index].nomComm}",
                                             style: GoogleFonts.leckerliOne(
                                               textStyle: TextStyle(
-                                                  color: Color(0xff67E278),
+                                                  color: Colors.white,
                                                   fontSize: 25,
                                                   letterSpacing: .5),
                                             ),
@@ -270,7 +270,7 @@ class _SearchPlantState extends State<SearchPlant> {
               trailing: Icon(Icons.home),
             ),
             ListTile(
-              onTap: _con.goToCreate,
+              onTap: null,
               title: Text('Agregar planta'),
               trailing: Icon(Icons.add),
             ),

@@ -33,6 +33,7 @@ dependencies:
   geolocator: ^7.6.2
   location: ^4.3.0
   flutter_bluetooth_serial: ^0.2.2
+  sqflite: ^2.0.0+4
 
 dev_dependencies:
   flutter_test:
