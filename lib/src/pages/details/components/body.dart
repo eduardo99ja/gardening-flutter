@@ -388,7 +388,7 @@ Widget _swiper({required String img1, required String img2, required String img3
           borderRadius: BorderRadius.circular(20.0),
           child: new FadeInImage(
             fit: BoxFit.cover,
-            image: NetworkImage(images[index]),
+            image: NetworkImage(images[index].split("name")[0]),
             placeholder: AssetImage("assets/img/loading.jpg"),
           ),
         );
