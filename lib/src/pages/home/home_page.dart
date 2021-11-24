@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
   List<Plant>? plant;
   StreamSubscription<QuerySnapshot>? addPlant;
 
-  final _dbRefJ = FirebaseFirestore.instance;
+  //final _dbRefJ = FirebaseFirestore.instance;
   List<jardin>? LJardin;
   StreamSubscription<QuerySnapshot>? addjardin;
 
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
     plant = [];
     addPlant = _dbRef
         .collection('Plantas')
-        .where("idPlanta", whereIn: LJardin)
+        //.where("idPlanta", whereIn: LJardin)
         .snapshots()
         .listen(agregarPlanta);
     LJardin = [];
@@ -239,7 +239,6 @@ class _HomePageState extends State<HomePage> {
 
     for (var tripSnapshotP in plant!) {
       var titleP = tripSnapshotP.id!.toLowerCase();
-
       String img = tripSnapshotP.img!.split("name")[0];
       String ti = tripSnapshotP.nomComm!;
       for (var tripSnapshot in LJardin!) {

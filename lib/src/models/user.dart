@@ -35,6 +35,17 @@ class User {
         isAdmin: json["isAdmin"],
       );
 
+  User.fromElement(elemento) {
+    id = elemento["id"];
+    username = elemento["username"];
+    name = elemento["name"];
+    lastname = elemento["lastname"];
+    email = elemento["email"];
+    //password = elemento["password"];
+    image = elemento["image"];
+    isAdmin = elemento["isAdmin"];
+  }
+
   Map<String, dynamic> toJson() => {
         "id": id,
         "username": username,
