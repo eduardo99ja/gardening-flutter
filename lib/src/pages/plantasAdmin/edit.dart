@@ -13,10 +13,13 @@ import 'package:gardening/src/layout/back_layout.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class CreatePlant extends StatefulWidget {
-  static const String route = "/CreatePlant";
+class EditPlant extends StatefulWidget {
+  final Plant planta;
+  EditPlant(this.planta);
+
+  static const String route = "/EditPlant";
   @override
-  _CreatePlantState createState() => _CreatePlantState();
+  _EditPlantState createState() => _EditPlantState();
 }
 
 Color color1 = HexColor("#59fb12");
@@ -32,7 +35,7 @@ String? imgName;
 String? imgName1;
 String? imgName2;
 String? imgName3;
-List<String> images = [
+List<String?> images = [
   "assets/img/plumaRosa.jpg",
   "assets/img/plumaRosa.jpg",
   "assets/img/plumaRosa.jpg"
@@ -49,7 +52,8 @@ String? temperatura = '';
 
 late CollectionReference _ref;
 
-class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStateMixin {
+class _EditPlantState extends State<EditPlant>
+    with SingleTickerProviderStateMixin {
   double? height, width;
   late TextEditingController _controller;
 
@@ -61,6 +65,21 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
   @override
   void initState() {
     super.initState();
+
+    nomComm = TextEditingController(text: widget.planta.nomComm);
+    nomBot = TextEditingController(text: widget.planta.nomBot);
+    genero = TextEditingController(text: widget.planta.genero);
+    riego = widget.planta.riego;
+    sol = widget.planta.sol;
+    humedad = widget.planta.humedad;
+    temperatura = widget.planta.temperatura;
+
+    images = [
+      widget.planta.img1!.split('name')[0],
+      widget.planta.img2!.split('name')[0],
+      widget.planta.img3!.split('name')[0]
+    ];
+
     _controller = TextEditingController();
     _ref = FirebaseFirestore.instance.collection('Plantas');
   }
@@ -97,15 +116,18 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
         height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-              begin: Alignment.topRight, end: Alignment.bottomLeft, colors: [color1, color2]),
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [color1, color2]),
         ),
         child: Padding(
           padding: EdgeInsets.all(15.0),
           child: SafeArea(
             child: Container(
               height: double.infinity,
-              decoration:
-                  BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30.0)),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(30.0)),
               child: SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.all(15.0),
@@ -128,7 +150,8 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                               child: IconButton(
                                   padding: new EdgeInsets.all(0.0),
                                   onPressed: () => print("button"),
-                                  icon: Icon(MdiIcons.flowerPollen, color: Colors.white)),
+                                  icon: Icon(MdiIcons.flowerPollen,
+                                      color: Colors.white)),
                             ),
                           )),
                           SizedBox(width: 10),
@@ -137,11 +160,11 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                             child: TextField(
                               controller: nomComm,
                               decoration: InputDecoration(
-                                border:
-                                    OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0)),
                                 labelText: 'Nombre común',
-                                contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 5.0, horizontal: 10),
                               ),
                             ),
                           ),
@@ -159,7 +182,8 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                               child: IconButton(
                                   padding: new EdgeInsets.all(0.0),
                                   onPressed: () => print("button"),
-                                  icon: Icon(MdiIcons.book, color: Colors.white)),
+                                  icon:
+                                      Icon(MdiIcons.book, color: Colors.white)),
                             ),
                           )),
                           SizedBox(width: 10),
@@ -168,11 +192,11 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                             child: TextField(
                               controller: nomBot,
                               decoration: InputDecoration(
-                                border:
-                                    OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0)),
                                 labelText: 'Nombre Botánico',
-                                contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 5.0, horizontal: 10),
                               ),
                             ),
                           ),
@@ -190,7 +214,8 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                               child: IconButton(
                                   padding: new EdgeInsets.all(0.0),
                                   onPressed: () => print("button"),
-                                  icon: Icon(MdiIcons.label, color: Colors.white)),
+                                  icon: Icon(MdiIcons.label,
+                                      color: Colors.white)),
                             ),
                           )),
                           SizedBox(width: 10),
@@ -199,11 +224,11 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                             child: TextField(
                               controller: genero,
                               decoration: InputDecoration(
-                                border:
-                                    OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0)),
                                 labelText: 'Género',
-                                contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 5.0, horizontal: 10),
                               ),
                             ),
                           ),
@@ -221,7 +246,8 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                               child: IconButton(
                                   padding: new EdgeInsets.all(0.0),
                                   onPressed: () => print("button"),
-                                  icon: Icon(MdiIcons.water, color: Colors.white)),
+                                  icon: Icon(MdiIcons.water,
+                                      color: Colors.white)),
                             ),
                           )),
                           SizedBox(width: 10),
@@ -229,11 +255,11 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                             flex: 7,
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
-                                border:
-                                    OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0)),
                                 labelText: 'Riego cada...',
-                                contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 5.0, horizontal: 10),
                               ),
                               isExpanded: true,
                               onChanged: (String? valor) {
@@ -241,6 +267,7 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                                   riego = valor!;
                                 });
                               },
+                              value: widget.planta.riego,
                               style: const TextStyle(color: Color(0xFF000000)),
                               items: <String>[
                                 '6-8 hrs',
@@ -269,7 +296,8 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                               child: IconButton(
                                   padding: new EdgeInsets.all(0.0),
                                   onPressed: () => print("button"),
-                                  icon: Icon(MdiIcons.sunWireless, color: Colors.white)),
+                                  icon: Icon(MdiIcons.sunWireless,
+                                      color: Colors.white)),
                             ),
                           )),
                           SizedBox(width: 10),
@@ -277,11 +305,11 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                             flex: 7,
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
-                                border:
-                                    OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0)),
                                 labelText: 'Nivel de Sol',
-                                contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 5.0, horizontal: 10),
                               ),
                               isExpanded: true,
                               onChanged: (String? valor) {
@@ -289,9 +317,13 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                                   sol = valor!;
                                 });
                               },
+                              value: widget.planta.sol,
                               style: const TextStyle(color: Color(0xFF000000)),
-                              items: <String>['Bajo', 'Medio', 'Alto']
-                                  .map<DropdownMenuItem<String>>((String value) {
+                              items: <String>[
+                                'Bajo',
+                                'Medio',
+                                'Alto'
+                              ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -313,7 +345,8 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                               child: IconButton(
                                   padding: new EdgeInsets.all(0.0),
                                   onPressed: () => print("button"),
-                                  icon: Icon(MdiIcons.cloud, color: Colors.white)),
+                                  icon: Icon(MdiIcons.cloud,
+                                      color: Colors.white)),
                             ),
                           )),
                           SizedBox(width: 10),
@@ -321,11 +354,11 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                             flex: 7,
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
-                                border:
-                                    OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0)),
                                 labelText: 'Humedad',
-                                contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 5.0, horizontal: 10),
                               ),
                               isExpanded: true,
                               onChanged: (String? valor) {
@@ -333,15 +366,14 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                                   humedad = valor!;
                                 });
                               },
+                              value: widget.planta.humedad,
                               style: const TextStyle(color: Color(0xFF000000)),
-
                               items: <String>[
                                 '20% - 40%',
                                 '40% - 60%',
                                 '60% - 80%',
                                 '80% - 100%'
                               ].map<DropdownMenuItem<String>>((String value) {
-
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -363,7 +395,8 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                               child: IconButton(
                                   padding: new EdgeInsets.all(0.0),
                                   onPressed: () => print("button"),
-                                  icon: Icon(MdiIcons.thermometer, color: Colors.white)),
+                                  icon: Icon(MdiIcons.thermometer,
+                                      color: Colors.white)),
                             ),
                           )),
                           SizedBox(width: 10),
@@ -371,11 +404,11 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                             flex: 7,
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
-                                border:
-                                    OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0)),
                                 labelText: 'Rango de Temperatura',
-                                contentPadding:
-                                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 5.0, horizontal: 10),
                               ),
                               isExpanded: true,
                               onChanged: (String? valor) {
@@ -383,9 +416,13 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                                   temperatura = valor!;
                                 });
                               },
+                              value: widget.planta.temperatura,
                               style: const TextStyle(color: Color(0xFF000000)),
-                              items: <String>['< 30 °C', '> 30 °C < 40 °C', '> 40 °C']
-                                  .map<DropdownMenuItem<String>>((String value) {
+                              items: <String>[
+                                '< 30 °C',
+                                '> 30 °C < 40 °C',
+                                '> 40 °C'
+                              ].map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -401,7 +438,9 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                         child: Text(
                           'Galería de fotos',
                           style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
                         ),
                       ),
                       _swiper(),
@@ -439,9 +478,10 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                     : Card(
                         child: Container(
                           height: 150.0,
-                          child: Image.asset(
-                            "assets/img/camera.png",
-                            fit: BoxFit.contain,
+                          child: FadeInImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(images[index]!),
+                            placeholder: AssetImage("assets/img/loading.jpg"),
                           ),
                         ),
                       ),
@@ -485,12 +525,11 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
               ),
             )
           : Card(
-              child: Container(
-                height: 150.0,
-                child: Image.asset(
-                  "assets/img/camera.png",
-                  fit: BoxFit.contain,
-                ),
+              child: FadeInImage(
+                height: 150,
+                fit: BoxFit.cover,
+                image: NetworkImage("${widget.planta.img!.split('name')[0]}"),
+                placeholder: AssetImage("assets/img/loading.jpg"),
               ),
             ),
     );
@@ -518,7 +557,8 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                               image: AssetImage("assets/img/gallery.png"),
                               fit: BoxFit.fitWidth,
                               colorFilter: new ColorFilter.mode(
-                                  Colors.white.withOpacity(0.3), BlendMode.dstATop),
+                                  Colors.white.withOpacity(0.3),
+                                  BlendMode.dstATop),
                               alignment: Alignment.center)),
                     ),
                   ),
@@ -527,8 +567,10 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                       padding: const EdgeInsets.all(16.0),
                       primary: Colors.black,
                     ),
-                    onPressed: () => seleccionarImagen(ImageSource.gallery, numImg),
-                    child: const Text('Galeria', style: TextStyle(fontWeight: FontWeight.bold)),
+                    onPressed: () =>
+                        seleccionarImagen(ImageSource.gallery, numImg),
+                    child: const Text('Galeria',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
@@ -548,7 +590,8 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                               image: AssetImage("assets/img/camera.png"),
                               fit: BoxFit.fitWidth,
                               colorFilter: new ColorFilter.mode(
-                                  Colors.white.withOpacity(0.3), BlendMode.dstATop),
+                                  Colors.white.withOpacity(0.3),
+                                  BlendMode.dstATop),
                               alignment: Alignment.center)),
                     ),
                   ),
@@ -557,8 +600,10 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
                       padding: const EdgeInsets.all(16.0),
                       primary: Colors.black,
                     ),
-                    onPressed: () => seleccionarImagen(ImageSource.camera, numImg),
-                    child: const Text('Cámara', style: TextStyle(fontWeight: FontWeight.bold)),
+                    onPressed: () =>
+                        seleccionarImagen(ImageSource.camera, numImg),
+                    child: const Text('Cámara',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
@@ -577,12 +622,11 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
 
   Future seleccionarImagen(ImageSource imgSrc, int ops) async {
     pickFileAux = await ImagePicker().getImage(source: imgSrc);
-    print(pickFileAux);
     if (pickFileAux != null) {
       switch (ops) {
         case -1:
           pickFile = pickFileAux;
-          imageFile = File(pickFile!.path);
+          imageFile = File(pickFileAux!.path);
           break;
         case 0:
           pickFile1 = pickFileAux;
@@ -610,20 +654,46 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
           onPressed: () async {
             //validacion
 
-            TaskSnapshot snapshot = await subirArchivo(pickFile!, -1);
-            TaskSnapshot snapshot1 = await subirArchivo(pickFile1!, 0);
-            TaskSnapshot snapshot2 = await subirArchivo(pickFile2!, 1);
-            TaskSnapshot snapshot3 = await subirArchivo(pickFile3!, 2);
-            String imageUrl = await snapshot.ref.getDownloadURL();
-            String imageUrl1 = await snapshot1.ref.getDownloadURL();
-            String imageUrl2 = await snapshot2.ref.getDownloadURL();
-            String imageUrl3 = await snapshot3.ref.getDownloadURL();
+            String? plantimg = widget.planta.img;
+            String? plantimg1 = widget.planta.img1;
+            String? plantimg2 = widget.planta.img2;
+            String? plantimg3 = widget.planta.img3;
+
+            if (pickFile != null) {
+              TaskSnapshot snapshot = await subirArchivo(
+                  pickFile!, -1, widget.planta.img!.split("name")[1]);
+              String imageUrl = await snapshot.ref.getDownloadURL();
+              plantimg =
+                  imageUrl + 'name' + widget.planta.img!.split("name")[1];
+            }
+            if (pickFile1 != null) {
+              print("---> ${widget.planta.img1}");
+              TaskSnapshot snapshot = await subirArchivo(
+                  pickFile1!, 0, widget.planta.img1!.split("name")[1]);
+              String imageUrl = await snapshot.ref.getDownloadURL();
+              plantimg1 =
+                  imageUrl + 'name' + widget.planta.img1!.split("name")[1];
+            }
+            if (pickFile2 != null) {
+              TaskSnapshot snapshot = await subirArchivo(
+                  pickFile2!, 1, widget.planta.img2!.split("name")[1]);
+              String imageUrl = await snapshot.ref.getDownloadURL();
+              plantimg2 =
+                  imageUrl + 'name' + widget.planta.img2!.split("name")[1];
+            }
+            if (pickFile3 != null) {
+              TaskSnapshot snapshot = await subirArchivo(
+                  pickFile3!, 2, widget.planta.img3!.split("name")[1]);
+              String imageUrl = await snapshot.ref.getDownloadURL();
+              plantimg3 =
+                  imageUrl + 'name' + widget.planta.img3!.split("name")[1];
+            }
 
             Plant model = Plant(
-                img: imageUrl + 'name' + imgName!,
-                img1: imageUrl1 + 'name' + imgName1!,
-                img2: imageUrl2 + 'name' + imgName2!,
-                img3: imageUrl3 + 'name' + imgName3!,
+                img: plantimg,
+                img1: plantimg1,
+                img2: plantimg2,
+                img3: plantimg3,
                 nomComm: nomComm!.text,
                 nomBot: nomBot!.text,
                 genero: genero!.text,
@@ -642,31 +712,20 @@ class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStat
 
   Future? saveList(Plant model) {
     return _ref
-        .add(model.toJson())
-        .then((value) => print('Se agrego la planta'))
+        .doc(widget.planta.id)
+        .update(model.toJson())
+        .then((value) => print('Se actualizo la planta'))
         .catchError((error) => print(error));
   }
 
-  Future<TaskSnapshot> subirArchivo(PickedFile file, int ops) async {
-    String nombre = '${UniqueKey().toString()}.jpg';
-    switch (ops) {
-      case -1:
-        imgName = nombre;
-        break;
-      case 0:
-        imgName1 = nombre;
-        break;
-      case 1:
-        imgName2 = nombre;
-        break;
-      case 2:
-        imgName3 = nombre;
-        break;
-    }
-    Reference ref = FirebaseStorage.instance.ref().child('plantas').child('/$nombre');
+  Future<TaskSnapshot> subirArchivo(
+      PickedFile file, int ops, String nombre) async {
+    Reference ref =
+        FirebaseStorage.instance.ref().child('plantas').child('/$nombre');
 
     final metadata = SettableMetadata(
-        contentType: 'image/jpeg', customMetadata: {'picked-file-path': file.path});
+        contentType: 'image/jpeg',
+        customMetadata: {'picked-file-path': file.path});
 
     UploadTask uploadTask = ref.putFile(File(file.path), metadata);
     return uploadTask;
