@@ -13,10 +13,13 @@ import 'package:gardening/src/layout/back_layout.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
-class CreatePlant extends StatefulWidget {
-  static const String route = "/CreatePlant";
+class EditPlant extends StatefulWidget {
+  final Plant planta;
+  EditPlant(this.planta);
+
+  static const String route = "/EditPlant";
   @override
-  _CreatePlantState createState() => _CreatePlantState();
+  _EditPlantState createState() => _EditPlantState();
 }
 
 Color color1 = HexColor("#59fb12");
@@ -32,7 +35,7 @@ String? imgName;
 String? imgName1;
 String? imgName2;
 String? imgName3;
-List<String> images = [
+List<String?> images = [
   "assets/img/plumaRosa.jpg",
   "assets/img/plumaRosa.jpg",
   "assets/img/plumaRosa.jpg"
@@ -49,7 +52,7 @@ String? temperatura = '';
 
 late CollectionReference _ref;
 
-class _CreatePlantState extends State<CreatePlant>
+class _EditPlantState extends State<EditPlant>
     with SingleTickerProviderStateMixin {
   double? height, width;
   late TextEditingController _controller;
@@ -62,6 +65,21 @@ class _CreatePlantState extends State<CreatePlant>
   @override
   void initState() {
     super.initState();
+
+    nomComm = TextEditingController(text: widget.planta.nomComm);
+    nomBot = TextEditingController(text: widget.planta.nomBot);
+    genero = TextEditingController(text: widget.planta.genero);
+    riego = widget.planta.riego;
+    sol = widget.planta.sol;
+    humedad = widget.planta.humedad;
+    temperatura = widget.planta.temperatura;
+
+    images = [
+      widget.planta.img1!.split('name')[0],
+      widget.planta.img2!.split('name')[0],
+      widget.planta.img3!.split('name')[0]
+    ];
+
     _controller = TextEditingController();
     _ref = FirebaseFirestore.instance.collection('Plantas');
   }
@@ -249,6 +267,7 @@ class _CreatePlantState extends State<CreatePlant>
                                   riego = valor!;
                                 });
                               },
+                              value: widget.planta.riego,
                               style: const TextStyle(color: Color(0xFF000000)),
                               items: <String>[
                                 '6-8 hrs',
@@ -298,6 +317,7 @@ class _CreatePlantState extends State<CreatePlant>
                                   sol = valor!;
                                 });
                               },
+                              value: widget.planta.sol,
                               style: const TextStyle(color: Color(0xFF000000)),
                               items: <String>[
                                 'Bajo',
@@ -346,6 +366,7 @@ class _CreatePlantState extends State<CreatePlant>
                                   humedad = valor!;
                                 });
                               },
+                              value: widget.planta.humedad,
                               style: const TextStyle(color: Color(0xFF000000)),
                               items: <String>[
                                 '20% - 40%',
@@ -395,6 +416,7 @@ class _CreatePlantState extends State<CreatePlant>
                                   temperatura = valor!;
                                 });
                               },
+                              value: widget.planta.temperatura,
                               style: const TextStyle(color: Color(0xFF000000)),
                               items: <String>[
                                 '< 30 °C',
@@ -456,9 +478,10 @@ class _CreatePlantState extends State<CreatePlant>
                     : Card(
                         child: Container(
                           height: 150.0,
-                          child: Image.asset(
-                            "assets/img/camera.png",
-                            fit: BoxFit.contain,
+                          child: FadeInImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(images[index]!),
+                            placeholder: AssetImage("assets/img/loading.jpg"),
                           ),
                         ),
                       ),
@@ -502,12 +525,11 @@ class _CreatePlantState extends State<CreatePlant>
               ),
             )
           : Card(
-              child: Container(
-                height: 150.0,
-                child: Image.asset(
-                  "assets/img/camera.png",
-                  fit: BoxFit.contain,
-                ),
+              child: FadeInImage(
+                height: 150,
+                fit: BoxFit.cover,
+                image: NetworkImage("${widget.planta.img!.split('name')[0]}"),
+                placeholder: AssetImage("assets/img/loading.jpg"),
               ),
             ),
     );
@@ -600,12 +622,11 @@ class _CreatePlantState extends State<CreatePlant>
 
   Future seleccionarImagen(ImageSource imgSrc, int ops) async {
     pickFileAux = await ImagePicker().getImage(source: imgSrc);
-    print(pickFileAux);
     if (pickFileAux != null) {
       switch (ops) {
         case -1:
           pickFile = pickFileAux;
-          imageFile = File(pickFile!.path);
+          imageFile = File(pickFileAux!.path);
           break;
         case 0:
           pickFile1 = pickFileAux;
@@ -633,20 +654,46 @@ class _CreatePlantState extends State<CreatePlant>
           onPressed: () async {
             //validacion
 
-            TaskSnapshot snapshot = await subirArchivo(pickFile!, -1);
-            TaskSnapshot snapshot1 = await subirArchivo(pickFile1!, 0);
-            TaskSnapshot snapshot2 = await subirArchivo(pickFile2!, 1);
-            TaskSnapshot snapshot3 = await subirArchivo(pickFile3!, 2);
-            String imageUrl = await snapshot.ref.getDownloadURL();
-            String imageUrl1 = await snapshot1.ref.getDownloadURL();
-            String imageUrl2 = await snapshot2.ref.getDownloadURL();
-            String imageUrl3 = await snapshot3.ref.getDownloadURL();
+            String? plantimg = widget.planta.img;
+            String? plantimg1 = widget.planta.img1;
+            String? plantimg2 = widget.planta.img2;
+            String? plantimg3 = widget.planta.img3;
+
+            if (pickFile != null) {
+              TaskSnapshot snapshot = await subirArchivo(
+                  pickFile!, -1, widget.planta.img!.split("name")[1]);
+              String imageUrl = await snapshot.ref.getDownloadURL();
+              plantimg =
+                  imageUrl + 'name' + widget.planta.img!.split("name")[1];
+            }
+            if (pickFile1 != null) {
+              print("---> ${widget.planta.img1}");
+              TaskSnapshot snapshot = await subirArchivo(
+                  pickFile1!, 0, widget.planta.img1!.split("name")[1]);
+              String imageUrl = await snapshot.ref.getDownloadURL();
+              plantimg1 =
+                  imageUrl + 'name' + widget.planta.img1!.split("name")[1];
+            }
+            if (pickFile2 != null) {
+              TaskSnapshot snapshot = await subirArchivo(
+                  pickFile2!, 1, widget.planta.img2!.split("name")[1]);
+              String imageUrl = await snapshot.ref.getDownloadURL();
+              plantimg2 =
+                  imageUrl + 'name' + widget.planta.img2!.split("name")[1];
+            }
+            if (pickFile3 != null) {
+              TaskSnapshot snapshot = await subirArchivo(
+                  pickFile3!, 2, widget.planta.img3!.split("name")[1]);
+              String imageUrl = await snapshot.ref.getDownloadURL();
+              plantimg3 =
+                  imageUrl + 'name' + widget.planta.img3!.split("name")[1];
+            }
 
             Plant model = Plant(
-                img: imageUrl + 'name' + imgName!,
-                img1: imageUrl1 + 'name' + imgName1!,
-                img2: imageUrl2 + 'name' + imgName2!,
-                img3: imageUrl3 + 'name' + imgName3!,
+                img: plantimg,
+                img1: plantimg1,
+                img2: plantimg2,
+                img3: plantimg3,
                 nomComm: nomComm!.text,
                 nomBot: nomBot!.text,
                 genero: genero!.text,
@@ -665,27 +712,14 @@ class _CreatePlantState extends State<CreatePlant>
 
   Future? saveList(Plant model) {
     return _ref
-        .add(model.toJson())
-        .then((value) => print('Se agrego la planta'))
+        .doc(widget.planta.id)
+        .update(model.toJson())
+        .then((value) => print('Se actualizo la planta'))
         .catchError((error) => print(error));
   }
 
-  Future<TaskSnapshot> subirArchivo(PickedFile file, int ops) async {
-    String nombre = '${UniqueKey().toString()}.jpg';
-    switch (ops) {
-      case -1:
-        imgName = nombre;
-        break;
-      case 0:
-        imgName1 = nombre;
-        break;
-      case 1:
-        imgName2 = nombre;
-        break;
-      case 2:
-        imgName3 = nombre;
-        break;
-    }
+  Future<TaskSnapshot> subirArchivo(
+      PickedFile file, int ops, String nombre) async {
     Reference ref =
         FirebaseStorage.instance.ref().child('plantas').child('/$nombre');
 

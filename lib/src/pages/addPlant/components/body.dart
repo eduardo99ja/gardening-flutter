@@ -50,7 +50,8 @@ class _addPlantState extends State<addPlant> {
         target: LatLng(0, 0),
       ),
       mapType: MapType.normal,
-      onMapCreated: (GoogleMapController controller) => mapController.complete(controller),
+      onMapCreated: (GoogleMapController controller) =>
+          mapController.complete(controller),
     );
   }
 
@@ -58,8 +59,8 @@ class _addPlantState extends State<addPlant> {
     posicion = await Geolocator.getCurrentPosition();
     GoogleMapController controller = await mapController.future;
     if (controller != null) {
-      controller.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(posicion!.latitude, posicion!.longitude), zoom: 8.0)));
+      controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+          target: LatLng(posicion!.latitude, posicion!.longitude), zoom: 8.0)));
     }
   }
 
@@ -89,7 +90,8 @@ class _addPlantState extends State<addPlant> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30))),
                       child: Padding(
                         padding: EdgeInsets.all(15.0),
                         child: Column(
@@ -116,7 +118,8 @@ class _addPlantState extends State<addPlant> {
                                       child: Card(
                                         elevation: 3,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(30.0),
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
                                         ),
                                         child: CircleAvatar(
                                           radius: 15,
@@ -128,21 +131,29 @@ class _addPlantState extends State<addPlant> {
 
                                                 jardin model;
 
-                                                _location.getLocation().then((value) async {
+                                                _location
+                                                    .getLocation()
+                                                    .then((value) async {
                                                   _locationData = value;
-                                                  latitud = _locationData.latitude.toString();
-                                                  longitud = _locationData.longitude.toString();
+                                                  latitud = _locationData
+                                                      .latitude
+                                                      .toString();
+                                                  longitud = _locationData
+                                                      .longitude
+                                                      .toString();
 
                                                   model = jardin(
                                                     idPlanta: plant.id,
-                                                    idUsuario: _firebaseAuth.currentUser!.uid,
+                                                    idUsuario: _firebaseAuth
+                                                        .currentUser!.uid,
                                                     latitud: latitud,
                                                     longitud: longitud,
                                                   );
                                                   await saveList(model);
                                                 }).then((value) => value);
                                               },
-                                              icon: Icon(Icons.add, color: Colors.green)),
+                                              icon: Icon(Icons.add,
+                                                  color: Colors.green)),
                                         ),
                                       ),
                                     ),
@@ -168,7 +179,8 @@ class _addPlantState extends State<addPlant> {
                                 Expanded(
                                   child: Text(
                                     '${plant.genero}',
-                                    style: TextStyle(fontSize: 15, color: Colors.black),
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.black),
                                   ),
                                 )
                               ],
@@ -191,7 +203,8 @@ class _addPlantState extends State<addPlant> {
                                 Expanded(
                                   child: Text(
                                     '${plant.nomBot}',
-                                    style: TextStyle(fontSize: 15, color: Colors.black),
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.black),
                                   ),
                                 )
                               ],
@@ -214,7 +227,8 @@ class _addPlantState extends State<addPlant> {
                                 Expanded(
                                   child: Text(
                                     '${plant.nomComm}',
-                                    style: TextStyle(fontSize: 15, color: Colors.black),
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.black),
                                   ),
                                 )
                               ],
@@ -240,21 +254,25 @@ class _addPlantState extends State<addPlant> {
                                 padding: EdgeInsets.all(15.0),
                                 scrollDirection: Axis.horizontal,
                                 children: [
-                                  _buildUsageItem(Icons.opacity, 'Riego', size.width, plant.riego!),
+                                  _buildUsageItem(Icons.opacity, 'Riego',
+                                      size.width, plant.riego!),
+                                  SizedBox(
+                                    width: size.width * 0.02,
+                                  ),
+                                  _buildUsageItem(Icons.wb_sunny_outlined,
+                                      ' Sol', size.width, plant.sol!),
+                                  SizedBox(
+                                    width: size.width * 0.02,
+                                  ),
+                                  _buildUsageItem(Icons.water, 'Humedad',
+                                      size.width, plant.humedad!),
                                   SizedBox(
                                     width: size.width * 0.02,
                                   ),
                                   _buildUsageItem(
-                                      Icons.wb_sunny_outlined, ' Sol', size.width, plant.sol!),
-                                  SizedBox(
-                                    width: size.width * 0.02,
-                                  ),
-                                  _buildUsageItem(
-                                      Icons.water, 'Humedad', size.width, plant.humedad!),
-                                  SizedBox(
-                                    width: size.width * 0.02,
-                                  ),
-                                  _buildUsageItem(Icons.thermostat, 'Temperatura', size.width,
+                                      Icons.thermostat,
+                                      'Temperatura',
+                                      size.width,
                                       plant.temperatura!),
                                   SizedBox(
                                     width: size.width * 0.02,
@@ -304,7 +322,8 @@ class _addPlantState extends State<addPlant> {
   Future? saveList(jardin model) {
     return _ref
         .add(model.toJson())
-        .then((value) => Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false))
+        .then((value) => Navigator.pushNamedAndRemoveUntil(
+            context, 'home', (route) => false))
         .catchError((error) => print(error));
   }
 }
@@ -333,7 +352,8 @@ class RenderSliverWidget extends RenderSliverToBoxAdapter {
       return;
     }
     final SliverConstraints constraints = this.constraints;
-    child!.layout(constraints.asBoxConstraints(/* crossAxisExtent: double.infinity */),
+    child!.layout(
+        constraints.asBoxConstraints(/* crossAxisExtent: double.infinity */),
         parentUsesSize: true);
     double childExtent;
     switch (constraints.axis) {
@@ -345,8 +365,10 @@ class RenderSliverWidget extends RenderSliverToBoxAdapter {
         break;
     }
     assert(childExtent != null);
-    final double paintedChildSize = calculatePaintOffset(constraints, from: 0.0, to: childExtent);
-    final double cacheExtent = calculateCacheOffset(constraints, from: 0.0, to: childExtent);
+    final double paintedChildSize =
+        calculatePaintOffset(constraints, from: 0.0, to: childExtent);
+    final double cacheExtent =
+        calculateCacheOffset(constraints, from: 0.0, to: childExtent);
 
     assert(paintedChildSize.isFinite);
     assert(paintedChildSize >= 0.0);
