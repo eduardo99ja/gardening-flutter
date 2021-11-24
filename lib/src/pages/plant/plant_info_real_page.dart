@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:gardening/src/models/jardin.dart';
 import 'package:gardening/src/models/plant.dart';
@@ -60,6 +61,8 @@ class _PlantInfoRealPageState extends State<PlantInfoRealPage> with SingleTicker
   bool get isConnected => connection != null && connection!.isConnected;
 
   bool isDisconnecting = false;
+
+  CollectionReference jardin = FirebaseFirestore.instance.collection('MiJardin');
 
   @override
   void initState() {
@@ -409,6 +412,12 @@ class _PlantInfoRealPageState extends State<PlantInfoRealPage> with SingleTicker
             datos.contains("Lluvia") ? datos.split("Lluvia: ")[1].trim().split("Hum")[0] : "...";
         riego =
             datos.contains("Riego") ? datos.split("Riego: ")[1].trim().split("Lluvia")[0] : "...";
+        print(widget.garden.id);
+        jardin
+            .doc(widget.garden.id)
+            .update({'temperatura': temp, 'lluvia': lluvia, 'humedadA': hum, 'humedadS': riego})
+            .then((value) => print("User Updated"))
+            .catchError((error) => print("Failed to update user: $error"));
         _messageBuffer = dataString.substring(index);
       });
     } else {
