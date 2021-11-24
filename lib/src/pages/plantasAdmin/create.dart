@@ -49,8 +49,7 @@ String? temperatura = '';
 
 late CollectionReference _ref;
 
-class _CreatePlantState extends State<CreatePlant>
-    with SingleTickerProviderStateMixin {
+class _CreatePlantState extends State<CreatePlant> with SingleTickerProviderStateMixin {
   double? height, width;
   late TextEditingController _controller;
 
@@ -98,18 +97,15 @@ class _CreatePlantState extends State<CreatePlant>
         height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [color1, color2]),
+              begin: Alignment.topRight, end: Alignment.bottomLeft, colors: [color1, color2]),
         ),
         child: Padding(
           padding: EdgeInsets.all(15.0),
           child: SafeArea(
             child: Container(
               height: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30.0)),
+              decoration:
+                  BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(30.0)),
               child: SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.all(15.0),
@@ -132,8 +128,7 @@ class _CreatePlantState extends State<CreatePlant>
                               child: IconButton(
                                   padding: new EdgeInsets.all(0.0),
                                   onPressed: () => print("button"),
-                                  icon: Icon(MdiIcons.flowerPollen,
-                                      color: Colors.white)),
+                                  icon: Icon(MdiIcons.flowerPollen, color: Colors.white)),
                             ),
                           )),
                           SizedBox(width: 10),
@@ -142,11 +137,11 @@ class _CreatePlantState extends State<CreatePlant>
                             child: TextField(
                               controller: nomComm,
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30.0)),
+                                border:
+                                    OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
                                 labelText: 'Nombre común',
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 5.0, horizontal: 10),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                               ),
                             ),
                           ),
@@ -164,8 +159,7 @@ class _CreatePlantState extends State<CreatePlant>
                               child: IconButton(
                                   padding: new EdgeInsets.all(0.0),
                                   onPressed: () => print("button"),
-                                  icon:
-                                      Icon(MdiIcons.book, color: Colors.white)),
+                                  icon: Icon(MdiIcons.book, color: Colors.white)),
                             ),
                           )),
                           SizedBox(width: 10),
@@ -174,11 +168,11 @@ class _CreatePlantState extends State<CreatePlant>
                             child: TextField(
                               controller: nomBot,
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30.0)),
+                                border:
+                                    OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
                                 labelText: 'Nombre Botánico',
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 5.0, horizontal: 10),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                               ),
                             ),
                           ),
@@ -196,8 +190,7 @@ class _CreatePlantState extends State<CreatePlant>
                               child: IconButton(
                                   padding: new EdgeInsets.all(0.0),
                                   onPressed: () => print("button"),
-                                  icon: Icon(MdiIcons.label,
-                                      color: Colors.white)),
+                                  icon: Icon(MdiIcons.label, color: Colors.white)),
                             ),
                           )),
                           SizedBox(width: 10),
@@ -206,11 +199,11 @@ class _CreatePlantState extends State<CreatePlant>
                             child: TextField(
                               controller: genero,
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30.0)),
+                                border:
+                                    OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
                                 labelText: 'Género',
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 5.0, horizontal: 10),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                               ),
                             ),
                           ),
@@ -228,8 +221,7 @@ class _CreatePlantState extends State<CreatePlant>
                               child: IconButton(
                                   padding: new EdgeInsets.all(0.0),
                                   onPressed: () => print("button"),
-                                  icon: Icon(MdiIcons.water,
-                                      color: Colors.white)),
+                                  icon: Icon(MdiIcons.water, color: Colors.white)),
                             ),
                           )),
                           SizedBox(width: 10),
@@ -237,11 +229,11 @@ class _CreatePlantState extends State<CreatePlant>
                             flex: 7,
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30.0)),
+                                border:
+                                    OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
                                 labelText: 'Riego cada...',
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 5.0, horizontal: 10),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                               ),
                               isExpanded: true,
                               onChanged: (String? valor) {
@@ -250,10 +242,8 @@ class _CreatePlantState extends State<CreatePlant>
                                 });
                               },
                               style: const TextStyle(color: Color(0xFF000000)),
-                              items: <String>[
-                                '6-8 hrs',
-                                '8-12 hrs'
-                              ].map<DropdownMenuItem<String>>((String value) {
+                              items: <String>['6-8 hrs', '8-12 hrs']
+                                  .map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -275,8 +265,7 @@ class _CreatePlantState extends State<CreatePlant>
                               child: IconButton(
                                   padding: new EdgeInsets.all(0.0),
                                   onPressed: () => print("button"),
-                                  icon: Icon(MdiIcons.sunWireless,
-                                      color: Colors.white)),
+                                  icon: Icon(MdiIcons.sunWireless, color: Colors.white)),
                             ),
                           )),
                           SizedBox(width: 10),
@@ -284,11 +273,11 @@ class _CreatePlantState extends State<CreatePlant>
                             flex: 7,
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30.0)),
+                                border:
+                                    OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
                                 labelText: 'Nivel de Sol',
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 5.0, horizontal: 10),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                               ),
                               isExpanded: true,
                               onChanged: (String? valor) {
@@ -297,11 +286,8 @@ class _CreatePlantState extends State<CreatePlant>
                                 });
                               },
                               style: const TextStyle(color: Color(0xFF000000)),
-                              items: <String>[
-                                'Bajo',
-                                'Medio',
-                                'Alto'
-                              ].map<DropdownMenuItem<String>>((String value) {
+                              items: <String>['Bajo', 'Medio', 'Alto']
+                                  .map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -323,8 +309,7 @@ class _CreatePlantState extends State<CreatePlant>
                               child: IconButton(
                                   padding: new EdgeInsets.all(0.0),
                                   onPressed: () => print("button"),
-                                  icon: Icon(MdiIcons.cloud,
-                                      color: Colors.white)),
+                                  icon: Icon(MdiIcons.cloud, color: Colors.white)),
                             ),
                           )),
                           SizedBox(width: 10),
@@ -332,11 +317,11 @@ class _CreatePlantState extends State<CreatePlant>
                             flex: 7,
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30.0)),
+                                border:
+                                    OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
                                 labelText: 'Humedad',
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 5.0, horizontal: 10),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                               ),
                               isExpanded: true,
                               onChanged: (String? valor) {
@@ -345,10 +330,8 @@ class _CreatePlantState extends State<CreatePlant>
                                 });
                               },
                               style: const TextStyle(color: Color(0xFF000000)),
-                              items: <String>[
-                                'Baja',
-                                'Alta'
-                              ].map<DropdownMenuItem<String>>((String value) {
+                              items: <String>['Baja', 'Alta']
+                                  .map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -370,8 +353,7 @@ class _CreatePlantState extends State<CreatePlant>
                               child: IconButton(
                                   padding: new EdgeInsets.all(0.0),
                                   onPressed: () => print("button"),
-                                  icon: Icon(MdiIcons.thermometer,
-                                      color: Colors.white)),
+                                  icon: Icon(MdiIcons.thermometer, color: Colors.white)),
                             ),
                           )),
                           SizedBox(width: 10),
@@ -379,11 +361,11 @@ class _CreatePlantState extends State<CreatePlant>
                             flex: 7,
                             child: DropdownButtonFormField<String>(
                               decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(30.0)),
+                                border:
+                                    OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
                                 labelText: 'Rango de Temperatura',
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 5.0, horizontal: 10),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10),
                               ),
                               isExpanded: true,
                               onChanged: (String? valor) {
@@ -392,11 +374,8 @@ class _CreatePlantState extends State<CreatePlant>
                                 });
                               },
                               style: const TextStyle(color: Color(0xFF000000)),
-                              items: <String>[
-                                '< 30 °C',
-                                '> 30 °C < 40 °C',
-                                '> 40 °C'
-                              ].map<DropdownMenuItem<String>>((String value) {
+                              items: <String>['< 30 °C', '> 30 °C < 40 °C', '> 40 °C']
+                                  .map<DropdownMenuItem<String>>((String value) {
                                 return DropdownMenuItem<String>(
                                   value: value,
                                   child: Text(value),
@@ -412,9 +391,7 @@ class _CreatePlantState extends State<CreatePlant>
                         child: Text(
                           'Galería de fotos',
                           style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
+                              fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                         ),
                       ),
                       _swiper(),
@@ -531,8 +508,7 @@ class _CreatePlantState extends State<CreatePlant>
                               image: AssetImage("assets/img/gallery.png"),
                               fit: BoxFit.fitWidth,
                               colorFilter: new ColorFilter.mode(
-                                  Colors.white.withOpacity(0.3),
-                                  BlendMode.dstATop),
+                                  Colors.white.withOpacity(0.3), BlendMode.dstATop),
                               alignment: Alignment.center)),
                     ),
                   ),
@@ -541,10 +517,8 @@ class _CreatePlantState extends State<CreatePlant>
                       padding: const EdgeInsets.all(16.0),
                       primary: Colors.black,
                     ),
-                    onPressed: () =>
-                        seleccionarImagen(ImageSource.gallery, numImg),
-                    child: const Text('Galeria',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    onPressed: () => seleccionarImagen(ImageSource.gallery, numImg),
+                    child: const Text('Galeria', style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
@@ -564,8 +538,7 @@ class _CreatePlantState extends State<CreatePlant>
                               image: AssetImage("assets/img/camera.png"),
                               fit: BoxFit.fitWidth,
                               colorFilter: new ColorFilter.mode(
-                                  Colors.white.withOpacity(0.3),
-                                  BlendMode.dstATop),
+                                  Colors.white.withOpacity(0.3), BlendMode.dstATop),
                               alignment: Alignment.center)),
                     ),
                   ),
@@ -574,10 +547,8 @@ class _CreatePlantState extends State<CreatePlant>
                       padding: const EdgeInsets.all(16.0),
                       primary: Colors.black,
                     ),
-                    onPressed: () =>
-                        seleccionarImagen(ImageSource.camera, numImg),
-                    child: const Text('Cámara',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    onPressed: () => seleccionarImagen(ImageSource.camera, numImg),
+                    child: const Text('Cámara', style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
@@ -681,12 +652,10 @@ class _CreatePlantState extends State<CreatePlant>
         imgName3 = nombre;
         break;
     }
-    Reference ref =
-        FirebaseStorage.instance.ref().child('plantas').child('/$nombre');
+    Reference ref = FirebaseStorage.instance.ref().child('plantas').child('/$nombre');
 
     final metadata = SettableMetadata(
-        contentType: 'image/jpeg',
-        customMetadata: {'picked-file-path': file.path});
+        contentType: 'image/jpeg', customMetadata: {'picked-file-path': file.path});
 
     UploadTask uploadTask = ref.putFile(File(file.path), metadata);
     return uploadTask;
