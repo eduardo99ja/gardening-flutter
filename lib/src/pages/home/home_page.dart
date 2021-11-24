@@ -67,6 +67,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     super.dispose();
+    addPlant!.cancel();
+    addjardin!.cancel();
   }
 
   @override
@@ -224,7 +226,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   agregarJardin(QuerySnapshot evento) {
-    LJardin = [];
+    tiP.clear();
+    images.clear();
+    LJardin!.clear();
     evento.docs.forEach((element) {
       setState(() {
         LJardin!.add(new jardin.fromElement(element));
