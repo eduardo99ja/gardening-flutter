@@ -239,13 +239,11 @@ class _HomePageState extends State<HomePage> {
 
     for (var tripSnapshotP in plant!) {
       var titleP = tripSnapshotP.id!.toLowerCase();
-      var nom = tripSnapshotP.nomComm!.toLowerCase();
 
       String img = tripSnapshotP.img!.split("name")[0];
       String ti = tripSnapshotP.nomComm!;
       for (var tripSnapshot in LJardin!) {
         var title = tripSnapshot.idPlanta!.toLowerCase();
-        print(title);
         if (title.contains(titleP)) {
           showResults.add(tripSnapshotP);
           jardinTemp.add(tripSnapshot);
