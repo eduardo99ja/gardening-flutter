@@ -336,7 +336,6 @@ class _listPlantsState extends State<listPlants> {
     });
   }
 
-
   _editaPlanta(Plant planta) async {
     await Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => EditPlant(planta)));
@@ -404,10 +403,10 @@ class _listPlantsState extends State<listPlants> {
           .catchError((error) => print(error));
       setState(() {});
     }).catchError((error) => print(error));
+  }
 
-    viewPlantM(Plant plant) {
+  viewPlantM(Plant plant) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => viewPlantScreen(plant)));
-
   }
 }
