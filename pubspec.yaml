@@ -29,7 +29,7 @@ dependencies:
   syncfusion_flutter_charts: ^19.3.47
   image_picker: ^0.8.4
   firebase_storage: ^8.0.0
-  google_maps_flutter: ^2.0.8
+  google_maps_flutter: ^2.0.9
   geolocator: ^7.6.2
   location: ^4.3.0
   flutter_bluetooth_serial: ^0.2.2

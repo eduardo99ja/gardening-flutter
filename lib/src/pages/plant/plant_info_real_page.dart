@@ -88,8 +88,11 @@ class _PlantInfoRealPageState extends State<PlantInfoRealPage> with SingleTicker
         // If we except the disconnection, `onDone` should be fired as result.
         // If we didn't except this (no flag set), it means closing by remote.
         if (isDisconnecting) {
-          print('Disconnecting locally!');
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Desconectando...')));
+          print('desconectando');
         } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('Desconectado del dispositivo')));
           print('Disconnected remotely!');
         }
         if (this.mounted) {
@@ -98,6 +101,8 @@ class _PlantInfoRealPageState extends State<PlantInfoRealPage> with SingleTicker
       });
     }).catchError((error) {
       print('Cannot connect, exception occured');
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('No se puede conectar , favor de intentarlo en otro momento')));
       print(error);
     });
   }
@@ -216,7 +221,7 @@ class _PlantInfoRealPageState extends State<PlantInfoRealPage> with SingleTicker
                   scrollDirection: Axis.horizontal,
                   children: [
                     _buildUsageItem(
-                        Icons.opacity, true, 'Humedad del suelo', (hum == null) ? "..." : hum!),
+                        Icons.opacity, true, 'Humedad atmosferica', (hum == null) ? "..." : hum!),
                     _buildUsageItem(
                         Icons.cloud_queue, true, 'Luvia', (lluvia == null) ? "..." : lluvia!),
                     _buildUsageItem(
