@@ -6,13 +6,12 @@ import 'package:gardening/src/pages/account/details_user.dart';
 import 'package:gardening/src/pages/home/home_page.dart';
 import 'package:gardening/src/pages/login/login_page.dart';
 import 'package:gardening/src/pages/plant/plant_info_history.dart';
-import 'package:gardening/src/pages/plant/plant_info_real_page.dart';
 import 'package:gardening/src/pages/register/register_page.dart';
 import 'package:gardening/src/utils/my_colors.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:gardening/src/pages/details/details-screen.dart';
 import 'package:gardening/src/pages/plantasAdmin/listPlants.dart';
-import 'package:gardening/src/pages/addPlant/addPlant_page.dart';
+
+import 'src/pages/plantasAdmin/edit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -1,7 +1,12 @@
 import 'dart:math';
 
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gardening/src/pages/home/home_controller.dart';
+
+import 'package:gardening/src/pages/plantasAdmin/edit.dart';
+
 import 'package:gardening/src/pages/plantasAdmin/components/view_plantBody.dart';
+
 import 'package:gardening/src/pages/plantasAdmin/listPlants_controller.dart';
 import 'package:gardening/src/pages/plantasAdmin/view_plant.dart';
 import 'dart:async';
@@ -29,6 +34,8 @@ class _listPlantsState extends State<listPlants> {
   List<Plant>? _resultsList = [];
 
   final _dbRef = FirebaseFirestore.instance;
+
+  late CollectionReference _ref;
   List<Plant>? plant;
   StreamSubscription<QuerySnapshot>? addPlant;
 
@@ -44,6 +51,7 @@ class _listPlantsState extends State<listPlants> {
     _con.init(context, refresh);
     plant = [];
     addPlant = _dbRef.collection('Plantas').snapshots().listen(agregarPlanta);
+    _ref = FirebaseFirestore.instance.collection('Plantas');
     _searchController.addListener(_onSearchChanged);
   }
 
@@ -205,7 +213,8 @@ class _listPlantsState extends State<listPlants> {
                                           IconButton(
                                               tooltip: 'Editar',
                                               padding: new EdgeInsets.all(0.0),
-                                              onPressed: () => print("button"),
+                                              onPressed: () => _editaPlanta(
+                                                  _resultsList![index]),
                                               icon: Icon(
                                                   MdiIcons.pencilBoxMultiple,
                                                   size: 30,
@@ -230,7 +239,10 @@ class _listPlantsState extends State<listPlants> {
                                               iconSize: 25,
                                               color: Colors.red[500],
                                               tooltip: 'Borrar',
-                                              onPressed: () {}),
+                                              onPressed: () {
+                                                _openModal(
+                                                    _resultsList![index]);
+                                              }),
                                         ],
                                       ),
                                     ],
@@ -324,8 +336,78 @@ class _listPlantsState extends State<listPlants> {
     });
   }
 
+
+  _editaPlanta(Plant planta) async {
+    await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => EditPlant(planta)));
+  }
+
+  _openModal(Plant plant) {
+    Widget btnAceptar = new TextButton(
+      onPressed: () => _borrarPlanta(plant),
+      child: Text('Aceptar'),
+    );
+
+    Widget btnCancelar = new TextButton(
+      onPressed: () => Navigator.of(context).pop(),
+      child: Text('Cancelar'),
+    );
+
+    AlertDialog alerta = new AlertDialog(
+      title: Text('Esta seguro que desea borrar al registro?'),
+      actions: [btnAceptar, btnCancelar],
+    );
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alerta;
+        });
+  }
+
+  _borrarPlanta(Plant plant) async {
+    print(plant.img!.split("name")[0]);
+    await _ref.doc(plant.id!).delete().then((value) {
+      print('Se borro la planta');
+      Navigator.of(context).pop();
+      Reference ref = FirebaseStorage.instance
+          .ref()
+          .child('plantas')
+          .child('${plant.img!.split("name")[1]}');
+      ref
+          .delete()
+          .then((value) => print("Se borro la imagen principal"))
+          .catchError((error) => print(error));
+      ref = FirebaseStorage.instance
+          .ref()
+          .child('plantas')
+          .child('${plant.img1!.split("name")[1]}');
+      ref
+          .delete()
+          .then((value) => print("Se borro la imagen principal"))
+          .catchError((error) => print(error));
+      ref = FirebaseStorage.instance
+          .ref()
+          .child('plantas')
+          .child('${plant.img2!.split("name")[1]}');
+      ref
+          .delete()
+          .then((value) => print("Se borro la imagen principal"))
+          .catchError((error) => print(error));
+      ref = FirebaseStorage.instance
+          .ref()
+          .child('plantas')
+          .child('${plant.img3!.split("name")[1]}');
+      ref
+          .delete()
+          .then((value) => print("Se borro la imagen principal"))
+          .catchError((error) => print(error));
+      setState(() {});
+    }).catchError((error) => print(error));
+
     viewPlantM(Plant plant) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => viewPlantScreen(plant)));
+
   }
 }
