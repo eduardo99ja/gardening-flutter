@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gardening/src/helper/hex_color.dart';
+import 'package:gardening/src/models/jardin.dart';
+import 'package:gardening/src/models/plant.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class PlantInfoHistory extends StatefulWidget {
-  const PlantInfoHistory({Key? key}) : super(key: key);
+  final jardin garden;
+  final Plant plant;
+  const PlantInfoHistory({Key? key, required this.garden, required this.plant}) : super(key: key);
 
   @override
   _PlantInfoHistoryState createState() => _PlantInfoHistoryState();

@@ -335,7 +335,11 @@ class _PlantInfoRealPageState extends State<PlantInfoRealPage> with SingleTicker
           child: Text("Historico"),
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => PlantInfoHistory()),
+            MaterialPageRoute(
+                builder: (_) => PlantInfoHistory(
+                      garden: widget.garden,
+                      plant: widget.plant,
+                    )),
           ),
         ),
         SizedBox(width: 15),
