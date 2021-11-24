@@ -36,11 +36,8 @@ class _HomePageState extends State<HomePage> {
   List<String>? imagesP;
   List<String> tiP = [];
 
-
   final List<Widget> images = [];
 
-
-  
   @override
   void initState() {
     super.initState();
@@ -92,7 +89,8 @@ class _HomePageState extends State<HomePage> {
           GestureDetector(
             onTap: () async {
               await _authProvider.signOut();
-              Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, 'login', (route) => false);
             },
             child: Container(
               margin: EdgeInsets.only(right: 10),
@@ -113,7 +111,9 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.all(10.0),
                 child: VerticalCardPager(
                   textStyle: TextStyle(
-                      fontFamily: "Bevan", color: Colors.white, fontWeight: FontWeight.bold),
+                      fontFamily: "Bevan",
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
                   titles: tiP,
                   images: images,
                   initialPage: 0,
@@ -235,15 +235,20 @@ class _HomePageState extends State<HomePage> {
       });
     });
     List<Plant> showResults = [];
+    List<jardin> jardinTemp = [];
+
     for (var tripSnapshotP in plant!) {
       var titleP = tripSnapshotP.id!.toLowerCase();
+      var nom = tripSnapshotP.nomComm!.toLowerCase();
+
       String img = tripSnapshotP.img!.split("name")[0];
       String ti = tripSnapshotP.nomComm!;
-
       for (var tripSnapshot in LJardin!) {
         var title = tripSnapshot.idPlanta!.toLowerCase();
+        print(title);
         if (title.contains(titleP)) {
           showResults.add(tripSnapshotP);
+          jardinTemp.add(tripSnapshot);
           images.add(ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
             child: FadeInImage(
@@ -257,8 +262,10 @@ class _HomePageState extends State<HomePage> {
         }
       }
     }
-    print(showResults.length);
+
     plant = showResults;
+    LJardin = jardinTemp;
+
     setState(() {});
   }
 }
