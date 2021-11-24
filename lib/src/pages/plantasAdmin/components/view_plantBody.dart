@@ -3,65 +3,35 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:flutter/rendering.dart';
 import 'package:gardening/src/models/jardin.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:gardening/src/models/plant.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gardening/src/providers/user_provider.dart';
 
-class addPlant extends StatefulWidget {
+class viewPlant extends StatefulWidget {
   final Plant plant;
-  addPlant(this.plant);
+  viewPlant(this.plant);
 
   @override
-  _addPlantState createState() => _addPlantState(plant);
+  _viewPlantState createState() => _viewPlantState(plant);
 }
 
-class _addPlantState extends State<addPlant> {
+class _viewPlantState extends State<viewPlant> {
   final Plant plant;
-  _addPlantState(this.plant);
+  _viewPlantState(this.plant);
   late CollectionReference _ref;
   late FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   @override
   void initState() {
     super.initState();
-    this.localizacion();
 
     _ref = FirebaseFirestore.instance.collection('MiJardin');
   }
 
-  Location _location = Location();
-  late LocationData _locationData;
-  String? latitud;
-  String? longitud;
-  Position? posicion;
-  Completer<GoogleMapController> mapController = new Completer();
-
-  Widget mapa() {
-    return GoogleMap(
-      initialCameraPosition: CameraPosition(
-        target: LatLng(0, 0),
-      ),
-      mapType: MapType.normal,
-      onMapCreated: (GoogleMapController controller) => mapController.complete(controller),
-    );
-  }
-
-  localizacion() async {
-    posicion = await Geolocator.getCurrentPosition();
-    GoogleMapController controller = await mapController.future;
-    if (controller != null) {
-      controller.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(posicion!.latitude, posicion!.longitude), zoom: 8.0)));
-    }
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +59,8 @@ class _addPlantState extends State<addPlant> {
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                              topLeft: Radius.circular(30),
+                              topRight: Radius.circular(30))),
                       child: Padding(
                         padding: EdgeInsets.all(15.0),
                         child: Column(
@@ -107,47 +78,6 @@ class _addPlantState extends State<addPlant> {
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black),
                                 ),
-                                Expanded(
-                                    child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Card(
-                                        elevation: 3,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(30.0),
-                                        ),
-                                        child: CircleAvatar(
-                                          radius: 15,
-                                          backgroundColor: Colors.white,
-                                          child: IconButton(
-                                              padding: new EdgeInsets.all(0.0),
-                                              onPressed: () async {
-                                                //validacio
-
-                                                jardin model;
-
-                                                _location.getLocation().then((value) async {
-                                                  _locationData = value;
-                                                  latitud = _locationData.latitude.toString();
-                                                  longitud = _locationData.longitude.toString();
-
-                                                  model = jardin(
-                                                    idPlanta: plant.id,
-                                                    idUsuario: _firebaseAuth.currentUser!.uid,
-                                                    latitud: latitud,
-                                                    longitud: longitud,
-                                                  );
-                                                  await saveList(model);
-                                                }).then((value) => value);
-                                              },
-                                              icon: Icon(Icons.add, color: Colors.green)),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ))
                               ],
                             ),
                             SizedBox(height: 15),
@@ -168,7 +98,8 @@ class _addPlantState extends State<addPlant> {
                                 Expanded(
                                   child: Text(
                                     '${plant.genero}',
-                                    style: TextStyle(fontSize: 15, color: Colors.black),
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.black),
                                   ),
                                 )
                               ],
@@ -191,7 +122,8 @@ class _addPlantState extends State<addPlant> {
                                 Expanded(
                                   child: Text(
                                     '${plant.nomBot}',
-                                    style: TextStyle(fontSize: 15, color: Colors.black),
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.black),
                                   ),
                                 )
                               ],
@@ -214,7 +146,8 @@ class _addPlantState extends State<addPlant> {
                                 Expanded(
                                   child: Text(
                                     '${plant.nomComm}',
-                                    style: TextStyle(fontSize: 15, color: Colors.black),
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.black),
                                   ),
                                 )
                               ],
@@ -240,21 +173,25 @@ class _addPlantState extends State<addPlant> {
                                 padding: EdgeInsets.all(15.0),
                                 scrollDirection: Axis.horizontal,
                                 children: [
-                                  _buildUsageItem(Icons.opacity, 'Riego', size.width, plant.riego!),
+                                  _buildUsageItem(Icons.opacity, 'Riego',
+                                      size.width, plant.riego!),
+                                  SizedBox(
+                                    width: size.width * 0.02,
+                                  ),
+                                  _buildUsageItem(Icons.wb_sunny_outlined,
+                                      ' Sol', size.width, plant.sol!),
+                                  SizedBox(
+                                    width: size.width * 0.02,
+                                  ),
+                                  _buildUsageItem(Icons.water, 'Humedad',
+                                      size.width, plant.humedad!),
                                   SizedBox(
                                     width: size.width * 0.02,
                                   ),
                                   _buildUsageItem(
-                                      Icons.wb_sunny_outlined, ' Sol', size.width, plant.sol!),
-                                  SizedBox(
-                                    width: size.width * 0.02,
-                                  ),
-                                  _buildUsageItem(
-                                      Icons.water, 'Humedad', size.width, plant.humedad!),
-                                  SizedBox(
-                                    width: size.width * 0.02,
-                                  ),
-                                  _buildUsageItem(Icons.thermostat, 'Temperatura', size.width,
+                                      Icons.thermostat,
+                                      'Temperatura',
+                                      size.width,
                                       plant.temperatura!),
                                   SizedBox(
                                     width: size.width * 0.02,
@@ -304,7 +241,8 @@ class _addPlantState extends State<addPlant> {
   Future? saveList(jardin model) {
     return _ref
         .add(model.toJson())
-        .then((value) => Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false))
+        .then((value) => Navigator.pushNamedAndRemoveUntil(
+            context, 'home', (route) => false))
         .catchError((error) => print(error));
   }
 }
@@ -333,7 +271,8 @@ class RenderSliverWidget extends RenderSliverToBoxAdapter {
       return;
     }
     final SliverConstraints constraints = this.constraints;
-    child!.layout(constraints.asBoxConstraints(/* crossAxisExtent: double.infinity */),
+    child!.layout(
+        constraints.asBoxConstraints(/* crossAxisExtent: double.infinity */),
         parentUsesSize: true);
     double childExtent;
     switch (constraints.axis) {
@@ -345,8 +284,10 @@ class RenderSliverWidget extends RenderSliverToBoxAdapter {
         break;
     }
     assert(childExtent != null);
-    final double paintedChildSize = calculatePaintOffset(constraints, from: 0.0, to: childExtent);
-    final double cacheExtent = calculateCacheOffset(constraints, from: 0.0, to: childExtent);
+    final double paintedChildSize =
+        calculatePaintOffset(constraints, from: 0.0, to: childExtent);
+    final double cacheExtent =
+        calculateCacheOffset(constraints, from: 0.0, to: childExtent);
 
     assert(paintedChildSize.isFinite);
     assert(paintedChildSize >= 0.0);

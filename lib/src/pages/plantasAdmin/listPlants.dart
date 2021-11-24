@@ -1,6 +1,9 @@
 import 'dart:math';
 
 import 'package:gardening/src/pages/home/home_controller.dart';
+import 'package:gardening/src/pages/plantasAdmin/components/view_plantBody.dart';
+import 'package:gardening/src/pages/plantasAdmin/listPlants_controller.dart';
+import 'package:gardening/src/pages/plantasAdmin/view_plant.dart';
 import 'dart:async';
 
 import 'package:gardening/src/providers/auth_provider.dart';
@@ -29,7 +32,8 @@ class _listPlantsState extends State<listPlants> {
   List<Plant>? plant;
   StreamSubscription<QuerySnapshot>? addPlant;
 
-  HomeController _con = HomeController();
+  listPlantsController _con = listPlantsController();
+
   late AuthProvider _authProvider;
 
   @override
@@ -37,7 +41,7 @@ class _listPlantsState extends State<listPlants> {
     super.initState();
 
     _authProvider = new AuthProvider();
-
+    _con.init(context, refresh);
     plant = [];
     addPlant = _dbRef.collection('Plantas').snapshots().listen(agregarPlanta);
     _searchController.addListener(_onSearchChanged);
@@ -108,7 +112,8 @@ class _listPlantsState extends State<listPlants> {
             GestureDetector(
               onTap: () async {
                 await _authProvider.signOut();
-                Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, 'login', (route) => false);
               },
               child: Container(
                 margin: EdgeInsets.only(right: 10),
@@ -128,13 +133,15 @@ class _listPlantsState extends State<listPlants> {
                 height: 20,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 10.0),
+                padding: const EdgeInsets.only(
+                    left: 30.0, right: 30.0, bottom: 10.0),
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.search),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.green, width: 2.0),
+                      borderSide:
+                          const BorderSide(color: Colors.green, width: 2.0),
                       borderRadius: BorderRadius.circular(25.0),
                     ),
                     contentPadding: EdgeInsets.fromLTRB(10.0, 10.0, 40.0, 10.0),
@@ -145,10 +152,12 @@ class _listPlantsState extends State<listPlants> {
               Expanded(
                   child: ListView.builder(
                       itemCount: _resultsList!.length,
-                      itemBuilder: (BuildContext context, int index) => GestureDetector(
-                            onTap: () {},
+                      itemBuilder: (BuildContext context, int index) =>
+                          GestureDetector(
+                            onTap: () => viewPlantM(_resultsList![index]),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 8),
                               height: 180,
                               child: Stack(
                                 children: [
@@ -159,7 +168,8 @@ class _listPlantsState extends State<listPlants> {
                                         fit: BoxFit.cover,
                                         image: NetworkImage(
                                             "${_resultsList![index].img!.split('name')[0]}"),
-                                        placeholder: AssetImage("assets/img/loading.jpg"),
+                                        placeholder: AssetImage(
+                                            "assets/img/loading.jpg"),
                                       ),
                                     ),
                                   ),
@@ -172,7 +182,8 @@ class _listPlantsState extends State<listPlants> {
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.only(
                                                 bottomLeft: Radius.circular(20),
-                                                bottomRight: Radius.circular(20)),
+                                                bottomRight:
+                                                    Radius.circular(20)),
                                             gradient: LinearGradient(
                                                 begin: Alignment.bottomCenter,
                                                 end: Alignment.topCenter,
@@ -182,28 +193,34 @@ class _listPlantsState extends State<listPlants> {
                                                 ]))),
                                   ),
                                   Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
                                         children: <Widget>[
                                           IconButton(
                                               tooltip: 'Editar',
                                               padding: new EdgeInsets.all(0.0),
                                               onPressed: () => print("button"),
-                                              icon: Icon(MdiIcons.pencilBoxMultiple,
-                                                  size: 30, color: Color(0xff59fb12))),
+                                              icon: Icon(
+                                                  MdiIcons.pencilBoxMultiple,
+                                                  size: 30,
+                                                  color: Color(0xff59fb12))),
                                         ],
                                       ),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Text(
                                             "\t${_resultsList![index].nomComm}",
                                             style: GoogleFonts.leckerliOne(
                                               textStyle: TextStyle(
-                                                  color: Color(0xff67E278),
+                                                  color: Colors.white,
                                                   fontSize: 25,
                                                   letterSpacing: .5),
                                             ),
@@ -305,5 +322,10 @@ class _listPlantsState extends State<listPlants> {
         _resultsList = plant;
       });
     });
+  }
+
+    viewPlantM(Plant plant) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => viewPlantScreen(plant)));
   }
 }

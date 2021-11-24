@@ -34,6 +34,6 @@ class listPlantsController {
   }
 
   void goToCredits() {
-    Navigator.pushNamed(context, 'credits');
+    Navigator.pushNamed(context, 'account/admin');
   }
 }

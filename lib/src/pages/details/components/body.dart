@@ -1,24 +1,38 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
-
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:gardening/src/pages/details/components/item_image.dart';
+import 'package:gardening/src/models/jardin.dart';
+import 'package:gardening/src/models/plant.dart';
 import 'package:flutter/rendering.dart';
+import 'package:gardening/src/pages/plant/bluetooht.dart';
+import 'package:gardening/src/pages/plant/plant_info_real_page.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Details extends StatefulWidget {
+  final Plant plant;
+  final jardin garden;
+  const Details({required this.plant, required this.garden});
+
   @override
   _DetailsState createState() => _DetailsState();
 }
 
 class _DetailsState extends State<Details> {
+  final _dbRef = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Stack(
       children: [
         Container(
-            child: ItemImage(
-              imgSrc: "assets/img/violetaAfricana.jpg",
+            child: FadeInImage(
+              fit: BoxFit.cover,
+              image: NetworkImage("${widget.plant.img!.split('name')[0]}"),
+              placeholder: AssetImage("assets/img/loading.jpg"),
             ),
             height: 400,
             width: double.infinity,
@@ -28,7 +42,238 @@ class _DetailsState extends State<Details> {
           slivers: <Widget>[
             SliverList(
               delegate: SliverChildListDelegate(
-                <Widget>[ItemInfo()],
+                <Widget>[
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                    child: Padding(
+                      padding: EdgeInsets.all(15.0),
+                      child: Column(
+                        children: [
+                          SizedBox(height: 15),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                widget.plant.nomComm!,
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                              ),
+                              Expanded(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Card(
+                                        elevation: 3,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(30.0),
+                                        ),
+                                        child: CircleAvatar(
+                                          radius: 15,
+                                          backgroundColor: Colors.white,
+                                          child: IconButton(
+                                              padding: new EdgeInsets.all(0.0),
+                                              onPressed: () => {
+                                                    print(widget.garden.id),
+                                                    _dbRef
+                                                        .collection('MiJardin')
+                                                        .doc(widget.garden.id)
+                                                        .delete()
+                                                        .then((value) =>
+                                                            Navigator.pushNamedAndRemoveUntil(
+                                                                context, 'home', (route) => false))
+                                                  },
+                                              icon: Icon(Icons.restore_from_trash,
+                                                  color: Colors.green)),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Card(
+                                        elevation: 3,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(30.0),
+                                        ),
+                                        child: CircleAvatar(
+                                          radius: 15,
+                                          backgroundColor: Colors.white,
+                                          child: IconButton(
+                                              padding: new EdgeInsets.all(0.0),
+                                              onPressed: () {
+                                                _showDialog(context, widget.garden);
+                                              },
+                                              icon: Icon(Icons.location_on_outlined,
+                                                  color: Colors.green)),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: 5),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Card(
+                                        elevation: 3,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(30.0),
+                                        ),
+                                        child: CircleAvatar(
+                                          radius: 15,
+                                          backgroundColor: Colors.white,
+                                          child: IconButton(
+                                              padding: new EdgeInsets.all(0.0),
+                                              onPressed: () => Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) => BluetoothPage(
+                                                            plant: widget.plant,
+                                                            garden: widget.garden,
+                                                          ))),
+                                              icon: Icon(Icons.bar_chart, color: Colors.green)),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 15),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Genero:',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                              ),
+                              SizedBox(width: size.width * 0.2),
+                              Text(
+                                widget.plant.genero!,
+                                style: TextStyle(fontSize: 15, color: Colors.black),
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 15),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Nombre botánico:',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                              ),
+                              SizedBox(width: size.width * 0.04),
+                              Text(
+                                widget.plant.nomBot!,
+                                style: TextStyle(fontSize: 15, color: Colors.black),
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 15),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'Nombre común:',
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                              ),
+                              SizedBox(width: size.width * 0.07),
+                              Text(
+                                widget.plant.nomComm!,
+                                style: TextStyle(fontSize: 15, color: Colors.black),
+                              )
+                            ],
+                          ),
+                          SizedBox(height: 40),
+                          Row(
+                            children: [
+                              Text(
+                                'Galería de fotos',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 15),
+                          _swiper(
+                              img1: widget.plant.img1!,
+                              img2: widget.plant.img2!,
+                              img3: widget.plant.img3!),
+                          SizedBox(height: 20),
+                          Container(
+                            height: 0.22 * size.height,
+                            child: ListView(
+                              padding: EdgeInsets.all(15.0),
+                              scrollDirection: Axis.horizontal,
+                              children: [
+                                _buildUsageItem(
+                                    Icons.opacity, 'Riego', size.width, widget.plant.riego!),
+                                SizedBox(
+                                  width: size.width * 0.02,
+                                ),
+                                _buildUsageItem(
+                                    Icons.wb_sunny_outlined, ' Sol', size.width, widget.plant.sol!),
+                                SizedBox(
+                                  width: size.width * 0.02,
+                                ),
+                                _buildUsageItem(
+                                    Icons.water, 'Humedad', size.width, widget.plant.humedad!),
+                                SizedBox(
+                                  width: size.width * 0.02,
+                                ),
+                                _buildUsageItem(Icons.thermostat, 'Temperatura', size.width,
+                                    widget.plant.temperatura!),
+                                SizedBox(
+                                  width: size.width * 0.02,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Text(
+                                'Realidad Aumentada',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                              ),
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: CircleAvatar(
+                                      radius: 25,
+                                      backgroundColor: Colors.green,
+                                      child: IconButton(
+                                          padding: new EdgeInsets.all(0.0),
+                                          onPressed: () => print("button"),
+                                          icon: Icon(MdiIcons.flower),
+                                          color: Colors.white)),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -36,201 +281,43 @@ class _DetailsState extends State<Details> {
       ],
     );
   }
-}
 
-class ItemInfo extends StatelessWidget {
-  const ItemInfo({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  void _showDialog(BuildContext context, jardin garden) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius:
-                BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-        child: Padding(
-          padding: EdgeInsets.all(15.0),
-          child: Column(
-            children: [
-              SizedBox(height: 15),
-              Row(
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            width: size.width,
+            padding: new EdgeInsets.all(0.0),
+            child: Expanded(
+              child: Stack(
                 children: [
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Lirio Flamingo',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Card(
-                            elevation: 3,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                            child: CircleAvatar(
-                              radius: 15,
-                              backgroundColor: Colors.white,
-                              child: IconButton(
-                                  padding: new EdgeInsets.all(0.0),
-                                  onPressed: () => print("button"),
-                                  icon: Icon(Icons.location_on_outlined, color: Colors.green)),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 5),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Card(
-                            elevation: 3,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0),
-                            ),
-                            child: CircleAvatar(
-                              radius: 15,
-                              backgroundColor: Colors.white,
-                              child: IconButton(
-                                  padding: new EdgeInsets.all(0.0),
-                                  onPressed: () => print("button"),
-                                  icon: Icon(Icons.bar_chart, color: Colors.green)),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: 15),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Genero:',
-                    textAlign: TextAlign.left,
-                    style:
-                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
-                  ),
-                  SizedBox(width: size.width * 0.2),
-                  Text(
-                    'Anthurium',
-                    style: TextStyle(fontSize: 15, color: Colors.black),
-                  )
-                ],
-              ),
-              SizedBox(height: 15),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Nombre botánico:',
-                    textAlign: TextAlign.left,
-                    style:
-                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
-                  ),
-                  SizedBox(width: size.width * 0.04),
-                  Text(
-                    'Anthurium andraemun',
-                    style: TextStyle(fontSize: 15, color: Colors.black),
-                  )
-                ],
-              ),
-              SizedBox(height: 15),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
-                    'Nombre común:',
-                    textAlign: TextAlign.left,
-                    style:
-                        TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
-                  ),
-                  SizedBox(width: size.width * 0.07),
-                  Text(
-                    'Lirio Flamingo',
-                    style: TextStyle(fontSize: 15, color: Colors.black),
-                  )
-                ],
-              ),
-              SizedBox(height: 40),
-              Row(
-                children: [
-                  Text(
-                    'Galería de fotos',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                  ),
-                ],
-              ),
-              SizedBox(height: 15),
-              _swiper(),
-              SizedBox(height: 20),
-              Container(
-                height: 0.22 * size.height!,
-                child: ListView(
-                  padding: EdgeInsets.all(15.0),
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    _buildUsageItem(Icons.opacity, 'Agua', size.width),
-                    SizedBox(
-                      width: size.width * 0.02,
-                    ),
-                    _buildUsageItem(Icons.wb_sunny_outlined, ' Sol', size.width),
-                    SizedBox(
-                      width: size.width * 0.02,
-                    ),
-                    _buildUsageItem(Icons.water, 'Humedad', size.width),
-                    SizedBox(
-                      width: size.width * 0.02,
-                    ),
-                    _buildUsageItem(Icons.thermostat, 'Temperatura', size.width),
-                    SizedBox(
-                      width: size.width * 0.02,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 20),
-              Row(
-                children: [
-                  Text(
-                    'Realidad Aumentada',
-                    style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
-                  ),
-                  Align(
+                  mapaView(),
+                  Container(
+                    child: Icon(Icons.location_on_outlined),
                     alignment: Alignment.center,
-                    child: CircleAvatar(
-                        radius: 25,
-                        backgroundColor: Colors.green,
-                        child: IconButton(
-                            padding: new EdgeInsets.all(0.0),
-                            onPressed: () => print("button"),
-                            icon: Icon(MdiIcons.flower),
-                            color: Colors.white)),
                   )
                 ],
-              )
-            ],
+              ),
+            ),
+            height: 200.0,
           ),
-        ),
+        );
+      },
+    );
+  }
+
+  Widget mapaView() {
+    print(widget.garden.latitud!);
+    return GoogleMap(
+      initialCameraPosition: CameraPosition(
+        target: LatLng(double.parse(widget.garden.latitud!), double.parse(widget.garden.longitud!)),
+        zoom: 10.0,
       ),
+      mapType: MapType.normal,
     );
   }
 }
@@ -288,12 +375,8 @@ class RenderSliverWidget extends RenderSliverToBoxAdapter {
   }
 }
 
-List<String> images = [
-  "assets/img/plumaRosa.jpg",
-  "assets/img/crasas.jpg",
-  "assets/img/violetaAfricana.jpg"
-];
-Widget _swiper() {
+Widget _swiper({required String img1, required String img2, required String img3}) {
+  List<String> images = [img1, img2, img3];
   return Container(
     width: double.infinity,
     height: 180.0,
@@ -303,32 +386,33 @@ Widget _swiper() {
       itemBuilder: (BuildContext context, int index) {
         return ClipRRect(
           borderRadius: BorderRadius.circular(20.0),
-          child: new Image.asset(
-            images[index],
-            fit: BoxFit.fill,
+          child: new FadeInImage(
+            fit: BoxFit.cover,
+            image: NetworkImage(images[index].split("name")[0]),
+            placeholder: AssetImage("assets/img/loading.jpg"),
           ),
         );
       },
-      itemCount: images.length,
+      itemCount: 3,
       /*pagination: new SwiperPagination(),
       control: new SwiperControl(),*/
     ),
   );
 }
 
-_buildUsageItem(IconData icon, String title, double w) {
+_buildUsageItem(IconData icon, String title, double w, String medida) {
   return Card(
     elevation: 5,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(30.0),
     ),
     child: Container(
-      width: 0.24 * w!,
+      width: 0.24 * w,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(30.0),
       ),
-      padding: EdgeInsets.all(0.025 * w!),
+      padding: EdgeInsets.all(0.025 * w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -365,9 +449,9 @@ _buildUsageItem(IconData icon, String title, double w) {
           ),
           Spacer(),
           Text(
-            "${Random().nextInt(100)} %",
+            medida,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20, color: Colors.green),
+            style: TextStyle(fontSize: 15, color: Colors.green),
           ),
         ],
       ),

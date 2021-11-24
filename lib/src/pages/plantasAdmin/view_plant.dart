@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:gardening/src/models/plant.dart';
-import 'package:gardening/src/pages/addPlant/components/body.dart';
+import 'package:gardening/src/pages/plantasAdmin/components/view_plantBody.dart';
 
-class addPlantScreen extends StatelessWidget {
+class viewPlantScreen extends StatelessWidget {
   final Plant plant;
-  addPlantScreen(this.plant);
+  viewPlantScreen(this.plant);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: addPlant(plant),
+      body: viewPlant(plant),
     );
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/scheduler.dart';
 import 'package:gardening/src/models/jardin.dart';
 import 'package:gardening/src/pages/addPlant/components/body.dart';
+import 'package:gardening/src/pages/details/components/body.dart';
+import 'package:gardening/src/pages/details/details-screen.dart';
 import 'package:gardening/src/pages/home/home_controller.dart';
 import 'package:gardening/src/providers/auth_provider.dart';
 import 'package:gardening/src/utils/my_colors.dart';
@@ -27,89 +29,14 @@ class _HomePageState extends State<HomePage> {
   List<Plant>? plant;
   StreamSubscription<QuerySnapshot>? addPlant;
 
-  final _dbRefJ = FirebaseFirestore.instance;
+  //final _dbRefJ = FirebaseFirestore.instance;
   List<jardin>? LJardin;
   StreamSubscription<QuerySnapshot>? addjardin;
 
   List<String>? imagesP;
   List<String> tiP = [];
 
-  final List<String> titles = [
-    "Ceropegia",
-    "Helecho",
-    "Maranta",
-    "Pluma Rosa",
-    "Violeta Africana",
-    "Crasas",
-  ];
   final List<Widget> images = [];
-
-  final List<Widget> imagesq = [
-    ClipRRect(
-      borderRadius: BorderRadius.circular(20.0),
-      child: Image.asset(
-        "assets/img/ceropegiaWoodii.jpg",
-        fit: BoxFit.cover,
-      ),
-    ),
-    ClipRRect(
-      borderRadius: BorderRadius.circular(20.0),
-      child: Image.asset(
-        "assets/img/helecho.jpg",
-        fit: BoxFit.cover,
-      ),
-    ),
-    ClipRRect(
-      borderRadius: BorderRadius.circular(20.0),
-      child: Image.asset(
-        "assets/img/marantaLeuconera.jpg",
-        fit: BoxFit.cover,
-      ),
-    ),
-    ClipRRect(
-      borderRadius: BorderRadius.circular(20.0),
-      child: Image.asset(
-        "assets/img/plumaRosa.jpg",
-        fit: BoxFit.cover,
-      ),
-    ),
-    ClipRRect(
-      borderRadius: BorderRadius.circular(20.0),
-      child: Image.asset(
-        "assets/img/violetaAfricana.jpg",
-        fit: BoxFit.cover,
-      ),
-    ),
-    ClipRRect(
-      borderRadius: BorderRadius.circular(20.0),
-      child: Image.asset(
-        "assets/img/crasas.jpg",
-        fit: BoxFit.cover,
-      ),
-    ),
-  ];
-
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text(
-      'Home',
-      style: optionStyle,
-    ),
-    Text(
-      'Likes',
-      style: optionStyle,
-    ),
-    Text(
-      'Search',
-      style: optionStyle,
-    ),
-    Text(
-      'Profile',
-      style: optionStyle,
-    ),
-  ];
 
   @override
   void initState() {
@@ -123,7 +50,7 @@ class _HomePageState extends State<HomePage> {
     plant = [];
     addPlant = _dbRef
         .collection('Plantas')
-        .where("idPlanta", whereIn: LJardin)
+        //.where("idPlanta", whereIn: LJardin)
         .snapshots()
         .listen(agregarPlanta);
     LJardin = [];
@@ -137,6 +64,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     super.dispose();
+    addPlant!.cancel();
+    addjardin!.cancel();
   }
 
   @override
@@ -185,20 +114,29 @@ class _HomePageState extends State<HomePage> {
                       fontFamily: "Bevan",
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
-                  titles: tiP!,
+                  titles: tiP,
                   images: images,
                   initialPage: 0,
                   onPageChanged: (page) {
                     // print(page);
                   },
-                  onSelectedItem: (index) {},
+                  onSelectedItem: (index) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => DetailsScreen(
+                          garden: LJardin![index],
+                          plant: plant![index],
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
           ],
         ),
       ),
-     
     );
   }
 
@@ -288,24 +226,27 @@ class _HomePageState extends State<HomePage> {
   }
 
   agregarJardin(QuerySnapshot evento) {
-    LJardin = [];
+    tiP.clear();
+    images.clear();
+    LJardin!.clear();
     evento.docs.forEach((element) {
       setState(() {
         LJardin!.add(new jardin.fromElement(element));
       });
     });
     List<Plant> showResults = [];
+    List<jardin> jardinTemp = [];
+
     for (var tripSnapshotP in plant!) {
       var titleP = tripSnapshotP.id!.toLowerCase();
       String img = tripSnapshotP.img!.split("name")[0];
       String ti = tripSnapshotP.nomComm!;
-
       for (var tripSnapshot in LJardin!) {
         var title = tripSnapshot.idPlanta!.toLowerCase();
         if (title.contains(titleP)) {
           showResults.add(tripSnapshotP);
-          images.add(
-            ClipRRect(
+          jardinTemp.add(tripSnapshot);
+          images.add(ClipRRect(
             borderRadius: BorderRadius.circular(20.0),
             child: FadeInImage(
               fit: BoxFit.cover,
@@ -314,11 +255,14 @@ class _HomePageState extends State<HomePage> {
             ),
           ));
 
-         tiP.add(ti);
+          tiP.add(ti);
         }
       }
     }
-    print(showResults.length);
+
+    plant = showResults;
+    LJardin = jardinTemp;
+
     setState(() {});
   }
 }
