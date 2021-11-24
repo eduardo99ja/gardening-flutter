@@ -2,6 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:gardening/src/helper/hex_color.dart';
 import 'package:gardening/src/layout/back_layout.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gardening/src/models/jardin.dart';
+import 'package:gardening/src/models/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gardening/src/providers/auth_provider.dart';
+import 'dart:async';
+
 
 class AccountAdminPage extends StatefulWidget {
   const AccountAdminPage({Key? key}) : super(key: key);
@@ -15,6 +21,55 @@ Color color2 = HexColor("#4ed810");
 
 class _AccountAdminPageState extends State<AccountAdminPage> {
   double? height, width;
+
+  final _dbRef = FirebaseFirestore.instance;
+  List<User>? user;
+  StreamSubscription<QuerySnapshot>? addUser;
+  late AuthProvider _authProvider;
+
+  List<jardin>? LJardin;
+  StreamSubscription<QuerySnapshot>? addjardin;
+
+    List<User>? allUser;
+  StreamSubscription<QuerySnapshot>? addAllUser;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _authProvider = new AuthProvider();
+
+    user = [];
+    print(_authProvider.getUser().uid);
+    addUser = _dbRef
+        .collection('Users')
+        .where("id", isEqualTo: _authProvider.getUser().uid)
+        .snapshots()
+        .listen(agregarUsuario);
+
+    allUser = [];
+    addAllUser = _dbRef
+        .collection('Users')
+        .where("isAdmin", isEqualTo: false)
+        .snapshots()
+        .listen(agregarTodosUsuario);
+
+    LJardin = [];
+    addjardin = _dbRef
+        .collection('MiJardin')
+        .snapshots()
+        .listen(agregarJardin);
+  }
+    @override
+  void dispose() {
+    super.dispose();
+    addUser!.cancel();
+        addAllUser!.cancel();
+
+    addjardin!.cancel();
+        addjardin!.pause();
+  }
+
 
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
@@ -85,9 +140,9 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
                               backgroundImage: NetworkImage(
                                   "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80"),
                             ),
-                            Text("Eduardo Apodaca"),
+                            Text("${user![0].name} ${user![0].lastname}"),
                             Text(
-                              "@eduardoApodaca",
+                              "@${user![0].username}",
                               style: TextStyle(color: Colors.grey[400]),
                             ),
                           ],
@@ -109,7 +164,7 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
               Divider(),
               _buildItem(
                 "Email",
-                "eduardo@gmail.com",
+                "${user![0].email}",
                 Icons.email,
                 HexColor("#75abb5"),
               ),
@@ -131,14 +186,14 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
               Divider(),
               _buildItem(
                 "No. de plantas",
-                "30",
+                "${LJardin!.length}",
                 Icons.format_list_numbered_rounded,
                 HexColor("#c77099"),
               ),
               SizedBox(height: 10),
               _buildItem(
                 "No. usuarios",
-                "5",
+                "${allUser!.length}",
                 Icons.people_alt,
                 HexColor("#edd18a"),
               ),
@@ -171,4 +226,32 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
       ),
     );
   }
+
+
+  agregarUsuario(QuerySnapshot evento) {
+    user = [];
+    evento.docs.forEach((element) {
+      setState(() {
+        user!.add(new User.fromElement(element));
+      });
+    });
+  }
+    agregarTodosUsuario(QuerySnapshot evento) {
+    allUser = [];
+    evento.docs.forEach((element) {
+      setState(() {
+        allUser!.add(new User.fromElement(element));
+      });
+      print(allUser!.length);
+    });
+  }
+    agregarJardin(QuerySnapshot evento) {
+    LJardin = [];
+    evento.docs.forEach((element) {
+      setState(() {
+        LJardin!.add(new jardin.fromElement(element));
+      });
+    });
+  }
+
 }
