@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gardening/src/helper/hex_color.dart';
 import 'package:gardening/src/layout/back_layout.dart';
+import 'package:gardening/src/pages/account/changePassword.dart';
 import 'package:gardening/src/pages/plantasAdmin/create.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gardening/src/models/jardin.dart';
@@ -149,8 +150,7 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
                                 backgroundImage: (user![0].image == null)
                                     ? NetworkImage(
                                         "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80")
-                                    : NetworkImage(
-                                        user![0].image!.split("name")[0]),
+                                    : NetworkImage(user![0].image!.split("name")[0]),
                               ),
                             ),
                             Text(
@@ -222,21 +222,32 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
   _buildItem(String text, String text2, IconData icon, Color color) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      child: Row(
-        children: [
-          Icon(icon, color: color),
-          SizedBox(width: 10),
-          Text(text),
-          Spacer(),
-          Text(
-            text2,
-            style: TextStyle(color: Colors.grey, fontSize: 12),
-          ),
-          Icon(
-            Icons.arrow_right_sharp,
-            color: Colors.grey,
-          ),
-        ],
+      child: GestureDetector(
+        onTap: () async {
+          if (text.contains("Cambiar")) {
+            showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return ChangePasswordPage();
+                });
+          }
+        },
+        child: Row(
+          children: [
+            Icon(icon, color: color),
+            SizedBox(width: 10),
+            Text(text),
+            Spacer(),
+            Text(
+              text2,
+              style: TextStyle(color: Colors.grey, fontSize: 12),
+            ),
+            Icon(
+              Icons.arrow_right_sharp,
+              color: Colors.grey,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -291,8 +302,7 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
                               image: AssetImage("assets/img/gallery.png"),
                               fit: BoxFit.fitWidth,
                               colorFilter: new ColorFilter.mode(
-                                  Colors.white.withOpacity(0.3),
-                                  BlendMode.dstATop),
+                                  Colors.white.withOpacity(0.3), BlendMode.dstATop),
                               alignment: Alignment.center)),
                     ),
                   ),
@@ -302,8 +312,7 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
                       primary: Colors.black,
                     ),
                     onPressed: () => seleccionarImagen(ImageSource.gallery),
-                    child: const Text('Galeria',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    child: const Text('Galeria', style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
@@ -323,8 +332,7 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
                               image: AssetImage("assets/img/camera.png"),
                               fit: BoxFit.fitWidth,
                               colorFilter: new ColorFilter.mode(
-                                  Colors.white.withOpacity(0.3),
-                                  BlendMode.dstATop),
+                                  Colors.white.withOpacity(0.3), BlendMode.dstATop),
                               alignment: Alignment.center)),
                     ),
                   ),
@@ -334,8 +342,7 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
                       primary: Colors.black,
                     ),
                     onPressed: () => seleccionarImagen(ImageSource.camera),
-                    child: const Text('Cámara',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    child: const Text('Cámara', style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
                 ],
               ),
@@ -387,12 +394,10 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
         ? '${UniqueKey().toString()}.jpg'
         : user![0].image!.split("name")[1];
 
-    Reference ref =
-        FirebaseStorage.instance.ref().child('usuarios').child('/$nombreImg');
+    Reference ref = FirebaseStorage.instance.ref().child('usuarios').child('/$nombreImg');
 
     final metadata = SettableMetadata(
-        contentType: 'image/jpeg',
-        customMetadata: {'picked-file-path': file.path});
+        contentType: 'image/jpeg', customMetadata: {'picked-file-path': file.path});
 
     UploadTask uploadTask = ref.putFile(File(file.path), metadata);
     return uploadTask;

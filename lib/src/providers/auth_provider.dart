@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 
 class AuthProvider {
   late FirebaseAuth _firebaseAuth;
@@ -9,6 +11,50 @@ class AuthProvider {
 
   User getUser() {
     return _firebaseAuth.currentUser!;
+  }
+
+  Future<bool> changePassword(
+      String currentPassword, String newPassword, BuildContext context) async {
+    final user = FirebaseAuth.instance.currentUser;
+    final cred = EmailAuthProvider.credential(email: user!.email!, password: currentPassword);
+    String? errorMessage;
+    try {
+      await user.reauthenticateWithCredential(cred).then((value) {
+        user.updatePassword(newPassword).then((_) {
+          _firebaseAuth.signOut();
+
+          Navigator.pushNamedAndRemoveUntil(context, "login", (route) => false);
+        }).catchError((error) {
+          print(error);
+        });
+      }).catchError((e) {
+        if (e.code == 'user-not-found') {
+          errorMessage = 'Ningun usuario encontrado con el email.';
+        } else if (e.code == 'wrong-password') {
+          print("wron pass");
+          errorMessage = 'Contraseña incorrecta';
+        } else if (e.code == 'too-many-requests') {
+          errorMessage = 'Demasiados peticiones';
+        }
+      });
+    } on FirebaseAuthException catch (e) {
+      print("error");
+      if (e.code == 'user-not-found') {
+        errorMessage = 'Ningun usuario encontrado con el email.';
+      } else if (e.code == 'wrong-password') {
+        print("wron pass");
+        errorMessage = 'Contraseña incorrecta';
+      } else if (e.code == 'too-many-requests') {
+        errorMessage = 'Demasiados peticiones';
+      }
+    } catch (error) {
+      print(error);
+    }
+    if (errorMessage != null) {
+      return Future.error(errorMessage!);
+    }
+
+    return true;
   }
 
   String? isSignedIn() {

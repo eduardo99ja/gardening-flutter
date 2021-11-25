@@ -3,10 +3,14 @@ import 'package:gardening/src/helper/hex_color.dart';
 import 'package:gardening/src/layout/back_layout.dart';
 import 'package:gardening/src/models/jardin.dart';
 import 'package:gardening/src/models/user.dart';
+import 'package:gardening/src/pages/account/changePassword.dart';
+import 'package:gardening/src/pages/login/login_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gardening/src/providers/auth_provider.dart';
 import 'dart:async';
+
+import 'package:ndialog/ndialog.dart';
 
 class AccountUserPage extends StatefulWidget {
   const AccountUserPage({Key? key}) : super(key: key);
@@ -49,12 +53,13 @@ class _AccountUserPageState extends State<AccountUserPage> {
         .snapshots()
         .listen(agregarJardin);
   }
-    @override
+
+  @override
   void dispose() {
     super.dispose();
     addUser!.cancel();
     addjardin!.cancel();
-        addjardin!.pause();
+    addjardin!.pause();
   }
 
   Widget build(BuildContext context) {
@@ -126,9 +131,10 @@ class _AccountUserPageState extends State<AccountUserPage> {
                               backgroundImage: NetworkImage(
                                   "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80"),
                             ),
-                            Text("${user!.length != 0? "${user![0].name}" "${user![0].lastname}":""}"),
                             Text(
-                              "@${user!.length != 0? user![0].username : ""}",
+                                "${user!.length != 0 ? "${user![0].name}" "${user![0].lastname}" : ""}"),
+                            Text(
+                              "@${user!.length != 0 ? user![0].username : ""}",
                               style: TextStyle(color: Colors.grey[400]),
                             ),
                           ],
@@ -150,7 +156,7 @@ class _AccountUserPageState extends State<AccountUserPage> {
               Divider(),
               _buildItem(
                 "Email",
-                "${user!.length != 0? user![0].email : ""}",
+                "${user!.length != 0 ? user![0].email : ""}",
                 Icons.email,
                 HexColor("#75abb5"),
               ),
@@ -187,21 +193,32 @@ class _AccountUserPageState extends State<AccountUserPage> {
   _buildItem(String text, String text2, IconData icon, Color color) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-      child: Row(
-        children: [
-          Icon(icon, color: color),
-          SizedBox(width: 10),
-          Text(text),
-          Spacer(),
-          Text(
-            text2,
-            style: TextStyle(color: Colors.grey, fontSize: 12),
-          ),
-          Icon(
-            Icons.arrow_right_sharp,
-            color: Colors.grey,
-          ),
-        ],
+      child: GestureDetector(
+        onTap: () async {
+          if (text.contains("Cambiar")) {
+            showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return ChangePasswordPage();
+                });
+          }
+        },
+        child: Row(
+          children: [
+            Icon(icon, color: color),
+            SizedBox(width: 10),
+            Text(text),
+            Spacer(),
+            Text(
+              text2,
+              style: TextStyle(color: Colors.grey, fontSize: 12),
+            ),
+            Icon(
+              Icons.arrow_right_sharp,
+              color: Colors.grey,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -214,7 +231,8 @@ class _AccountUserPageState extends State<AccountUserPage> {
       });
     });
   }
-    agregarJardin(QuerySnapshot evento) {
+
+  agregarJardin(QuerySnapshot evento) {
     LJardin = [];
     evento.docs.forEach((element) {
       setState(() {
@@ -222,5 +240,4 @@ class _AccountUserPageState extends State<AccountUserPage> {
       });
     });
   }
-
 }
