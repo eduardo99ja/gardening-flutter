@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:gardening/src/models/user.dart';
 import 'package:gardening/src/pages/plantasAdmin/create.dart';
+import 'package:gardening/src/providers/auth_provider.dart';
 
 class HomeController {
   late BuildContext context;

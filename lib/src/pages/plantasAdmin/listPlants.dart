@@ -277,7 +277,7 @@ class _listPlantsState extends State<listPlants> {
                     height: 10.0,
                   ),
                   Text(
-                    _con.user?.email ?? 'email@prueba.com',
+                    _authProvider.getUser().email!,
                     style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.white70,
@@ -300,7 +300,12 @@ class _listPlantsState extends State<listPlants> {
               trailing: Icon(Icons.add),
             ),
             ListTile(
-              title: Text('Creditos'),
+              title: Text('Mi cuenta'),
+              trailing: Icon(Icons.person),
+              onTap: _con.goToCuenta,
+            ),
+            ListTile(
+              title: Text('Créditos'),
               trailing: Icon(Icons.info),
               onTap: _con.goToCredits,
             ),

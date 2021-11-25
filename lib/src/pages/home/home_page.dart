@@ -23,11 +23,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   HomeController _con = HomeController();
-  late AuthProvider _authProvider;
 
   final _dbRef = FirebaseFirestore.instance;
   List<Plant>? plant;
   StreamSubscription<QuerySnapshot>? addPlant;
+  late AuthProvider _authProvider;
 
   //final _dbRefJ = FirebaseFirestore.instance;
   List<jardin>? LJardin;
@@ -41,6 +41,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _authProvider = AuthProvider();
 
     SchedulerBinding.instance!.addPostFrameCallback((timeStamp) {
       _con.init(context, refresh);
@@ -89,8 +90,7 @@ class _HomePageState extends State<HomePage> {
           GestureDetector(
             onTap: () async {
               await _authProvider.signOut();
-              Navigator.pushNamedAndRemoveUntil(
-                  context, 'login', (route) => false);
+              Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
             },
             child: Container(
               margin: EdgeInsets.only(right: 10),
@@ -111,9 +111,7 @@ class _HomePageState extends State<HomePage> {
                 padding: EdgeInsets.all(10.0),
                 child: VerticalCardPager(
                   textStyle: TextStyle(
-                      fontFamily: "Bevan",
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+                      fontFamily: "Bevan", color: Colors.white, fontWeight: FontWeight.bold),
                   titles: tiP,
                   images: images,
                   initialPage: 0,
@@ -176,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                     height: 10.0,
                   ),
                   Text(
-                    _con.user?.email ?? 'email@prueba.com',
+                    _authProvider.getUser().email!,
                     style: TextStyle(
                       fontSize: 18.0,
                       color: Colors.white70,
@@ -201,7 +199,12 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               onTap: _con.goToUserAccount,
               title: Text('Cuenta usuario'),
-              trailing: Icon(Icons.arrow_right),
+              trailing: Icon(Icons.person),
+            ),
+            ListTile(
+              onTap: _con.goToCredits,
+              title: Text('Créditos'),
+              trailing: Icon(Icons.info),
             ),
 
             /* ListTile(

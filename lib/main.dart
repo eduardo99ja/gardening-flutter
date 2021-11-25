@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gardening/src/pages/credits_page.dart';
 import 'package:gardening/src/pages/plantasAdmin/create.dart';
 import 'package:gardening/src/pages/plantasAdmin/searchPlant.dart';
 import 'package:gardening/src/pages/account/details_admin.dart';
@@ -45,6 +46,7 @@ class _MyAppState extends State<MyApp> {
         // 'plant/info/history': (BuildContext context) => PlantInfoHistory(),
         'account/admin': (BuildContext context) => AccountAdminPage(),
         'account/user': (BuildContext context) => AccountUserPage(),
+        'credits': (BuildContext context) => CreditsPage(),
       },
       theme: ThemeData(
         primaryColor: MyColors.primaryColor,
