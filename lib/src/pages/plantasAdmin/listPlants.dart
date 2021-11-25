@@ -120,8 +120,7 @@ class _listPlantsState extends State<listPlants> {
             GestureDetector(
               onTap: () async {
                 await _authProvider.signOut();
-                Navigator.pushNamedAndRemoveUntil(
-                    context, 'login', (route) => false);
+                Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
               },
               child: Container(
                 margin: EdgeInsets.only(right: 10),
@@ -141,15 +140,13 @@ class _listPlantsState extends State<listPlants> {
                 height: 20,
               ),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 30.0, right: 30.0, bottom: 10.0),
+                padding: const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 10.0),
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.search),
                     focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.green, width: 2.0),
+                      borderSide: const BorderSide(color: Colors.green, width: 2.0),
                       borderRadius: BorderRadius.circular(25.0),
                     ),
                     contentPadding: EdgeInsets.fromLTRB(10.0, 10.0, 40.0, 10.0),
@@ -160,12 +157,10 @@ class _listPlantsState extends State<listPlants> {
               Expanded(
                   child: ListView.builder(
                       itemCount: _resultsList!.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          GestureDetector(
+                      itemBuilder: (BuildContext context, int index) => GestureDetector(
                             onTap: () => viewPlantM(_resultsList![index]),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 8),
+                              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
                               height: 180,
                               child: Stack(
                                 children: [
@@ -176,8 +171,7 @@ class _listPlantsState extends State<listPlants> {
                                         fit: BoxFit.cover,
                                         image: NetworkImage(
                                             "${_resultsList![index].img!.split('name')[0]}"),
-                                        placeholder: AssetImage(
-                                            "assets/img/loading.jpg"),
+                                        placeholder: AssetImage("assets/img/loading.jpg"),
                                       ),
                                     ),
                                   ),
@@ -190,8 +184,7 @@ class _listPlantsState extends State<listPlants> {
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.only(
                                                 bottomLeft: Radius.circular(20),
-                                                bottomRight:
-                                                    Radius.circular(20)),
+                                                bottomRight: Radius.circular(20)),
                                             gradient: LinearGradient(
                                                 begin: Alignment.bottomCenter,
                                                 end: Alignment.topCenter,
@@ -201,29 +194,22 @@ class _listPlantsState extends State<listPlants> {
                                                 ]))),
                                   ),
                                   Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                                        mainAxisAlignment: MainAxisAlignment.end,
                                         children: <Widget>[
                                           IconButton(
                                               tooltip: 'Editar',
                                               padding: new EdgeInsets.all(0.0),
-                                              onPressed: () => _editaPlanta(
-                                                  _resultsList![index]),
-                                              icon: Icon(
-                                                  MdiIcons.pencilBoxMultiple,
-                                                  size: 30,
-                                                  color: Color(0xff59fb12))),
+                                              onPressed: () => _editaPlanta(_resultsList![index]),
+                                              icon: Icon(MdiIcons.pencilBoxMultiple,
+                                                  size: 30, color: Color(0xff59fb12))),
                                         ],
                                       ),
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Text(
                                             "\t${_resultsList![index].nomComm}",
@@ -240,8 +226,7 @@ class _listPlantsState extends State<listPlants> {
                                               color: Colors.red[500],
                                               tooltip: 'Borrar',
                                               onPressed: () {
-                                                _openModal(
-                                                    _resultsList![index]);
+                                                _openModal(_resultsList![index]);
                                               }),
                                         ],
                                       ),
@@ -336,10 +321,8 @@ class _listPlantsState extends State<listPlants> {
     });
   }
 
-
   _editaPlanta(Plant planta) async {
-    await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => EditPlant(planta)));
+    await Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditPlant(planta)));
   }
 
   _openModal(Plant plant) {
@@ -370,44 +353,35 @@ class _listPlantsState extends State<listPlants> {
     await _ref.doc(plant.id!).delete().then((value) {
       print('Se borro la planta');
       Navigator.of(context).pop();
-      Reference ref = FirebaseStorage.instance
-          .ref()
-          .child('plantas')
-          .child('${plant.img!.split("name")[1]}');
+      Reference ref =
+          FirebaseStorage.instance.ref().child('plantas').child('${plant.img!.split("name")[1]}');
       ref
           .delete()
           .then((value) => print("Se borro la imagen principal"))
           .catchError((error) => print(error));
-      ref = FirebaseStorage.instance
-          .ref()
-          .child('plantas')
-          .child('${plant.img1!.split("name")[1]}');
+      ref =
+          FirebaseStorage.instance.ref().child('plantas').child('${plant.img1!.split("name")[1]}');
       ref
           .delete()
           .then((value) => print("Se borro la imagen principal"))
           .catchError((error) => print(error));
-      ref = FirebaseStorage.instance
-          .ref()
-          .child('plantas')
-          .child('${plant.img2!.split("name")[1]}');
+      ref =
+          FirebaseStorage.instance.ref().child('plantas').child('${plant.img2!.split("name")[1]}');
       ref
           .delete()
           .then((value) => print("Se borro la imagen principal"))
           .catchError((error) => print(error));
-      ref = FirebaseStorage.instance
-          .ref()
-          .child('plantas')
-          .child('${plant.img3!.split("name")[1]}');
+      ref =
+          FirebaseStorage.instance.ref().child('plantas').child('${plant.img3!.split("name")[1]}');
       ref
           .delete()
           .then((value) => print("Se borro la imagen principal"))
           .catchError((error) => print(error));
       setState(() {});
     }).catchError((error) => print(error));
+  }
 
-    viewPlantM(Plant plant) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => viewPlantScreen(plant)));
-
+  viewPlantM(Plant plant) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => viewPlantScreen(plant)));
   }
 }
