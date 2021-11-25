@@ -56,7 +56,7 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
         .where("id", isEqualTo: _authProvider.getUser().uid)
         .snapshots()
         .listen(agregarUsuario);
-
+    print(user!.length);
     allUser = [];
     addAllUser = _dbRef
         .collection('Users')
@@ -153,9 +153,10 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
                                         user![0].image!.split("name")[0]),
                               ),
                             ),
-                            Text("${user![0].name} ${user![0].lastname}"),
                             Text(
-                              "@${user![0].username}",
+                                "${user!.length != 0 ? "${user![0].name}" "${user![0].name}" : ""}"),
+                            Text(
+                              "@${user!.length != 0 ? user![0].username : ""}",
                               style: TextStyle(color: Colors.grey[400]),
                             ),
                           ],
@@ -177,7 +178,7 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
               Divider(),
               _buildItem(
                 "Email",
-                "${user![0].email}",
+                "${user!.length != 0 ? user![0].email : ""}",
                 Icons.email,
                 HexColor("#75abb5"),
               ),
