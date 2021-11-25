@@ -265,7 +265,7 @@ class _listPlantsState extends State<listPlants> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '${_con.user?.name ?? 'Prueba'} ${_con.user?.lastname ?? 'Test'}',
+                    "Bienvenido",
                     style: TextStyle(
                       fontSize: 20.0,
                       color: Colors.white,
