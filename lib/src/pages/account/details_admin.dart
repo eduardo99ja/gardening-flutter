@@ -1,6 +1,11 @@
+import 'dart:io';
+import 'dart:ui';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:gardening/src/helper/hex_color.dart';
 import 'package:gardening/src/layout/back_layout.dart';
+import 'package:gardening/src/pages/plantasAdmin/create.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gardening/src/models/jardin.dart';
 import 'package:gardening/src/models/user.dart';
@@ -8,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gardening/src/providers/auth_provider.dart';
 import 'dart:async';
 
+import 'package:image_picker/image_picker.dart';
 
 class AccountAdminPage extends StatefulWidget {
   const AccountAdminPage({Key? key}) : super(key: key);
@@ -18,6 +24,10 @@ class AccountAdminPage extends StatefulWidget {
 
 Color color1 = HexColor("#59fb12");
 Color color2 = HexColor("#4ed810");
+
+PickedFile? pickFile;
+File? imageFile;
+String? nombreImg;
 
 class _AccountAdminPageState extends State<AccountAdminPage> {
   double? height, width;
@@ -30,7 +40,7 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
   List<jardin>? LJardin;
   StreamSubscription<QuerySnapshot>? addjardin;
 
-    List<User>? allUser;
+  List<User>? allUser;
   StreamSubscription<QuerySnapshot>? addAllUser;
 
   @override
@@ -55,21 +65,18 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
         .listen(agregarTodosUsuario);
 
     LJardin = [];
-    addjardin = _dbRef
-        .collection('MiJardin')
-        .snapshots()
-        .listen(agregarJardin);
+    addjardin = _dbRef.collection('MiJardin').snapshots().listen(agregarJardin);
   }
-    @override
+
+  @override
   void dispose() {
     super.dispose();
     addUser!.cancel();
-        addAllUser!.cancel();
+    addAllUser!.cancel();
 
     addjardin!.cancel();
-        addjardin!.pause();
+    addjardin!.pause();
   }
-
 
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
@@ -135,10 +142,16 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
                         Spacer(),
                         Column(
                           children: [
-                            CircleAvatar(
-                              radius: 45,
-                              backgroundImage: NetworkImage(
-                                  "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80"),
+                            GestureDetector(
+                              onTap: () => showAlert(),
+                              child: CircleAvatar(
+                                radius: 45,
+                                backgroundImage: (user![0].image == null)
+                                    ? NetworkImage(
+                                        "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80")
+                                    : NetworkImage(
+                                        user![0].image!.split("name")[0]),
+                              ),
                             ),
                             Text("${user![0].name} ${user![0].lastname}"),
                             Text(
@@ -227,7 +240,6 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
     );
   }
 
-
   agregarUsuario(QuerySnapshot evento) {
     user = [];
     evento.docs.forEach((element) {
@@ -236,7 +248,8 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
       });
     });
   }
-    agregarTodosUsuario(QuerySnapshot evento) {
+
+  agregarTodosUsuario(QuerySnapshot evento) {
     allUser = [];
     evento.docs.forEach((element) {
       setState(() {
@@ -245,7 +258,8 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
       print(allUser!.length);
     });
   }
-    agregarJardin(QuerySnapshot evento) {
+
+  agregarJardin(QuerySnapshot evento) {
     LJardin = [];
     evento.docs.forEach((element) {
       setState(() {
@@ -254,4 +268,132 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
     });
   }
 
+  void showAlert() {
+//[cameraButton, galleryButton],
+    AlertDialog alerta = AlertDialog(
+      title: Text('¿Desde donde subir imagen?'),
+      actions: <Widget>[
+        Row(
+          children: [
+            SizedBox(
+              width: 30,
+            ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: Stack(
+                children: <Widget>[
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          image: DecorationImage(
+                              image: AssetImage("assets/img/gallery.png"),
+                              fit: BoxFit.fitWidth,
+                              colorFilter: new ColorFilter.mode(
+                                  Colors.white.withOpacity(0.3),
+                                  BlendMode.dstATop),
+                              alignment: Alignment.center)),
+                    ),
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.all(16.0),
+                      primary: Colors.black,
+                    ),
+                    onPressed: () => seleccionarImagen(ImageSource.gallery),
+                    child: const Text('Galeria',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 80,
+            ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: Stack(
+                children: <Widget>[
+                  Positioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          image: DecorationImage(
+                              image: AssetImage("assets/img/camera.png"),
+                              fit: BoxFit.fitWidth,
+                              colorFilter: new ColorFilter.mode(
+                                  Colors.white.withOpacity(0.3),
+                                  BlendMode.dstATop),
+                              alignment: Alignment.center)),
+                    ),
+                  ),
+                  TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.all(16.0),
+                      primary: Colors.black,
+                    ),
+                    onPressed: () => seleccionarImagen(ImageSource.camera),
+                    child: const Text('Cámara',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alerta;
+        });
+  }
+
+  Future seleccionarImagen(ImageSource imgSrc) async {
+    pickFile = await ImagePicker().getImage(source: imgSrc);
+    imageFile = File(pickFile!.path);
+
+    Navigator.of(context).pop();
+
+    TaskSnapshot snapshot = await subirArchivo(pickFile!);
+    String imageUrl = await snapshot.ref.getDownloadURL();
+
+    String? docId;
+    CollectionReference userData = _dbRef.collection('Users');
+    await userData
+        .where("id", isEqualTo: _authProvider.getUser().uid)
+        .get()
+        .then((QuerySnapshot query) {
+      query.docs.forEach((element) {
+        docId = element.reference.id;
+      });
+    });
+
+    print(docId);
+    await userData
+        .doc(docId)
+        .update({"image": imageUrl + "name" + nombreImg!})
+        .then((value) => print("Datos firebase Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
+
+    setState(() {});
+  }
+
+  Future<TaskSnapshot> subirArchivo(PickedFile file) async {
+    nombreImg = (user![0].image == null)
+        ? '${UniqueKey().toString()}.jpg'
+        : user![0].image!.split("name")[1];
+
+    Reference ref =
+        FirebaseStorage.instance.ref().child('usuarios').child('/$nombreImg');
+
+    final metadata = SettableMetadata(
+        contentType: 'image/jpeg',
+        customMetadata: {'picked-file-path': file.path});
+
+    UploadTask uploadTask = ref.putFile(File(file.path), metadata);
+    return uploadTask;
+  }
 }
