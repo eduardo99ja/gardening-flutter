@@ -8,7 +8,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gardening/src/providers/auth_provider.dart';
 import 'dart:async';
 
-
 class AccountAdminPage extends StatefulWidget {
   const AccountAdminPage({Key? key}) : super(key: key);
 
@@ -30,7 +29,7 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
   List<jardin>? LJardin;
   StreamSubscription<QuerySnapshot>? addjardin;
 
-    List<User>? allUser;
+  List<User>? allUser;
   StreamSubscription<QuerySnapshot>? addAllUser;
 
   @override
@@ -46,7 +45,7 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
         .where("id", isEqualTo: _authProvider.getUser().uid)
         .snapshots()
         .listen(agregarUsuario);
-
+    print(user!.length);
     allUser = [];
     addAllUser = _dbRef
         .collection('Users')
@@ -55,21 +54,18 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
         .listen(agregarTodosUsuario);
 
     LJardin = [];
-    addjardin = _dbRef
-        .collection('MiJardin')
-        .snapshots()
-        .listen(agregarJardin);
+    addjardin = _dbRef.collection('MiJardin').snapshots().listen(agregarJardin);
   }
-    @override
+
+  @override
   void dispose() {
     super.dispose();
-    addUser!.cancel();
-        addAllUser!.cancel();
+    addAllUser!.cancel();
 
     addjardin!.cancel();
-        addjardin!.pause();
+    addjardin!.pause();
+    addUser!.cancel();
   }
-
 
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
@@ -140,9 +136,9 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
                               backgroundImage: NetworkImage(
                                   "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80"),
                             ),
-                            Text("${user![0].name} ${user![0].lastname}"),
+                            Text("${ user!.length != 0? "${user![0].name}"  "${user![0].name}" : ""}"),
                             Text(
-                              "@${user![0].username}",
+                              "@${user!.length != 0? user![0].username : ""}",
                               style: TextStyle(color: Colors.grey[400]),
                             ),
                           ],
@@ -164,7 +160,7 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
               Divider(),
               _buildItem(
                 "Email",
-                "${user![0].email}",
+                "${user!.length != 0? user![0].email : ""}",
                 Icons.email,
                 HexColor("#75abb5"),
               ),
@@ -227,7 +223,6 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
     );
   }
 
-
   agregarUsuario(QuerySnapshot evento) {
     user = [];
     evento.docs.forEach((element) {
@@ -236,7 +231,8 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
       });
     });
   }
-    agregarTodosUsuario(QuerySnapshot evento) {
+
+  agregarTodosUsuario(QuerySnapshot evento) {
     allUser = [];
     evento.docs.forEach((element) {
       setState(() {
@@ -245,7 +241,8 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
       print(allUser!.length);
     });
   }
-    agregarJardin(QuerySnapshot evento) {
+
+  agregarJardin(QuerySnapshot evento) {
     LJardin = [];
     evento.docs.forEach((element) {
       setState(() {
@@ -253,5 +250,4 @@ class _AccountAdminPageState extends State<AccountAdminPage> {
       });
     });
   }
-
 }
