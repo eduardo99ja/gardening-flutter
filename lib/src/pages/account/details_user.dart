@@ -126,9 +126,9 @@ class _AccountUserPageState extends State<AccountUserPage> {
                               backgroundImage: NetworkImage(
                                   "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80"),
                             ),
-                            Text("${user![0].name} ${user![0].lastname}"),
+                            Text("${user!.length != 0? "${user![0].name}" "${user![0].lastname}":""}"),
                             Text(
-                              "@${user![0].username}",
+                              "@${user!.length != 0? user![0].username : ""}",
                               style: TextStyle(color: Colors.grey[400]),
                             ),
                           ],
@@ -150,7 +150,7 @@ class _AccountUserPageState extends State<AccountUserPage> {
               Divider(),
               _buildItem(
                 "Email",
-                "${user![0].email}",
+                "${user!.length != 0? user![0].email : ""}",
                 Icons.email,
                 HexColor("#75abb5"),
               ),
