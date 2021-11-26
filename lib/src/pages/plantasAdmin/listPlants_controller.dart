@@ -33,7 +33,11 @@ class listPlantsController {
     Navigator.pushNamed(context, 'plants/create');
   }
 
-  void goToCredits() {
+  void goToCuenta() {
     Navigator.pushNamed(context, 'account/admin');
+  }
+
+  void goToCredits() {
+    Navigator.pushNamed(context, 'credits');
   }
 }

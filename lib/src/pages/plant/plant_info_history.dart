@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:gardening/src/helper/hex_color.dart';
+import 'package:gardening/src/models/jardin.dart';
+import 'package:gardening/src/models/plant.dart';
+import 'package:gardening/src/models/plantaSemana.dart';
+// import 'package:gardening/src/pages/plant/plant_info_real_page.dart';
+import 'package:gardening/src/providers/db_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
+import 'dart:async';
+import 'package:path/path.dart' as Path;
+import 'dart:typed_data';
 import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class PlantInfoHistory extends StatefulWidget {
-  const PlantInfoHistory({Key? key}) : super(key: key);
+  final jardin garden;
+  final Plant plant;
+  const PlantInfoHistory({Key? key, required this.garden, required this.plant}) : super(key: key);
 
   @override
   _PlantInfoHistoryState createState() => _PlantInfoHistoryState();
@@ -16,6 +27,31 @@ Color color2 = HexColor("#4ed810");
 
 class _PlantInfoHistoryState extends State<PlantInfoHistory> {
   double? height, width;
+  late SqliteProvider _plantProvider;
+
+  double? lunesTem, lunesHum;
+  double? martesTemp, martesHum;
+  double? miercolesTemp, miercolesHum;
+  double? juevesTemp, juevesHum;
+  double? viernesTemp, viernesHum;
+  double? sabadoTemp, sabadoHum;
+  double? domingoTemp, domingoHum;
+
+  @override
+  void initState() {
+    print("Entro a init state.......................");
+    WidgetsFlutterBinding.ensureInitialized();
+    _initDB();
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _plantProvider.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +74,14 @@ class _PlantInfoHistoryState extends State<PlantInfoHistory> {
     });
   }
 
+  _initDB() async {
+    final path = await initDeleteDb('plantas.db');
+    // print("patgh....");
+    // print(path);
+    _plantProvider = SqliteProvider();
+    await _plantProvider.open2(path);
+  }
+
   _buildBody() {
     return Container(
       height: double.infinity,
@@ -56,16 +100,19 @@ class _PlantInfoHistoryState extends State<PlantInfoHistory> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
-                    child: Image.network(
-                      'https://www.florespedia.com/Imagenes/petunias-2.jpg',
-                      width: 200,
-                      height: 150,
+                  Container(
+                    height: 150,
+                    child: Center(
+                      child: FadeInImage(
+                        fit: BoxFit.fill,
+                        image: NetworkImage("${widget.plant.img!.split('name')[0]}"),
+                        placeholder: AssetImage("assets/img/loading.jpg"),
+                      ),
                     ),
                   ),
                   Center(
                     child: Text(
-                      "Petunia",
+                      widget.plant.nomComm!,
                       style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
                     ),
                   ),
@@ -88,9 +135,20 @@ class _PlantInfoHistoryState extends State<PlantInfoHistory> {
                 ),
                 child: Column(
                   children: [
-                    _buildTemperaturaHistory(title: 'Humedad del suelo'),
-                    _buildTemperaturaHistory(title: 'Humedad del ambiente'),
-                    _buildTemperaturaHistory(title: 'Temperatura '),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            _getData();
+                            setState(() {});
+                          },
+                          child: Text('Graficar datos >'),
+                        ),
+                      ],
+                    ),
+                    _buildTemperaturaHistory(title: 'Temperatura'),
+                    _buildHumHistory(title: 'Humedad'),
                   ],
                 ),
               ),
@@ -99,6 +157,46 @@ class _PlantInfoHistoryState extends State<PlantInfoHistory> {
         ),
       ),
     );
+  }
+
+  _getData() async {
+    PlantaSemanal? plantas = await _plantProvider.getPlantaSemanalByIdHistory(widget.garden.id!);
+    if (plantas != null) {
+      lunesTem = double.parse(plantas.lunes!.split("hum")[0].split("temp:")[1]);
+      martesTemp = double.parse(plantas.martes!.split("hum")[0].split("temp:")[1]);
+      miercolesTemp = double.parse(plantas.miercoles!.split("hum")[0].split("temp:")[1]);
+      juevesTemp = double.parse(plantas.jueves!.split("hum")[0].split("temp:")[1]);
+      viernesTemp = double.parse(plantas.viernes!.split("hum")[0].split("temp:")[1]);
+      sabadoTemp = double.parse(plantas.sabado!.split("hum")[0].split("temp:")[1]);
+      domingoTemp = double.parse(plantas.domingo!.split("hum")[0].split("temp:")[1]);
+
+      lunesHum = double.parse(plantas.lunes!.split("hum")[1]);
+      martesHum = double.parse(plantas.martes!.split("hum")[1]);
+      miercolesHum = double.parse(plantas.miercoles!.split("hum")[1]);
+      juevesHum = double.parse(plantas.jueves!.split("hum")[1]);
+      viernesHum = double.parse(plantas.viernes!.split("hum")[1]);
+      sabadoHum = double.parse(plantas.sabado!.split("hum")[1]);
+      domingoHum = double.parse(plantas.domingo!.split("hum")[1]);
+
+      setState(() {});
+
+      print("Temperatura________");
+      print("Lunes:" + lunesTem.toString());
+      print("Martes:" + martesTemp.toString());
+      print("Miercoles:" + miercolesTemp.toString());
+      print("Jueves:" + juevesTemp.toString());
+      print("Viernes:" + viernesTemp.toString());
+      print("Sabado:" + sabadoTemp.toString());
+      print("Domingo:" + domingoTemp.toString());
+      print("Humedad________");
+      print("Lunes:" + lunesHum.toString());
+      print("Martes:" + martesHum.toString());
+      print("Miercoles:" + miercolesHum.toString());
+      print("Jueves:" + juevesHum.toString());
+      print("Viernes:" + viernesHum.toString());
+      print("Sabado:" + sabadoHum.toString());
+      print("Domingo:" + domingoHum.toString());
+    }
   }
 
   _buildTemperaturaHistory({required String title}) {
@@ -112,17 +210,47 @@ class _PlantInfoHistoryState extends State<PlantInfoHistory> {
         series: <LineSeries<SalesData, String>>[
           LineSeries<SalesData, String>(
             dataSource: <SalesData>[
-              SalesData('Lun', 35),
-              SalesData('Mar', 28),
-              SalesData('Mie', 34),
-              SalesData('Jue', 32),
-              SalesData('Vie', 40),
-              SalesData('Sab', 40),
-              SalesData('Dom', 40),
+              SalesData('Lun', lunesTem != null ? lunesTem! : 0),
+              SalesData('Mar', martesTemp != null ? martesTemp! : 0),
+              SalesData('Mie', miercolesTemp != null ? miercolesTemp! : 0),
+              SalesData('Jue', juevesTemp != null ? juevesTemp! : 0),
+              SalesData('Vie', viernesTemp != null ? viernesTemp! : 0),
+              SalesData('Sab', sabadoTemp != null ? sabadoTemp! : 0),
+              SalesData('Dom', domingoTemp != null ? domingoTemp! : 0),
             ],
             xValueMapper: (SalesData sales, _) => sales.year,
             yValueMapper: (SalesData sales, _) => sales.sales,
             name: "Temperatura",
+            // Enable data label
+            dataLabelSettings: DataLabelSettings(isVisible: true),
+          ),
+        ],
+      ),
+    ));
+  }
+
+  _buildHumHistory({required String title}) {
+    return Center(
+        child: Container(
+      child: SfCartesianChart(
+        primaryXAxis: CategoryAxis(title: AxisTitle(text: 'Semana')),
+        title: ChartTitle(text: '${title}'),
+        legend: Legend(isVisible: false),
+        tooltipBehavior: TooltipBehavior(enable: true),
+        series: <LineSeries<SalesData, String>>[
+          LineSeries<SalesData, String>(
+            dataSource: <SalesData>[
+              SalesData('Lun', lunesHum != null ? lunesHum! : 0),
+              SalesData('Mar', martesHum != null ? martesHum! : 0),
+              SalesData('Mie', miercolesHum != null ? miercolesHum! : 0),
+              SalesData('Jue', juevesHum != null ? juevesHum! : 0),
+              SalesData('Vie', viernesHum != null ? viernesHum! : 0),
+              SalesData('Sab', sabadoHum != null ? sabadoHum! : 0),
+              SalesData('Dom', domingoHum != null ? domingoHum! : 0),
+            ],
+            xValueMapper: (SalesData sales, _) => sales.year,
+            yValueMapper: (SalesData sales, _) => sales.sales,
+            name: "Humedad",
             // Enable data label
             dataLabelSettings: DataLabelSettings(isVisible: true),
           ),
@@ -136,4 +264,12 @@ class SalesData {
   SalesData(this.year, this.sales);
   final String year;
   final double sales;
+}
+
+Future<String> initDeleteDb(String dbName) async {
+  final databasePath = await getDatabasesPath();
+
+  final path = Path.join(databasePath, dbName);
+
+  return path;
 }

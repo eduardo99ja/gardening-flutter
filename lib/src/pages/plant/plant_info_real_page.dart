@@ -137,6 +137,7 @@ class _PlantInfoRealPageState extends State<PlantInfoRealPage> with SingleTicker
       connection?.dispose();
       connection = null;
     }
+    plantProvider.close();
     super.dispose();
   }
 
@@ -332,12 +333,23 @@ class _PlantInfoRealPageState extends State<PlantInfoRealPage> with SingleTicker
         Icon(Icons.pie_chart),
         SizedBox(width: 5),
         GestureDetector(
-          child: Text("Historico"),
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => PlantInfoHistory()),
-          ),
-        ),
+            child: Text("Historico"),
+            onTap: () async {
+              if (isConnected) {
+                isDisconnecting = true;
+                connection?.dispose();
+                connection = null;
+              }
+              await plantProvider.close();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (_) => PlantInfoHistory(
+                          garden: widget.garden,
+                          plant: widget.plant,
+                        )),
+              );
+            }),
         SizedBox(width: 15),
       ],
     );

@@ -93,7 +93,6 @@ class _SearchPlantState extends State<SearchPlant> {
           flexibleSpace: Column(
             children: [
               SizedBox(height: 40),
-              _menuDrawer(),
             ],
           ),
           centerTitle: true,
@@ -104,10 +103,9 @@ class _SearchPlantState extends State<SearchPlant> {
           actions: [
             GestureDetector(
               onTap: () async {
-              await _authProvider.signOut();
-              Navigator.pushNamedAndRemoveUntil(
-                  context, 'login', (route) => false);
-            },
+                await _authProvider.signOut();
+                Navigator.pushNamedAndRemoveUntil(context, 'login', (route) => false);
+              },
               child: Container(
                 margin: EdgeInsets.only(right: 10),
                 child: Icon(
@@ -118,7 +116,6 @@ class _SearchPlantState extends State<SearchPlant> {
             )
           ],
         ),
-        drawer: _drawer(),
         body: Container(
           child: Column(
             children: <Widget>[
@@ -126,15 +123,13 @@ class _SearchPlantState extends State<SearchPlant> {
                 height: 20,
               ),
               Padding(
-                padding: const EdgeInsets.only(
-                    left: 30.0, right: 30.0, bottom: 10.0),
+                padding: const EdgeInsets.only(left: 30.0, right: 30.0, bottom: 10.0),
                 child: TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.search),
                     focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.green, width: 2.0),
+                      borderSide: const BorderSide(color: Colors.green, width: 2.0),
                       borderRadius: BorderRadius.circular(25.0),
                     ),
                     contentPadding: EdgeInsets.fromLTRB(10.0, 10.0, 40.0, 10.0),
@@ -145,12 +140,10 @@ class _SearchPlantState extends State<SearchPlant> {
               Expanded(
                   child: ListView.builder(
                       itemCount: _resultsList!.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          GestureDetector(
+                      itemBuilder: (BuildContext context, int index) => GestureDetector(
                             onTap: () => addPlanta(_resultsList![index]),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 8),
+                              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
                               height: 180,
                               child: Stack(
                                 children: [
@@ -161,8 +154,7 @@ class _SearchPlantState extends State<SearchPlant> {
                                         fit: BoxFit.cover,
                                         image: NetworkImage(
                                             "${_resultsList![index].img!.split('name')[0]}"),
-                                        placeholder: AssetImage(
-                                            "assets/img/loading.jpg"),
+                                        placeholder: AssetImage("assets/img/loading.jpg"),
                                       ),
                                     ),
                                   ),
@@ -175,8 +167,7 @@ class _SearchPlantState extends State<SearchPlant> {
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.only(
                                                 bottomLeft: Radius.circular(20),
-                                                bottomRight:
-                                                    Radius.circular(20)),
+                                                bottomRight: Radius.circular(20)),
                                             gradient: LinearGradient(
                                                 begin: Alignment.bottomCenter,
                                                 end: Alignment.topCenter,
@@ -187,12 +178,10 @@ class _SearchPlantState extends State<SearchPlant> {
                                   ),
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Text(
                                             "\t${_resultsList![index].nomComm}",
@@ -216,72 +205,6 @@ class _SearchPlantState extends State<SearchPlant> {
         ));
   }
 
-  Widget _menuDrawer() => GestureDetector(
-        onTap: _con.openDrawer,
-        child: Container(
-          margin: EdgeInsets.only(left: 20.0),
-          alignment: Alignment.centerLeft,
-          child: Image.asset(
-            'assets/img/menu.png',
-            width: 20.0,
-            height: 20.0,
-          ),
-        ),
-      );
-
-  Widget _drawer() => Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: MyColors.primaryColor),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '${_con.user?.name ?? 'Prueba'} ${_con.user?.lastname ?? 'Test'}',
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 1,
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  Text(
-                    _con.user?.email ?? 'email@prueba.com',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: Colors.white70,
-                      fontWeight: FontWeight.bold,
-                      fontStyle: FontStyle.italic,
-                    ),
-                    maxLines: 1,
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              onTap: null,
-              title: Text('Inicio'),
-              trailing: Icon(Icons.home),
-            ),
-            ListTile(
-              onTap: null,
-              title: Text('Agregar planta'),
-              trailing: Icon(Icons.add),
-            ),
-            ListTile(
-              title: Text('Creditos'),
-              trailing: Icon(Icons.info),
-              onTap: _con.goToCredits,
-            ),
-          ],
-        ),
-      );
   refresh() {
     setState(() {});
   }
@@ -297,7 +220,6 @@ class _SearchPlantState extends State<SearchPlant> {
   }
 
   addPlanta(Plant plant) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => addPlantScreen(plant)));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => addPlantScreen(plant)));
   }
 }

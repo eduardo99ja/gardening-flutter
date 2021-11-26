@@ -47,7 +47,8 @@ class _DetailsState extends State<Details> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30))),
                     child: Padding(
                       padding: EdgeInsets.all(15.0),
                       child: Column(
@@ -61,7 +62,9 @@ class _DetailsState extends State<Details> {
                               Text(
                                 widget.plant.nomComm!,
                                 style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
                               ),
                               Expanded(
                                 child: Row(
@@ -72,24 +75,17 @@ class _DetailsState extends State<Details> {
                                       child: Card(
                                         elevation: 3,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(30.0),
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
                                         ),
                                         child: CircleAvatar(
                                           radius: 15,
                                           backgroundColor: Colors.white,
                                           child: IconButton(
                                               padding: new EdgeInsets.all(0.0),
-                                              onPressed: () => {
-                                                    print(widget.garden.id),
-                                                    _dbRef
-                                                        .collection('MiJardin')
-                                                        .doc(widget.garden.id)
-                                                        .delete()
-                                                        .then((value) =>
-                                                            Navigator.pushNamedAndRemoveUntil(
-                                                                context, 'home', (route) => false))
-                                                  },
-                                              icon: Icon(Icons.restore_from_trash,
+                                              onPressed: () => {_openModal()},
+                                              icon: Icon(
+                                                  Icons.restore_from_trash,
                                                   color: Colors.green)),
                                         ),
                                       ),
@@ -100,7 +96,8 @@ class _DetailsState extends State<Details> {
                                       child: Card(
                                         elevation: 3,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(30.0),
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
                                         ),
                                         child: CircleAvatar(
                                           radius: 15,
@@ -108,9 +105,11 @@ class _DetailsState extends State<Details> {
                                           child: IconButton(
                                               padding: new EdgeInsets.all(0.0),
                                               onPressed: () {
-                                                _showDialog(context, widget.garden);
+                                                _showDialog(
+                                                    context, widget.garden);
                                               },
-                                              icon: Icon(Icons.location_on_outlined,
+                                              icon: Icon(
+                                                  Icons.location_on_outlined,
                                                   color: Colors.green)),
                                         ),
                                       ),
@@ -121,7 +120,8 @@ class _DetailsState extends State<Details> {
                                       child: Card(
                                         elevation: 3,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(30.0),
+                                          borderRadius:
+                                              BorderRadius.circular(30.0),
                                         ),
                                         child: CircleAvatar(
                                           radius: 15,
@@ -131,11 +131,14 @@ class _DetailsState extends State<Details> {
                                               onPressed: () => Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (_) => BluetoothPage(
+                                                      builder: (_) =>
+                                                          BluetoothPage(
                                                             plant: widget.plant,
-                                                            garden: widget.garden,
+                                                            garden:
+                                                                widget.garden,
                                                           ))),
-                                              icon: Icon(Icons.bar_chart, color: Colors.green)),
+                                              icon: Icon(Icons.bar_chart,
+                                                  color: Colors.green)),
                                         ),
                                       ),
                                     ),
@@ -154,12 +157,15 @@ class _DetailsState extends State<Details> {
                                 'Genero:',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
                               ),
                               SizedBox(width: size.width * 0.2),
                               Text(
                                 widget.plant.genero!,
-                                style: TextStyle(fontSize: 15, color: Colors.black),
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.black),
                               )
                             ],
                           ),
@@ -173,12 +179,15 @@ class _DetailsState extends State<Details> {
                                 'Nombre botánico:',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
                               ),
                               SizedBox(width: size.width * 0.04),
                               Text(
                                 widget.plant.nomBot!,
-                                style: TextStyle(fontSize: 15, color: Colors.black),
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.black),
                               )
                             ],
                           ),
@@ -192,12 +201,15 @@ class _DetailsState extends State<Details> {
                                 'Nombre común:',
                                 textAlign: TextAlign.left,
                                 style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold, color: Colors.black),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
                               ),
                               SizedBox(width: size.width * 0.07),
                               Text(
                                 widget.plant.nomComm!,
-                                style: TextStyle(fontSize: 15, color: Colors.black),
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.black),
                               )
                             ],
                           ),
@@ -207,7 +219,9 @@ class _DetailsState extends State<Details> {
                               Text(
                                 'Galería de fotos',
                                 style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -223,23 +237,23 @@ class _DetailsState extends State<Details> {
                               padding: EdgeInsets.all(15.0),
                               scrollDirection: Axis.horizontal,
                               children: [
-                                _buildUsageItem(
-                                    Icons.opacity, 'Riego', size.width, widget.plant.riego!),
+                                _buildUsageItem(Icons.opacity, 'Riego',
+                                    size.width, widget.plant.riego!),
                                 SizedBox(
                                   width: size.width * 0.02,
                                 ),
-                                _buildUsageItem(
-                                    Icons.wb_sunny_outlined, ' Sol', size.width, widget.plant.sol!),
+                                _buildUsageItem(Icons.wb_sunny_outlined, ' Sol',
+                                    size.width, widget.plant.sol!),
                                 SizedBox(
                                   width: size.width * 0.02,
                                 ),
-                                _buildUsageItem(
-                                    Icons.water, 'Humedad', size.width, widget.plant.humedad!),
+                                _buildUsageItem(Icons.water, 'Humedad',
+                                    size.width, widget.plant.humedad!),
                                 SizedBox(
                                   width: size.width * 0.02,
                                 ),
-                                _buildUsageItem(Icons.thermostat, 'Temperatura', size.width,
-                                    widget.plant.temperatura!),
+                                _buildUsageItem(Icons.thermostat, 'Temperatura',
+                                    size.width, widget.plant.temperatura!),
                                 SizedBox(
                                   width: size.width * 0.02,
                                 ),
@@ -252,7 +266,9 @@ class _DetailsState extends State<Details> {
                               Text(
                                 'Realidad Aumentada',
                                 style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
                               ),
                               Expanded(
                                 child: Align(
@@ -280,6 +296,92 @@ class _DetailsState extends State<Details> {
         ),
       ],
     );
+  }
+
+  _openModal() {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0))),
+            contentPadding: EdgeInsets.only(top: 10.0),
+            content: Container(
+              width: 300.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        "¿Esta seguro de borrar?",
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 5.0,
+                  ),
+                  Divider(
+                    color: Colors.grey,
+                    height: 4.0,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                    child: TextField(
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        hintText: "${widget.plant.nomComm}",
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  ),
+                  FadeInImage(
+                    fit: BoxFit.cover,
+                    image:
+                        NetworkImage("${widget.plant.img!.split('name')[0]}"),
+                    placeholder: AssetImage("assets/img/loading.jpg"),
+                  ),
+                  InkWell(
+                    child: Container(
+                      padding: EdgeInsets.only(top: 8.0, bottom: 8.0),
+                      decoration: BoxDecoration(
+                        color: Colors.green,
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(32.0),
+                            bottomRight: Radius.circular(32.0)),
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          _dbRef
+                              .collection('MiJardin')
+                              .doc(widget.garden.id)
+                              .delete()
+                              .then((value) =>
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context, 'home', (route) => false));
+                        },
+                        child: Text(
+                          "Borrar",
+                          style: TextStyle(color: Colors.white, fontSize: 15),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+
   }
 
   void _showDialog(BuildContext context, jardin garden) {
@@ -314,7 +416,8 @@ class _DetailsState extends State<Details> {
     print(widget.garden.latitud!);
     return GoogleMap(
       initialCameraPosition: CameraPosition(
-        target: LatLng(double.parse(widget.garden.latitud!), double.parse(widget.garden.longitud!)),
+        target: LatLng(double.parse(widget.garden.latitud!),
+            double.parse(widget.garden.longitud!)),
         zoom: 10.0,
       ),
       mapType: MapType.normal,
@@ -346,7 +449,8 @@ class RenderSliverWidget extends RenderSliverToBoxAdapter {
       return;
     }
     final SliverConstraints constraints = this.constraints;
-    child!.layout(constraints.asBoxConstraints(/* crossAxisExtent: double.infinity */),
+    child!.layout(
+        constraints.asBoxConstraints(/* crossAxisExtent: double.infinity */),
         parentUsesSize: true);
     double childExtent;
     switch (constraints.axis) {
@@ -358,8 +462,10 @@ class RenderSliverWidget extends RenderSliverToBoxAdapter {
         break;
     }
     assert(childExtent != null);
-    final double paintedChildSize = calculatePaintOffset(constraints, from: 0.0, to: childExtent);
-    final double cacheExtent = calculateCacheOffset(constraints, from: 0.0, to: childExtent);
+    final double paintedChildSize =
+        calculatePaintOffset(constraints, from: 0.0, to: childExtent);
+    final double cacheExtent =
+        calculateCacheOffset(constraints, from: 0.0, to: childExtent);
 
     assert(paintedChildSize.isFinite);
     assert(paintedChildSize >= 0.0);
@@ -375,7 +481,8 @@ class RenderSliverWidget extends RenderSliverToBoxAdapter {
   }
 }
 
-Widget _swiper({required String img1, required String img2, required String img3}) {
+Widget _swiper(
+    {required String img1, required String img2, required String img3}) {
   List<String> images = [img1, img2, img3];
   return Container(
     width: double.infinity,
